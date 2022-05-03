@@ -13,7 +13,7 @@
       <class name="com.twc.ios.app.testcases.LATAMDOPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.LATAMCOPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.EXEMPTPrivacyTest"/>
-      <class name="com.twc.ios.app.testcases.TURKEYPrivacyTest"/>
+      <!--  class name="com.twc.ios.app.testcases.TURKEYPrivacyTest"/>-->
       <class name="com.twc.ios.app.testcases.CHINAPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.BELARUSPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.RUSSIAPrivacyTest"/>

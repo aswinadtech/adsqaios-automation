@@ -3490,5 +3490,29 @@ public class Functions extends Driver {
 		
 
 	}
+	
+	/**
+	 * This method verifies app state not equal to expected state.
+	 * NOT_INSTALLED
+	 * NOT_RUNNING
+	 * RUNNING_IN_BACKGROUND
+	 * RUNNING_IN_BACKGROUND_SUSPENDED
+	 * RUNNING_IN_FOREGROUND
+	 * @param expectedState
+	 */
+	public static void checkForAppStateNotEqual(ApplicationState  notExpectedState) {
+		ApplicationState appState = Ad.queryAppState("com.weather.TWC");
+		
+		if (appState.equals(notExpectedState)) {
+			System.out.println("App Current State: "+appState +" is matched with Not Expected State: "+notExpectedState);
+			logStep("App Current State: "+appState +" is matched with Not Expected State: "+notExpectedState);
+			Assert.fail("App Current State: "+appState +" is matched with Not Expected State: "+notExpectedState);
+			//flag = true;
+		} else {
+			System.out.println("App Current State: "+appState +" is not matched with Not Expected State: "+notExpectedState);
+			logStep("App Current State: "+appState +" is not matched with Not Expected State: "+notExpectedState);
+		}
+
+	}
 
 }

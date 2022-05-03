@@ -141,7 +141,8 @@ public class CHINAPrivacyTest extends TwcIosBaseTest {
 		logStep("App Launched SuccessFully");
 		TestBase.waitForMilliSeconds(20000);
 		try {
-			Functions.checkForAppState(ApplicationState.NOT_RUNNING);
+			//Functions.checkForAppState(ApplicationState.NOT_RUNNING);
+			Functions.checkForAppStateNotEqual(ApplicationState.RUNNING_IN_FOREGROUND);
 		}finally {
 			proxy.getXml();
 			Utils.createXMLFileForCharlesSessionFile();

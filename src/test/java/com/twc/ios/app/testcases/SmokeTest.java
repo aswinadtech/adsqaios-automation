@@ -1817,7 +1817,7 @@ public class SmokeTest extends TwcIosBaseTest {
 		Functions.checkForAppState();
 		addrScreen.enternewAddress(false, "30124", "Cave Spring, Georgia");
 		TestBase.waitForMilliSeconds(20000);
-		addrScreen.enternewAddress(false, "07095", "Woodbridge Township, New Jersey");
+		addrScreen.enternewAddress(false, "07095", "Woodbridge, New Jersey");
 		TestBase.waitForMilliSeconds(20000);
 		addrScreen.enternewAddress(false, "61920", "Charleston, Illinois");
 		TestBase.waitForMilliSeconds(20000);
@@ -2402,7 +2402,7 @@ public class SmokeTest extends TwcIosBaseTest {
 		Functions.close_launchApp();
 		Functions.checkForAppState();
 		// addrScreen.enternewAddress(false, "Atlanta, Georgia");
-		addrScreen.enternewAddress(false, "07095", "Woodbridge Township, New Jersey");
+		addrScreen.enternewAddress(false, "07095", "Woodbridge, New Jersey");
 		TestBase.waitForMilliSeconds(20000);
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();

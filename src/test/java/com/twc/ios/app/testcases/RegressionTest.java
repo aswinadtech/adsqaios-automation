@@ -116,7 +116,7 @@ public class RegressionTest extends TwcIosBaseTest {
 		// Preconditions
 		Functions.capabilities();
 		Functions.Appium_Autostart();
-		//Utils.getCurrentMacIPAddressAndSetiPhoneProxy(true, true);
+		Utils.getCurrentMacIPAddressAndSetiPhoneProxy(true, true);
 		// Enable rewriting on Charles install/launch TWC to rewrite geoipcountry to US
 		proxy.enableRewriting();
 		proxy.startRecording();

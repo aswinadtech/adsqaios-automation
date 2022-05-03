@@ -263,7 +263,7 @@ public class FTLScreens extends Utils {
 
 	}
 	
-	@Step("Handle Unwanted Popups during app launch For China")
+	@Step("Handle Unwanted Popups during app launch For China/Russia/Belarus")
 	public void handle_Unwanted_Popups_China() throws Exception {
 		try {
 			TestBase.waitForVisibilityOfElementLocated(Ad, 30, bySettingsButton);
