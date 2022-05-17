@@ -83,35 +83,35 @@ public class SmokeTest extends TwcIosBaseTest {
 		Ad.launchApp();
 		stScreen.getAppVersion();
 		Functions.archive_folder("Charles");
-		//proxy.disableRewriting();
-		//proxy.quitCharlesProxy();
+		proxy.disableRewriting();
+		proxy.quitCharlesProxy();
 		try {
 			//Ad.closeApp();
-			//Ad.terminateApp("com.weather.TWC");
-			//System.out.println("App closed successfully");
-			//logStep("App closed successfully");
+			Ad.terminateApp("com.weather.TWC");
+			System.out.println("App closed successfully");
+			logStep("App closed successfully");
 		} catch (Exception e) {
-			//System.out.println("An exception while closeApp() executed");
-			//logStep("An exception while closeApp() executed");
+			System.out.println("An exception while closeApp() executed");
+			logStep("An exception while closeApp() executed");
 		}
 
 		if (Ad != null) {
 			try {
-				//Ad.quit();
+				Ad.quit();
 			} catch (Exception ex) {
 				// Session crashed/died probably so no big deal, since
 				// this exception was thrown when trying to close session.
 				// Also, avoids failures in before/after methods for TestNG.
-				//System.out.println(
+				System.out.println(
 						"NoSuchSessionException was thrown while attempting to close session. Ignoring this error.");
-				//logStep("NoSuchSessionException was thrown while attempting to close session. Ignoring this error.");
+				logStep("NoSuchSessionException was thrown while attempting to close session. Ignoring this error.");
 			}
-			//System.out.println("Closing appium session.. Done");
-			//logStep("Closing appium session.. Done");
+			System.out.println("Closing appium session.. Done");
+			logStep("Closing appium session.. Done");
 		}
 
-		//System.out.println("****** Smoke Test Ended");
-		//logStep("****** Smoke Test Ended");
+		System.out.println("****** Smoke Test Ended");
+		logStep("****** Smoke Test Ended");
 	}
 
 	@Test(priority = 0)
@@ -122,8 +122,8 @@ public class SmokeTest extends TwcIosBaseTest {
 		logStep("****** Updating Device Proxy Details and Launch the App test case Started");
 		// Preconditions
 		Functions.capabilities();
-		//Functions.Appium_Autostart();
-		//Utils.getCurrentMacIPAddressAndSetiPhoneProxy(true, true);
+		Functions.Appium_Autostart();
+		Utils.getCurrentMacIPAddressAndSetiPhoneProxy(true, true);
 		proxy.startRecording();
 		proxy.clearCharlesSession();
 		Functions.archive_folder("Charles");
