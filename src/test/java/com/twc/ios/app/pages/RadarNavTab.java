@@ -17,7 +17,8 @@ public class RadarNavTab extends Utils{
 	
 	String radarTab_AccessibilityId = "mapDetailContainerTab";
 	String closeLight_AccessibilityId = "close light";
-	String radarTabStickyTestAd_AccessibilityId = "weather.maps-adContentView";
+	//String radarTabStickyTestAd_AccessibilityId = "weather.maps-adContentView";
+	String radarTabStickyTestAd_AccessibilityId = "weather.maps-adContainterView";
 
 	By byRadarNavTab = MobileBy.AccessibilityId(radarTab_AccessibilityId);
 	By byCloseLight = MobileBy.AccessibilityId(closeLight_AccessibilityId);

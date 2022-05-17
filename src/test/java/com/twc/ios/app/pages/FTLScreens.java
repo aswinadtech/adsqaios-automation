@@ -85,7 +85,7 @@ public class FTLScreens extends Utils {
 			}
 		} catch (Exception e1) {
 			try {
-				//TestBase.waitForVisibilityOfElementLocated(Ad, 40, byCloseButton);
+				//TestBase.waitForVisibilityOfElementLocated(Ad, 30, byCloseButton);
 				closeButton = Ad.findElement(byCloseButton);
 				TestBase.clickOnElement(byCloseButton, closeButton, "Close Button");
 				System.out.println("Intermittent Ad displayed on the screen and closed");
@@ -95,7 +95,7 @@ public class FTLScreens extends Utils {
 				logStep("Intermittent Ad not displayed on the screen");
 			}
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byChangeToAlwaysAllow);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byChangeToAlwaysAllow);
 				changeToAlwaysAllow = Ad.findElement(byChangeToAlwaysAllow);
 				TestBase.clickOnElement(byChangeToAlwaysAllow, changeToAlwaysAllow, "Change to Always Allow Button");
 				System.out.println("Change to Always Allow button available on the screen and handled");
@@ -106,7 +106,7 @@ public class FTLScreens extends Utils {
 			}
 
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byCloseButton);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byCloseButton);
 				closeButton = Ad.findElement(byCloseButton);
 				TestBase.clickOnElement(byCloseButton, closeButton, "Close Button");
 				//Ad.findElementByName("close_button").click();
@@ -117,7 +117,7 @@ public class FTLScreens extends Utils {
 				logStep("App upgrade alert not available on the screen");
 			}
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byLetsGoButton);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byLetsGoButton);
 				letsGoButton = Ad.findElement(byLetsGoButton);
 				TestBase.clickOnElement(byLetsGoButton, letsGoButton, "Let's Go/Next Button");
 				System.out.println("Let's Go/Next button available on the screen and handled");
@@ -128,7 +128,7 @@ public class FTLScreens extends Utils {
 			}
 
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byContinueButton);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byContinueButton);
 				continueButton = Ad.findElement(byContinueButton);
 				TestBase.clickOnElement(byContinueButton, continueButton, "Continue Button");
 				System.out.println("Continue button available on the Apple Tracking Transparency screen and handled");
@@ -143,7 +143,7 @@ public class FTLScreens extends Utils {
 			 * FTL iOS14.3 & iPhone 8 plus
 			 */
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byAllow);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byAllow);
 				allowButton = Ad.findElement(byAllow);
 				TestBase.clickOnElement(byAllow, allowButton, "Allow Button");
 				System.out.println("Allow button available on the App Tracking screen and handled");
@@ -159,7 +159,7 @@ public class FTLScreens extends Utils {
 			 */
 
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byIUnderstand);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byIUnderstand);
 				iUnderstand = Ad.findElement(byIUnderstand);
 				TestBase.clickOnElement(byIUnderstand, iUnderstand, "iUnderstand Button");
 				System.out.println("I Understand button available on the screen and handled");
@@ -188,7 +188,7 @@ public class FTLScreens extends Utils {
 			 */
 
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byIUnderstand);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byIUnderstand);
 				iUnderstand = Ad.findElement(byIUnderstand);
 				TestBase.clickOnElement(byIUnderstand, iUnderstand, "iUnderstand Button");
 				System.out.println("I Understand button available on the screen and handled");
@@ -211,7 +211,7 @@ public class FTLScreens extends Utils {
 			}
 
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byAlwaysAllow);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byAlwaysAllow);
 				alwaysAllow = Ad.findElement(byAlwaysAllow);
 				TestBase.clickOnElement(byAlwaysAllow, alwaysAllow, "Always Allow Button");
 				System.out.println("Always Allow button available on the screen and handled");
@@ -221,7 +221,7 @@ public class FTLScreens extends Utils {
 				logStep("Always Allow button not available on the screen");
 			}
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byAllowWhileUsingApp);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byAllowWhileUsingApp);
 				allowWhileUsingApp = Ad.findElement(byAllowWhileUsingApp);
 				TestBase.clickOnElement(byAllowWhileUsingApp, allowWhileUsingApp, "Allow While Using App Button");
 				System.out.println("Allow While Using App button available on the screen and handled");
@@ -232,7 +232,7 @@ public class FTLScreens extends Utils {
 			}
 			
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byAllow);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byAllow);
 				allowButton = Ad.findElement(byAllow);
 				TestBase.clickOnElement(byAllow, allowButton, "Allow Button");
 				System.out.println("Allow button available on the screen and handled");
@@ -244,7 +244,7 @@ public class FTLScreens extends Utils {
 						
 
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byCloseButton);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byCloseButton);
 				closeButton = Ad.findElement(byCloseButton);
 				TestBase.clickOnElement(byCloseButton, closeButton, "Close Button");
 				System.out.println("Privacy notification displayed on the screen and handled");
@@ -253,7 +253,22 @@ public class FTLScreens extends Utils {
 				System.out.println("Privacy notification not displayed on the screen");
 				logStep("Privacy notification not displayed on the screen");
 			}
+			
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, bySettingsButton);
+				settingsButton = Ad.findElement(bySettingsButton);
+				System.out
+						.println("Settings Button found after handling all alerts");
+				logStep("Settings Button found after handling all alerts");
+			}catch(Exception e) {
+				System.out
+				.println("Settings Button not found after handling all alerts, hence kill and launching it again");
+				logStep("Settings Button not found after handling all alerts, hence kill and launching it again");
+				Functions.close_launchApp();
+				
+			}
 		}
+		
 		try {
 			attachScreen();
 		} catch (Exception e) {
@@ -291,7 +306,7 @@ public class FTLScreens extends Utils {
 			}
 		} catch (Exception e1) {
 			try {
-				//TestBase.waitForVisibilityOfElementLocated(Ad, 40, byCloseButton);
+				//TestBase.waitForVisibilityOfElementLocated(Ad, 30, byCloseButton);
 				closeButton = Ad.findElement(byCloseButton);
 				TestBase.clickOnElement(byCloseButton, closeButton, "Close Button");
 				System.out.println("Intermittent Ad displayed on the screen and closed");
@@ -301,7 +316,7 @@ public class FTLScreens extends Utils {
 				logStep("Intermittent Ad not displayed on the screen");
 			}
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byChangeToAlwaysAllow);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byChangeToAlwaysAllow);
 				changeToAlwaysAllow = Ad.findElement(byChangeToAlwaysAllow);
 				TestBase.clickOnElement(byChangeToAlwaysAllow, changeToAlwaysAllow, "Change to Always Allow Button");
 				System.out.println("Change to Always Allow button available on the screen and handled");
@@ -312,7 +327,7 @@ public class FTLScreens extends Utils {
 			}
 
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byCloseButton);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byCloseButton);
 				closeButton = Ad.findElement(byCloseButton);
 				TestBase.clickOnElement(byCloseButton, closeButton, "Close Button");
 				//Ad.findElementByName("close_button").click();
@@ -323,7 +338,7 @@ public class FTLScreens extends Utils {
 				logStep("App upgrade alert not available on the screen");
 			}
 			try {
-				TestBase.waitForVisibilityOfElementLocated(Ad, 40, byLetsGoButton);
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byLetsGoButton);
 				letsGoButton = Ad.findElement(byLetsGoButton);
 				TestBase.clickOnElement(byLetsGoButton, letsGoButton, "Let's Go/Next Button");
 				System.out.println("Let's Go/Next button available on the screen and handled");
@@ -342,6 +357,220 @@ public class FTLScreens extends Utils {
 			logStep("An exception while attaching screenshot");
 		}
 
+	}
+	
+	@Step("Handle Unwanted Popups during app launch from widget")
+	public void handle_Unwanted_Popups_When_App_Launched_From_Widget() throws Exception {
+		try {
+			TestBase.waitForVisibilityOfElementLocated(Ad, 30, bySettingsButton);
+			settingsButton = Ad.findElement(bySettingsButton);
+			System.out
+					.println("Settings Button found after app launch, hence no need to verify the application alerts");
+			logStep("Settings Button found after app launch, hence no need to verify the application alerts");
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 10, byCloseButton);
+				closeButton = Ad.findElement(byCloseButton);
+				TestBase.clickOnElement(byCloseButton, closeButton, "Close Button");
+				System.out.println("Premium Big Ad displayed on the screen and closed");
+				logStep("Premium Big Ad displayed on the screen and closed");
+			} catch (Exception e) {
+				try {
+					TestBase.waitForVisibilityOfElementLocated(Ad, 10, byCancelButton);
+					cancelButton = Ad.findElement(byCancelButton);
+					TestBase.clickOnElement(byCancelButton, cancelButton, "Cancel Button");
+					System.out.println("Premium Big Ad displayed on the screen and closed");
+					logStep("Premium Big Ad displayed on the screen and closed");
+				} catch (Exception e1) {
+					System.out.println("Premium Big Ad not displayed on the screen");
+					logStep("Premium Big Ad not displayed on the screen");
+				}
+			}
+		} catch (Exception e1) {
+			try {
+				//TestBase.waitForVisibilityOfElementLocated(Ad, 30, byCloseButton);
+				closeButton = Ad.findElement(byCloseButton);
+				TestBase.clickOnElement(byCloseButton, closeButton, "Close Button");
+				System.out.println("Intermittent Ad displayed on the screen and closed");
+				logStep("Intermittent Ad displayed on the screen and closed");
+			} catch (Exception e) {
+				System.out.println("Intermittent Ad not displayed on the screen");
+				logStep("Intermittent Ad not displayed on the screen");
+			}
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byChangeToAlwaysAllow);
+				changeToAlwaysAllow = Ad.findElement(byChangeToAlwaysAllow);
+				TestBase.clickOnElement(byChangeToAlwaysAllow, changeToAlwaysAllow, "Change to Always Allow Button");
+				System.out.println("Change to Always Allow button available on the screen and handled");
+				logStep("Change to Always Allow button available on the screen and handled");
+			} catch (Exception e) {
+				System.out.println("Change to Always Allow button not available on the screen");
+				logStep("Change to Always Allow button not available on the screen");
+			}
+
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byCloseButton);
+				closeButton = Ad.findElement(byCloseButton);
+				TestBase.clickOnElement(byCloseButton, closeButton, "Close Button");
+				//Ad.findElementByName("close_button").click();
+				System.out.println("App upgrade alert available on the screen and handled");
+				logStep("App upgrade alert available on the screen and handled");
+			} catch (Exception e) {
+				System.out.println("App upgrade alert not available on the screen");
+				logStep("App upgrade alert not available on the screen");
+			}
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byLetsGoButton);
+				letsGoButton = Ad.findElement(byLetsGoButton);
+				TestBase.clickOnElement(byLetsGoButton, letsGoButton, "Let's Go/Next Button");
+				System.out.println("Let's Go/Next button available on the screen and handled");
+				logStep("Let's Go/Next button available on the screen and handled");
+			} catch (Exception e) {
+				System.out.println("Let's Go/Next button not available on the screen");
+				logStep("Let's Go/Next button not available on the screen");
+			}
+
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byContinueButton);
+				continueButton = Ad.findElement(byContinueButton);
+				TestBase.clickOnElement(byContinueButton, continueButton, "Continue Button");
+				System.out.println("Continue button available on the Apple Tracking Transparency screen and handled");
+				logStep("Continue button available on the Apple Tracking Transparency screen and handled");
+			} catch (Exception e) {
+				System.out.println("Continue button not available on the Apple Tracking Transparency screen");
+				logStep("Continue button not available on the Apple Tracking Transparency screen");
+			}
+			
+			/*
+			 * ADTECH-1342:Update automation suites to handle Tracking Options flow during
+			 * FTL iOS14.3 & iPhone 8 plus
+			 */
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byAllow);
+				allowButton = Ad.findElement(byAllow);
+				TestBase.clickOnElement(byAllow, allowButton, "Allow Button");
+				System.out.println("Allow button available on the App Tracking screen and handled");
+				logStep("Allow button available on the App Tracking screen and handled");
+			} catch (Exception e) {
+				System.out.println("Allow button not available on the App Tracking screen");
+				logStep("Allow button not available on the App Tracking screen");
+			}
+			/**
+			 * on iPhone 7, we need to scroll on Location and Weatcher screen due to size of
+			 * screen as privacy content increased, then only I Understand button enabled,
+			 * else it is disabled.
+			 */
+
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byIUnderstand);
+				iUnderstand = Ad.findElement(byIUnderstand);
+				TestBase.clickOnElement(byIUnderstand, iUnderstand, "iUnderstand Button");
+				System.out.println("I Understand button available on the screen and handled");
+				logStep("I Understand button available on the screen and handled");
+				try {
+					oKButton = Ad.findElement(byOKButton);
+					TestBase.clickOnElement(byOKButton, oKButton, "OK Button");
+					Functions.swipe_Up_OnLocationScreen();
+				    byIUnderstand = MobileBy.AccessibilityId("I Understand");
+					iUnderstand = Ad.findElement(byIUnderstand);
+					TestBase.clickOnElement(byIUnderstand, iUnderstand, "iUnderstand Button");
+					
+				} catch (Exception e) {
+
+				}
+
+			} catch (Exception e) {
+				System.out.println("I Understand button not available on the screen");
+				logStep("I Understand button not available on the screen");
+			}
+
+			/**
+			 * on iPhone 7, we need to scroll on Location and Weatcher screen due to size of
+			 * screen as privacy content increased, then only I Understand button enabled,
+			 * else it is disabled.
+			 */
+
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byIUnderstand);
+				iUnderstand = Ad.findElement(byIUnderstand);
+				TestBase.clickOnElement(byIUnderstand, iUnderstand, "iUnderstand Button");
+				System.out.println("I Understand button available on the screen and handled");
+				logStep("I Understand button available on the screen and handled");
+				try {
+					oKButton = Ad.findElement(byOKButton);
+					TestBase.clickOnElement(byOKButton, oKButton, "OK Button");
+					Functions.swipe_Up_OnLocationScreen();
+				    byIUnderstand = MobileBy.AccessibilityId("I Understand");
+					iUnderstand = Ad.findElement(byIUnderstand);
+					TestBase.clickOnElement(byIUnderstand, iUnderstand, "iUnderstand Button");
+					
+				} catch (Exception e) {
+
+				}
+
+			} catch (Exception e) {
+				System.out.println("I Understand button not available on the screen");
+				logStep("I Understand button not available on the screen");
+			}
+
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byAlwaysAllow);
+				alwaysAllow = Ad.findElement(byAlwaysAllow);
+				TestBase.clickOnElement(byAlwaysAllow, alwaysAllow, "Always Allow Button");
+				System.out.println("Always Allow button available on the screen and handled");
+				logStep("Always Allow button available on the screen and handled");
+			} catch (Exception e) {
+				System.out.println("Always Allow button not available on the screen");
+				logStep("Always Allow button not available on the screen");
+			}
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byAllowWhileUsingApp);
+				allowWhileUsingApp = Ad.findElement(byAllowWhileUsingApp);
+				TestBase.clickOnElement(byAllowWhileUsingApp, allowWhileUsingApp, "Allow While Using App Button");
+				System.out.println("Allow While Using App button available on the screen and handled");
+				logStep("Allow While Using App button available on the screen and handled");
+			} catch (Exception e) {
+				System.out.println("Allow While Using App button not available on the screen");
+				logStep("Allow While Using App button not available on the screen");
+			}
+			
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byAllow);
+				allowButton = Ad.findElement(byAllow);
+				TestBase.clickOnElement(byAllow, allowButton, "Allow Button");
+				System.out.println("Allow button available on the screen and handled");
+				logStep("Allow button available on the screen and handled");
+			} catch (Exception e) {
+				System.out.println("Allow button not available on the screen");
+				logStep("Allow button not available on the screen");
+			}
+						
+
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, byCloseButton);
+				closeButton = Ad.findElement(byCloseButton);
+				TestBase.clickOnElement(byCloseButton, closeButton, "Close Button");
+				System.out.println("Privacy notification displayed on the screen and handled");
+				logStep("Privacy notification displayed on the screen and handled");
+			} catch (Exception e) {
+				System.out.println("Privacy notification not displayed on the screen");
+				logStep("Privacy notification not displayed on the screen");
+			}
+			
+			try {
+				TestBase.waitForVisibilityOfElementLocated(Ad, 30, bySettingsButton);
+				settingsButton = Ad.findElement(bySettingsButton);
+				System.out
+						.println("Settings Button found after handling all alerts");
+				logStep("Settings Button found after handling all alerts");
+			}catch(Exception e) {
+				System.out
+				.println("Settings Button not found after handling all alerts, hence kill and launching it again");
+				logStep("Settings Button not found after handling all alerts, hence kill and launching it again");
+				Functions.close_launchApp();
+				
+			}
+		}
+		
 	}
 
 }

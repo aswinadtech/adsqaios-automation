@@ -34,6 +34,7 @@ public class SettingsScreen extends Utils {
 	String oK_Name = "OK";
 	String clearCache_Name = "Clear Cache";
 	String general_Name = "General";
+	
 
 	By bySettingsButton = MobileBy.AccessibilityId(settingsButton_AccessibilityId);
 	By byApplicationVersion = MobileBy.AccessibilityId(applicationVersion_AccessibilityId);
@@ -47,6 +48,7 @@ public class SettingsScreen extends Utils {
 	By byClearCache = MobileBy.name(clearCache_Name);
 	By byGeneral = MobileBy.name(general_Name);
 	
+	
 	MobileElement settingsButton = null;
 	MobileElement privacySettings = null;
 	MobileElement applicationVersion = null;
@@ -59,6 +61,7 @@ public class SettingsScreen extends Utils {
 	MobileElement oK = null;
 	MobileElement clearCache = null;
 	MobileElement general = null;
+	
 
 	public SettingsScreen(AppiumDriver<MobileElement> Ad) {
 		this.Ad = Ad;
@@ -170,9 +173,9 @@ public class SettingsScreen extends Utils {
 		// logStep("Returned From 'Navigate to Privacy'");
 		// Thread.sleep(30000);
 
-		swipe_Up();
-		swipe_Up();
-		swipe_Up();
+		swipe_Up(Ad);
+		swipe_Up(Ad);
+		swipe_Up(Ad);
 		Thread.sleep(5000);
 		// swipe_Up();
 		try {
@@ -260,9 +263,9 @@ public class SettingsScreen extends Utils {
 //		System.out.println("Returned From 'Navigate to Privacy'");
 //		logStep("Returned From 'Navigate to Privacy'");
 
-		swipe_Up();
-		swipe_Up();
-		swipe_Up();
+		swipe_Up(Ad);
+		swipe_Up(Ad);
+		swipe_Up(Ad);
 		Thread.sleep(5000);
 		// swipe_Up();
 		try {
@@ -367,9 +370,9 @@ public class SettingsScreen extends Utils {
 				logStep("An Exception while Switching to Native App Context");
 			}
 
-			swipe_Up();
-			swipe_Up();
-			swipe_Up();
+			swipe_Up(Ad);
+			swipe_Up(Ad);
+			swipe_Up(Ad);
 			Thread.sleep(5000);
 			// swipe_Up();
 

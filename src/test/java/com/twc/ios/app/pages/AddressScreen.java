@@ -20,6 +20,7 @@ public class AddressScreen extends Utils {
 	AppiumDriver<MobileElement> Ad;
 	
 	String currentLocation_AccessibilityId = "currentLocation";
+	String currentLocation2_AccessibilityId = "locationButton";
 	String addCityOrZIPCode_AccessibilityId = "Add City or ZIP Code";
 	String searchBar_AccessibilityId = "searchBar";
 	String searchForYourLocation_Xpath = "//XCUIElementTypeButton[@name=\" Or search for your location\"]";
@@ -39,6 +40,7 @@ public class AddressScreen extends Utils {
 	
 	By bySearchForYourLocation = MobileBy.xpath(searchForYourLocation_Xpath);
 	By byCurrentLocation = MobileBy.AccessibilityId(currentLocation_AccessibilityId);
+	By byCurrentLocation2 = MobileBy.AccessibilityId(currentLocation2_AccessibilityId);
 	By byAddCityOrZIPCode = MobileBy.AccessibilityId(addCityOrZIPCode_AccessibilityId);
 	By bySearchBar = MobileBy.AccessibilityId(searchBar_AccessibilityId);
 	By byCancel = MobileBy.name(cancel_Name);
@@ -89,7 +91,7 @@ public class AddressScreen extends Utils {
 		//WebElement PresentAddress = null;
 		//MobileElement done = null;
 
-		try {
+		/*try {
 			TestBase.waitForMilliSeconds(5000);
 			searchForYourLocation = Ad.findElement(bySearchForYourLocation);
 			//Ad.findElementByXPath("//XCUIElementTypeButton[@name=\" Or search for your location\"]").click();
@@ -98,7 +100,7 @@ public class AddressScreen extends Utils {
 		} catch (Exception e) {
 			System.out.println("Or search for your location button not available on the screen");
 			logStep("Or search for your location button not available on the screen");
-		}
+		}*/
 		try {
 			//PresentAddress = Ad.findElementByAccessibilityId("currentLocation");
 			PresentAddress = Ad.findElement(byCurrentLocation);
@@ -143,9 +145,17 @@ public class AddressScreen extends Utils {
 						logStep("Clicked on Present Address");
 						TestBase.waitForMilliSeconds(5000);
 					} catch (Exception e1) {
-						System.out.println("There is an exception when clicked on Present Address");
-						logStep("There is an exception when clicked on Present Address");
-						// Ad.tap(1, 164, 42, 2000);//commented on 23 oct 2020
+						try {
+							PresentAddress = Ad.findElement(byCurrentLocation2);
+							TestBase.clickOnElement(byCurrentLocation2, PresentAddress, "Current Location");
+							System.out.println("Clicked on Present Address");
+							logStep("Clicked on Present Address");
+							TestBase.waitForMilliSeconds(5000);
+						} catch (Exception e2) {
+							System.out.println("There is an exception when clicked on Present Address");
+							logStep("There is an exception when clicked on Present Address");
+							// Ad.tap(1, 164, 42, 2000);//commented on 23 oct 2020
+						}
 					}
 					try {
 						TestBase.waitForMilliSeconds(4000);
@@ -378,7 +388,7 @@ public class AddressScreen extends Utils {
 		//WebElement PresentAddress = null;
 		MobileElement done = null;
 
-		try {
+	/*	try {
 			TestBase.waitForMilliSeconds(5000);
 			//Ad.findElementByXPath("//XCUIElementTypeButton[@name=\" Or search for your location\"]").click();
 			searchForYourLocation = Ad.findElement(bySearchForYourLocation);
@@ -387,7 +397,7 @@ public class AddressScreen extends Utils {
 		} catch (Exception e) {
 			System.out.println("Or search for your location button not available on the screen");
 			logStep("Or search for your location button not available on the screen");
-		}
+		}*/
 		try {
 			//PresentAddress = Ad.findElementByAccessibilityId("currentLocation");
 			PresentAddress = Ad.findElement(byCurrentLocation);
@@ -430,8 +440,17 @@ public class AddressScreen extends Utils {
 						logStep("Clicked on Present Address");
 						TestBase.waitForMilliSeconds(5000);
 					} catch (Exception e1) {
-						System.out.println("There is an exception when clicked on Present Address");
-						logStep("There is an exception when clicked on Present Address");
+						try {
+							PresentAddress = Ad.findElement(byCurrentLocation2);
+							TestBase.clickOnElement(byCurrentLocation2, PresentAddress, "Current Location");
+							System.out.println("Clicked on Present Address");
+							logStep("Clicked on Present Address");
+							TestBase.waitForMilliSeconds(5000);
+						} catch (Exception e2) {
+							System.out.println("There is an exception when clicked on Present Address");
+							logStep("There is an exception when clicked on Present Address");
+							// Ad.tap(1, 164, 42, 2000);//commented on 23 oct 2020
+						}
 					}
 					try {
 						TestBase.waitForMilliSeconds(4000);

@@ -14,6 +14,7 @@ import com.twc.ios.app.pages.BreakingNewsCardScreen;
 import com.twc.ios.app.pages.DailyNavTab;
 import com.twc.ios.app.pages.HomeNavTab;
 import com.twc.ios.app.pages.HourlyNavTab;
+import com.twc.ios.app.pages.LogInScreen;
 import com.twc.ios.app.pages.PlanningCardScreen;
 import com.twc.ios.app.pages.RadarNavTab;
 import com.twc.ios.app.pages.SeasonalHubCardScreen;
@@ -21,6 +22,7 @@ import com.twc.ios.app.pages.SettingsScreen;
 import com.twc.ios.app.pages.VideoNavTab;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import org.testng.annotations.Listeners;
 
@@ -50,6 +52,16 @@ public class RegressionTest extends TwcIosBaseTest {
 	SeasonalHubCardScreen sScreen;
 	BreakingNewsCardScreen bnScreen;
 	SettingsScreen stScreen;
+	LogInScreen loginScreen;
+	
+	long subscriptionFqCapStrtTime = 0L;
+	long start = 0;
+	long finish = 0;
+	long subscriptionFqCapEndTime = 0L;
+	long timeElapsed = 0;
+	long subscriptionFqtimeElapsed = 0L;
+	long convert = 0;
+	long subscriptionFqtimeconvert = 0L;
 	
 
 	@BeforeClass(alwaysRun = true)
@@ -135,6 +147,7 @@ public class RegressionTest extends TwcIosBaseTest {
 		sScreen = new SeasonalHubCardScreen(Ad);
 		bnScreen = new BreakingNewsCardScreen(Ad) ;
 		stScreen = new SettingsScreen(Ad);
+		loginScreen = new LogInScreen(Ad);
 	}
 
 	@Test(priority = 50, enabled = true)
@@ -489,7 +502,7 @@ public class RegressionTest extends TwcIosBaseTest {
 	 * Utils.verifyFeedAds_AAX_SlotIds("Smoke", "CleanLaunch"); }
 	 */
 
-	@Test(priority = 250, enabled = true)
+	@Test(priority = 101, enabled = true)
 	@Description("Verify preroll video iu")
 	public void Verify_video_adcall_iu() throws Exception {
 		System.out.println("==============================================");
@@ -510,7 +523,7 @@ public class RegressionTest extends TwcIosBaseTest {
 		Utils.get_iu_value_of_Feedcall("Smoke", "PreRollVideo");
 	}
 
-	@Test(priority = 251, enabled = true)
+	@Test(priority = 102, enabled = true)
 	@Description("Validating Google Interactive Media Ads SDK version of Preroll video call ")
 	public void Validate_IMA_SDK_version() throws Exception {
 		System.out.println("==============================================");
@@ -522,18 +535,898 @@ public class RegressionTest extends TwcIosBaseTest {
 				properties.getProperty("IMASDKVersion"));
 
 	}
+	
+	/**
+	 * This method enables monthly premium subscription
+	 * @throws Exception
+	 */
+	@Test(priority = 125, enabled = true)
+	@Description("Verify Premium Subscription")
+	public void enablePremiumSubsription() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Enable Premium Subscription test Started");
+		logStep("****** Enable Premium Subscription test Started");
+		Utils.getCurrentMacIPAddressAndSetiPhoneProxy(false);
+		Ad.launchApp();
+		Functions.close_launchApp();
+//		TestBase.waitForMilliSeconds(5000);
+//		Ad.launchApp();
+		
+		loginScreen.premiumSubscriptionOfMonthly("jmktwc4@gmail.com", "300Interstate");
+//		loginScreen.premiumSubscriptionOfYearly("jmktwc4@gmail.com", "300Interstate");
+			
+		subscriptionFqCapStrtTime = System.nanoTime();
+		start = System.nanoTime();
+				
+		Utils.getCurrentMacIPAddressAndSetiPhoneProxy(true, true);
+		
+		Ad.launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.put_Background_launch(10);
+		Functions.archive_folder("Charles");
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+	}
+	
+	/**
+	 * This method verifies Lotame call 
+	 * @throws Exception
+	 */
+	@Test(priority = 126, enabled = true)
+	@Description("Lotame Call verification")
+	public void Verify_Lotame_Call_When_Premium_Subscription_Enabled() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** bcp.crwdcntrl.net Call test case Started");
+		logStep("****** bcp.crwdcntrl.net Call test case Started");
+		Utils.verifyAPICal("Smoke", "Lotame", false);
+	}
+
+	/**
+	 * This method verifies FACTUAL call
+	 * @throws Exception
+	 */
+	@Test(priority = 127, enabled = true)
+	@Description("Factual Call verification")
+	public void Verify_LocationWFXTriggers_Call_When_Premium_Subscription_Enabled() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** location.wfxtriggers.com Call test case Started");
+		logStep("location.wfxtriggers.com Call test case Started");
+		Utils.verifyAPICal("Smoke", "LocationWFX", false);
+	}
+	
+	/**
+	 * This method verifies WFXTriggers call
+	 * @throws Exception
+	 */
+	@Test(priority = 128, enabled = true)
+	@Description("WFXTrigger Call verification")
+	public void Verify_WFXTriggers_Call_When_Premium_Subscription_Enabled() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** triggers.wfxtriggers.com Call test case Started");
+		logStep("****** triggers.wfxtriggers.com Call test case Started");
+		Utils.verifyAPICal("Smoke", "WFXTrigger", false);
+	}
+	
+	/**
+	 * This method verifies Amazon call
+	 * @throws Exception
+	 */
+	@Test(priority = 129, enabled = true)
+	@Description("Amazon aax call verification")
+	public void Verify_Amazon_Call_When_Premium_Subscription_Enabled() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** amazon-adsystem.com Call test case Started");
+		logStep("****** amazon-adsystem.com Call test case Started");
+		Utils.verify_Amazon_aax_call("Smoke", "Amazon", false);
+	}
+	
+	/**
+	 * This method verifies Criteo Initialization API call
+	 * @throws Exception
+	 */
+	@Test(priority = 130, enabled = true)
+	@Description("Verify Criteo SDK inapp v2 call")
+	public void Verify_Criteo_SDK_inapp_v2_Call_When_Premium_Subscription_Enabled() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("=========================== Criteo SDK inapp/v2 call ====================");
+		System.out.println("****** Criteo SDK inapp/v2 call validation Started");
+		logStep("****** Criteo SDK inapp/v2 call validation Started");
+		Utils.verifyCriteo_inapp_v2_Call("Smoke", "Criteo", false);
+	}
+	
+	/**
+	 * This method verifies Criteo Bidder API call
+	 * @throws Exception
+	 */
+	@Test(priority = 131, enabled = true)
+	@Description("Verify Criteo SDK config app call")
+	public void Verify_Criteo_SDK_config_app_Call_When_Premium_Subscription_Enabled() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("=========================== Criteo SDK config/app call ====================");
+		System.out.println("****** Criteo SDK config/app call validation Started");
+		logStep("****** Criteo SDK config/app call validation Started");
+		Utils.verifyCriteo_config_app_Call("Smoke", "Criteo", false);
+	}
+
+	/**
+	 * This method verifies NextGen IM gampad call
+	 * @throws Exception
+	 */
+	@Test(priority = 132, enabled = true)
+	@Description("Verify Gampad Ad Call")
+	public void Verify_Gampad_call_When_Premium_Subscription_Enabled() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Gampad Call verification test case Started");
+		logStep("****** Gampad Call verification test case Started");
+		Utils.verify_Gampad_adcall("Smoke", "Gampad", false);
+	}
+	
+	/**
+	 * This method verifies whether premium subscription expired or not
+	 * @throws Exception
+	 */
+	@Test(priority = 150, enabled = true)
+	@Description("Verify Premium Subscription Expiry")
+	public void checkPremiumSubsriptionExpiry() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Premium Subscription Expiry test Started");
+		logStep("****** Premium Subscription Expiry test Started");
+		finish = System.nanoTime();
+		subscriptionFqCapEndTime = System.nanoTime();
+		timeElapsed = finish - start;
+		subscriptionFqtimeElapsed = subscriptionFqCapEndTime - subscriptionFqCapStrtTime;
+		convert = TimeUnit.SECONDS.convert(timeElapsed, TimeUnit.NANOSECONDS);
+		subscriptionFqtimeconvert = TimeUnit.SECONDS.convert(subscriptionFqtimeElapsed,
+				TimeUnit.NANOSECONDS);
+		// System.out.println("Elapsed time is: " + convert);
+		System.out.println("Subscription Frequency Cap Elapsed time is: " + subscriptionFqtimeconvert);
+		
+		if (subscriptionFqtimeconvert >= 305) {
+			System.out.println("Subscription Frequency Cap Elapsed time is: >= 300, hence ads to be displayed, continuing validation");
+		} else {
+			System.out.println("Will be going to for loop due to elapsed time less than 300 s ");
+			logStep("Will be going to forloop due to elapsed time less than 300 s ");
+			for (int i = 0; i <= 300; i++) {
+				TestBase.waitForMilliSeconds(1000);
+				finish = System.nanoTime();
+				subscriptionFqCapEndTime = System.nanoTime();
+
+				timeElapsed = finish - start;
+				subscriptionFqtimeElapsed = subscriptionFqCapEndTime - subscriptionFqCapStrtTime;
+
+				convert = TimeUnit.SECONDS.convert(timeElapsed, TimeUnit.NANOSECONDS);
+				subscriptionFqtimeconvert = TimeUnit.SECONDS.convert(subscriptionFqtimeElapsed,
+						TimeUnit.NANOSECONDS);
+				// System.out.println("Elapsed time is: " + convert);
+				System.out.println(
+						"Subscription Frequency Cap Elapsed time is: " + subscriptionFqtimeconvert);
+				
+				if (subscriptionFqtimeconvert >= 305) {
+					System.out.println("Subscription Frequency Cap Elapsed time is: >= 300, hence ads to be displayed, continuing validation");
+					break;
+				}
+			}
+		}
+		
+		Ad.launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.put_Background_launch(10);
+		Functions.archive_folder("Charles");
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+	}
+	
+	
+	/**
+	 * This method verifies Lotame call 
+	 * @throws Exception
+	 */
+	@Test(priority = 151, enabled = true)
+	@Description("Lotame Call verification")
+	public void Verify_Lotame_Call_When_Premium_Subscription_Expired() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** bcp.crwdcntrl.net Call test case Started");
+		logStep("****** bcp.crwdcntrl.net Call test case Started");
+		Utils.verifyAPICal("Smoke", "Lotame", true);
+	}
+
+	/**
+	 * This method verifies FACTUAL call
+	 * @throws Exception
+	 */
+	@Test(priority = 152, enabled = true)
+	@Description("Factual Call verification")
+	public void Verify_LocationWFXTriggers_Call_When_Premium_Subscription_Expired() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** location.wfxtriggers.com Call test case Started");
+		logStep("location.wfxtriggers.com Call test case Started");
+		Utils.verifyAPICal("Smoke", "LocationWFX", false);
+	}
+	
+	/**
+	 * This method verifies WFXTriggers call
+	 * @throws Exception
+	 */
+	@Test(priority = 153, enabled = true)
+	@Description("WFXTrigger Call verification")
+	public void Verify_WFXTriggers_Call_When_Premium_Subscription_Expired() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** triggers.wfxtriggers.com Call test case Started");
+		logStep("****** triggers.wfxtriggers.com Call test case Started");
+		Utils.verifyAPICal("Smoke", "WFXTrigger", true);
+	}
+	
+	/**
+	 * This method verifies Amazon call
+	 * @throws Exception
+	 */
+	@Test(priority = 154, enabled = true)
+	@Description("Amazon aax call verification")
+	public void Verify_Amazon_Call_When_Premium_Subscription_Expired() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** amazon-adsystem.com Call test case Started");
+		logStep("****** amazon-adsystem.com Call test case Started");
+		Utils.verify_Amazon_aax_call("Smoke", "Amazon", true);
+	}
+	
+	/**
+	 * This method verifies Criteo Initialization API call
+	 * @throws Exception
+	 */
+	@Test(priority = 155, enabled = true)
+	@Description("Verify Criteo SDK inapp v2 call")
+	public void Verify_Criteo_SDK_inapp_v2_Call_When_Premium_Subscription_Expired() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("=========================== Criteo SDK inapp/v2 call ====================");
+		System.out.println("****** Criteo SDK inapp/v2 call validation Started");
+		logStep("****** Criteo SDK inapp/v2 call validation Started");
+		Utils.verifyCriteo_inapp_v2_Call("Smoke", "Criteo", true);
+	}
+	
+	/**
+	 * This method verifies Criteo Bidder API call
+	 * @throws Exception
+	 */
+	@Test(priority = 156, enabled = true)
+	@Description("Verify Criteo SDK config app call")
+	public void Verify_Criteo_SDK_config_app_Call_When_Premium_Subscription_Expired() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("=========================== Criteo SDK config/app call ====================");
+		System.out.println("****** Criteo SDK config/app call validation Started");
+		logStep("****** Criteo SDK config/app call validation Started");
+		Utils.verifyCriteo_config_app_Call("Smoke", "Criteo", true);
+	}
+
+	/**
+	 * This method verifies NextGen IM gampad call
+	 * @throws Exception
+	 */
+	@Test(priority = 157, enabled = true)
+	@Description("Verify Gampad Ad Call")
+	public void Verify_Gampad_call_When_Premium_Subscription_Expired() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Gampad Call verification test case Started");
+		logStep("****** Gampad Call verification test case Started");
+		Utils.verify_Gampad_adcall("Smoke", "Gampad", true);
+	}
+	
+	/**
+	 * LogIn to the App
+	 * @throws Exception
+	 */
+	@Test(priority = 175, enabled = true)
+	@Description("Verify Ads With UPSX LogIn")
+	public void verifyAdsWithUPSXLogIn() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** UPSX LogIn test Started");
+		logStep("****** UPSX LogIn test Started");
+		Ad.launchApp();
+		Functions.close_launchApp();
+		loginScreen.navigatetoLogInPage();
+		loginScreen.logInToApp("jmktwc4@gmail.com", "300Inter$tate");
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.put_Background_launch(10);
+		Functions.archive_folder("Charles");
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+	}
+	
+	/**
+	 * This method verifies Lotame call 
+	 * @throws Exception
+	 */
+	@Test(priority = 176, enabled = true)
+	@Description("Lotame Call verification")
+	public void Verify_Lotame_Call_When_UPSX_LogIn() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** bcp.crwdcntrl.net Call test case Started");
+		logStep("****** bcp.crwdcntrl.net Call test case Started");
+		Utils.verifyAPICal("Smoke", "Lotame", true);
+	}
+
+	/**
+	 * This method verifies FACTUAL call
+	 * @throws Exception
+	 */
+	@Test(priority = 177, enabled = true)
+	@Description("Factual Call verification")
+	public void Verify_LocationWFXTriggers_Call_When_UPSX_LogIn() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** location.wfxtriggers.com Call test case Started");
+		logStep("location.wfxtriggers.com Call test case Started");
+		Utils.verifyAPICal("Smoke", "LocationWFX", false);
+	}
+	
+	/**
+	 * This method verifies WFXTriggers call
+	 * @throws Exception
+	 */
+	@Test(priority = 178, enabled = true)
+	@Description("WFXTrigger Call verification")
+	public void Verify_WFXTriggers_Call_When_UPSX_LogIn() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** triggers.wfxtriggers.com Call test case Started");
+		logStep("****** triggers.wfxtriggers.com Call test case Started");
+		Utils.verifyAPICal("Smoke", "WFXTrigger", true);
+	}
+	
+	/**
+	 * This method verifies Amazon call
+	 * @throws Exception
+	 */
+	@Test(priority = 179, enabled = true)
+	@Description("Amazon aax call verification")
+	public void Verify_Amazon_Call_When_UPSX_LogIn() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** amazon-adsystem.com Call test case Started");
+		logStep("****** amazon-adsystem.com Call test case Started");
+		Utils.verify_Amazon_aax_call("Smoke", "Amazon", true);
+	}
+	
+	/**
+	 * This method verifies Criteo Initialization API call
+	 * @throws Exception
+	 */
+	@Test(priority = 180, enabled = true)
+	@Description("Verify Criteo SDK inapp v2 call")
+	public void Verify_Criteo_SDK_inapp_v2_Call_When_UPSX_LogIn() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("=========================== Criteo SDK inapp/v2 call ====================");
+		System.out.println("****** Criteo SDK inapp/v2 call validation Started");
+		logStep("****** Criteo SDK inapp/v2 call validation Started");
+		Utils.verifyCriteo_inapp_v2_Call("Smoke", "Criteo", true);
+	}
+	
+	/**
+	 * This method verifies Criteo Bidder API call
+	 * @throws Exception
+	 */
+	@Test(priority = 181, enabled = true)
+	@Description("Verify Criteo SDK config app call")
+	public void Verify_Criteo_SDK_config_app_Call_When_UPSX_LogIn() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("=========================== Criteo SDK config/app call ====================");
+		System.out.println("****** Criteo SDK config/app call validation Started");
+		logStep("****** Criteo SDK config/app call validation Started");
+		Utils.verifyCriteo_config_app_Call("Smoke", "Criteo", true);
+	}
+
+	/**
+	 * This method verifies NextGen IM gampad call
+	 * @throws Exception
+	 */
+	@Test(priority = 182, enabled = true)
+	@Description("Verify Gampad Ad Call")
+	public void Verify_Gampad_call_When_UPSX_LogIn() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Gampad Call verification test case Started");
+		logStep("****** Gampad Call verification test case Started");
+		Utils.verify_Gampad_adcall("Smoke", "Gampad", true);
+	}
+	
+	/**
+	 * LogOut from the App
+	 * @throws Exception
+	 */
+	@Test(priority = 200, enabled = true)
+	@Description("Verify Ads With UPSX LogOut")
+	public void verifyAdsWithUPSXLogOut() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** UPSX LogOut test Started");
+		logStep("****** UPSX LogOut test Started");
+		Ad.launchApp();
+		Functions.close_launchApp();
+		loginScreen.logOutFromApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.put_Background_launch(10);
+		Functions.archive_folder("Charles");
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+	}
+	
+	/**
+	 * This method verifies Lotame call 
+	 * @throws Exception
+	 */
+	@Test(priority = 201, enabled = true)
+	@Description("Lotame Call verification")
+	public void Verify_Lotame_Call_When_UPSX_LogOut() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** bcp.crwdcntrl.net Call test case Started");
+		logStep("****** bcp.crwdcntrl.net Call test case Started");
+		Utils.verifyAPICal("Smoke", "Lotame", true);
+	}
+
+	/**
+	 * This method verifies FACTUAL call
+	 * @throws Exception
+	 */
+	@Test(priority = 202, enabled = true)
+	@Description("Factual Call verification")
+	public void Verify_LocationWFXTriggers_Call_When_UPSX_LogOut() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** location.wfxtriggers.com Call test case Started");
+		logStep("location.wfxtriggers.com Call test case Started");
+		Utils.verifyAPICal("Smoke", "LocationWFX", false);
+	}
+	
+	/**
+	 * This method verifies WFXTriggers call
+	 * @throws Exception
+	 */
+	@Test(priority = 203, enabled = true)
+	@Description("WFXTrigger Call verification")
+	public void Verify_WFXTriggers_Call_When_UPSX_LogOut() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** triggers.wfxtriggers.com Call test case Started");
+		logStep("****** triggers.wfxtriggers.com Call test case Started");
+		Utils.verifyAPICal("Smoke", "WFXTrigger", true);
+	}
+	
+	/**
+	 * This method verifies Amazon call
+	 * @throws Exception
+	 */
+	@Test(priority = 204, enabled = true)
+	@Description("Amazon aax call verification")
+	public void Verify_Amazon_Call_When_UPSX_LogOut() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** amazon-adsystem.com Call test case Started");
+		logStep("****** amazon-adsystem.com Call test case Started");
+		Utils.verify_Amazon_aax_call("Smoke", "Amazon", true);
+	}
+	
+	/**
+	 * This method verifies Criteo Initialization API call
+	 * @throws Exception
+	 */
+	@Test(priority = 205, enabled = true)
+	@Description("Verify Criteo SDK inapp v2 call")
+	public void Verify_Criteo_SDK_inapp_v2_Call_When_UPSX_LogOut() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("=========================== Criteo SDK inapp/v2 call ====================");
+		System.out.println("****** Criteo SDK inapp/v2 call validation Started");
+		logStep("****** Criteo SDK inapp/v2 call validation Started");
+		Utils.verifyCriteo_inapp_v2_Call("Smoke", "Criteo", true);
+	}
+	
+	/**
+	 * This method verifies Criteo Bidder API call
+	 * @throws Exception
+	 */
+	@Test(priority = 206, enabled = true)
+	@Description("Verify Criteo SDK config app call")
+	public void Verify_Criteo_SDK_config_app_Call_When_UPSX_LogOut() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("=========================== Criteo SDK config/app call ====================");
+		System.out.println("****** Criteo SDK config/app call validation Started");
+		logStep("****** Criteo SDK config/app call validation Started");
+		Utils.verifyCriteo_config_app_Call("Smoke", "Criteo", true);
+	}
+
+	/**
+	 * This method verifies NextGen IM gampad call
+	 * @throws Exception
+	 */
+	@Test(priority = 207, enabled = true)
+	@Description("Verify Gampad Ad Call")
+	public void Verify_Gampad_call_When_UPSX_LogOut() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Gampad Call verification test case Started");
+		logStep("****** Gampad Call verification test case Started");
+		Utils.verify_Gampad_adcall("Smoke", "Gampad", true);
+	}
+		
+	@Test(priority = 250,   enabled = true)
+	@Description("Segment Parameter Verificatiion when background launch the app from hourly tab")
+	public void seg_Parameter_Verification_When_Navigated_To_Hourly_Tab() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Segment Parameter Verificatiion when background launch the app from hourly tab test case Started");
+		logStep("****** Segment Parameter Verificatiion when background launch the app from hourly tab test case Started");
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.checkForAppState();
+		proxy.clearCharlesSession();
+		Functions.archive_folder("Charles");
+		hrTab.navigateToHourlyTab();
+		Functions.put_Background_launch(10);
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		Utils.verify_Lotame_Call_Segment_Parameter("Smoke", "Lotame", "seg=Hourly");
+	
+	}
+	
+	@Test(priority = 251,   enabled = true)
+	@Description("Segment Parameter Verificatiion when background launch the app from daily tab")
+	public void seg_Parameter_Verification_When_Navigated_To_Daily_Tab() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Segment Parameter Verificatiion when background launch the app from daily tab test case Started");
+		logStep("****** Segment Parameter Verificatiion when background launch the app from daily tab test case Started");
+		proxy.clearCharlesSession();
+		Functions.archive_folder("Charles");
+		dTab.navigateToDailyTab();
+		Functions.put_Background_launch(10);
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		Utils.verify_Lotame_Call_Segment_Parameter("Smoke", "Lotame", "seg=Daily");
+
+	}
+	
+	@Test(priority = 252,   enabled = true)
+	@Description("Segment Parameter Verificatiion when background launch the app from radar tab")
+	public void seg_Parameter_Verification_When_Navigated_To_Radar_Tab() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Segment Parameter Verificatiion when background launch the app from radar tab test case Started");
+		logStep("****** Segment Parameter Verificatiion when background launch the app from radar tab test case Started");
+		proxy.clearCharlesSession();
+		Functions.archive_folder("Charles");
+		rTab.navigateToRadarTab();
+		Functions.put_Background_launch(10);
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		Utils.verify_Lotame_Call_Segment_Parameter("Smoke", "Lotame", "seg=Radar");
+	
+	}
+	
+	@Test(priority = 253,   enabled = true)
+	@Description("Segment Parameter Verificatiion when background launch the app from video tab")
+	public void seg_Parameter_Verification_When_Navigated_To_Video_Tab() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Segment Parameter Verificatiion when background launch the app from video tab test case Started");
+		logStep("****** Segment Parameter Verificatiion when background launch the app from video tab test case Started");
+		proxy.clearCharlesSession();
+		Functions.archive_folder("Charles");
+		vTab.navigateToVideoTab();
+		Functions.put_Background_launch(10);
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		Utils.verify_Lotame_Call_Segment_Parameter("Smoke", "Lotame", "seg=Video");
+	
+	}
+	
+	@Test(priority = 270, enabled = true)
+	@Description("Enable Preconditions to change region to de_DE")
+	public void enable_preConditions_toChange_Region_for_de_DE() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** enable Preconditions to change region to de_DE test case Started");
+		logStep("****** enable Preconditions to change region to de_DE test case Started");
+		Ad.terminateApp("com.weather.TWC");
+		
+		Functions.Appium_Autostart();
+		Functions.archive_folder("Charles");
+		proxy.startRecording();
+		proxy.clearCharlesSession();
+		Functions.launchtheApp_forLocalization("true", "de_DE", true, "de", true);
+		System.out.println("App launched ");
+		logStep("App launched ");
+		proxy.getXml();
+		Functions.archive_folder("Charles");
+		Functions.close_launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.checkForAppState();
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		
+		Ad.terminateApp("com.weather.TWC");
+	}
+
+	@Test(priority = 271, enabled = true)
+	@Description("Validating NextGen IM Call for de_DE")
+	public void validate_NextGen_IM_call_for_de_DE() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating NextGen IM Call for de_DE");
+		logStep("Validating NextGen IM Call for de_DE");
+
+		//Utils.verifyPubadCal("iu=%2F3673%2Fm_app_ios_iphone_wx%2Fdb_display%2Fhome_screen%2Fmarquee");
+		Utils.verifyPubadCal("iu=%2F3673%2Fm_app_ios_iphone_wx");
+
+	}
+
+	@Test(priority = 275, enabled = true)
+	@Description("Enable Preconditions to change region to es_US")
+	public void enable_preConditions_toChange_Region_for_es_US() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** enable Preconditions to change region to es_US test case Started");
+		logStep("****** enable Preconditions to change region to es_US test case Started");
+		
+		Functions.Appium_Autostart();
+		Functions.archive_folder("Charles");
+		proxy.startRecording();
+		proxy.clearCharlesSession();
+		Functions.launchtheApp_forLocalization("true", "es_US", true, "es", true);
+		System.out.println("App launched ");
+		logStep("App launched ");
+		proxy.getXml();
+		Functions.archive_folder("Charles");
+		Functions.close_launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.checkForAppState();
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		
+		Ad.terminateApp("com.weather.TWC");
+	}
+
+	@Test(priority = 276, enabled = true)
+	@Description("Validating NextGen IM Call for es_US")
+	public void validate_NextGen_IM_call_for_es_US() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating NextGen IM Call for es_US");
+		logStep("Validating NextGen IM Call for es_US");
+
+		Utils.verifyPubadCal("iu=%2F7646%2Fapp_iphone_us_es%2Fdb_display%2Fhome_screen%2Fmarquee");
+
+	}
+
+	@Test(priority = 280, enabled = true)
+	@Description("Enable Preconditions to change region to hi_IN")
+	public void enable_preConditions_toChange_Region_for_hi_IN() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** enable Preconditions to change region to hi_IN test case Started");
+		logStep("****** enable Preconditions to change region to hi_IN test case Started");
+	
+		Functions.Appium_Autostart();
+		Functions.archive_folder("Charles");
+		proxy.startRecording();
+		proxy.clearCharlesSession();
+		Functions.launchtheApp_forLocalization("true", "hi_IN", true, "hi", true);
+		System.out.println("App launched ");
+		logStep("App launched ");
+		proxy.getXml();
+		Functions.archive_folder("Charles");
+		Functions.close_launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.checkForAppState();
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		
+		Ad.terminateApp("com.weather.TWC");
+	}
+
+	@Test(priority = 281, enabled = true)
+	@Description("Validating NextGen IM Call for hi_IN")
+	public void validate_NextGen_IM_call_for_hi_IN() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating NextGen IM Call for hi_IN");
+		logStep("Validating NextGen IM Call for hi_IN");
+
+		Utils.verifyPubadCal("iu=%2F7646%2Fapp_iphone_hi_in%2Fdb_display%2Fhome_screen%2Fmarquee");
+
+	}
+
+	@Test(priority = 285, enabled = true)
+	@Description("Enable Preconditions to change region to en_IN")
+	public void enable_preConditions_toChange_Region_for_en_IN() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** enable Preconditions to change region to en_IN test case Started");
+		logStep("****** enable Preconditions to change region to en_IN test case Started");
+		
+		Functions.Appium_Autostart();
+		Functions.archive_folder("Charles");
+		proxy.startRecording();
+		proxy.clearCharlesSession();
+		Functions.launchtheApp_forLocalization("true", "en_IN", true, "en", false);
+		System.out.println("App launched ");
+		logStep("App launched ");
+		proxy.getXml();
+		Functions.archive_folder("Charles");
+		Functions.close_launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.checkForAppState();
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		
+		Ad.terminateApp("com.weather.TWC");
+	}
+
+	@Test(priority = 286, enabled = true)
+	@Description("Validating NextGen IM Call for en_IN")
+	public void validate_NextGen_IM_call_for_en_IN() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating NextGen IM Call for en_IN");
+		logStep("Validating NextGen IM Call for en_IN");
+
+		Utils.verifyPubadCal("iu=%2F7646%2Fapp_iphone_en_in%2Fdb_display%2Fhome_screen%2Fmarquee");
+
+	}
+	
+	@Test(priority = 290, enabled = true)
+	@Description("Enable Preconditions to change region to en_GB")
+	public void enable_preConditions_toChange_Region_for_en_GB() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** enable Preconditions to change region to en_GB test case Started");
+		logStep("****** enable Preconditions to change region to en_GB test case Started");
+		
+		Functions.Appium_Autostart();
+		Functions.archive_folder("Charles");
+		proxy.startRecording();
+		proxy.clearCharlesSession();
+		Functions.launchtheApp_forLocalization("true", "en_GB", true, "en", false);
+		System.out.println("App launched ");
+		logStep("App launched ");
+		proxy.getXml();
+		Functions.archive_folder("Charles");
+		Functions.close_launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.checkForAppState();
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		
+		Ad.terminateApp("com.weather.TWC");
+	}
+
+	@Test(priority = 291, enabled = true)
+	@Description("Validating NextGen IM Call for en_GB")
+	public void validate_NextGen_IM_call_for_en_GB() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating NextGen IM Call for en_GB");
+		logStep("Validating NextGen IM Call for en_GB");
+
+		Utils.verifyPubadCal("iu=%2F7646%2Fapp_iphone_intl%2Fdb_display%2Fhome_screen%2Fmarquee");
+
+	}
+	
+	@Test(priority = 295, enabled = true)
+	@Description("Enable Preconditions to change region to en_CA")
+	public void enable_preConditions_toChange_Region_for_en_CA() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** enable Preconditions to change region to en_CA test case Started");
+		logStep("****** enable Preconditions to change region to en_CA test case Started");
+		
+		Functions.Appium_Autostart();
+		Functions.archive_folder("Charles");
+		proxy.startRecording();
+		proxy.clearCharlesSession();
+		Functions.launchtheApp_forLocalization("true", "en_CA", true, "en", false);
+		System.out.println("App launched ");
+		logStep("App launched ");
+		proxy.getXml();
+		Functions.archive_folder("Charles");
+		Functions.close_launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.checkForAppState();
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		
+		Ad.terminateApp("com.weather.TWC");
+	}
+
+	@Test(priority = 296, enabled = true)
+	@Description("Validating NextGen IM Call for en_CA")
+	public void validate_NextGen_IM_call_for_en_CA() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating NextGen IM Call for en_CA");
+		logStep("Validating NextGen IM Call for en_CA");
+
+		Utils.verifyPubadCal("iu=%2F7646%2Fapp_iphone_intl%2Fdb_display%2Fhome_screen%2Fmarquee");
+
+	}
+	
+	@Test(priority = 300, enabled = true)
+	@Description("Enable Preconditions to change region to fr_FR")
+	public void enable_preConditions_toChange_Region_for_fr_FR() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** enable Preconditions to change region to fr_FR test case Started");
+		logStep("****** enable Preconditions to change region to fr_FR test case Started");
+	
+		Functions.Appium_Autostart();
+		Functions.archive_folder("Charles");
+		proxy.startRecording();
+		proxy.clearCharlesSession();
+		Functions.launchtheApp_forLocalization("true", "fr_FR", true, "fr", true);
+		System.out.println("App launched ");
+		logStep("App launched ");
+		proxy.getXml();
+		Functions.archive_folder("Charles");
+		Functions.close_launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.checkForAppState();
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		
+		Ad.terminateApp("com.weather.TWC");
+	}
+
+	@Test(priority = 301, enabled = true)
+	@Description("Validating NextGen IM Call for fr_FR")
+	public void validate_NextGen_IM_call_for_fr_FR() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating NextGen IM Call for fr_FR");
+		logStep("Validating NextGen IM Call for fr_FR");
+
+		Utils.verifyPubadCal("iu=%2F7646%2Fapp_iphone_intl%2Fdb_display%2Fhome_screen%2Fmarquee");
+
+	}
+	
+	@Test(priority = 305, enabled = true)
+	@Description("Enable Preconditions for en_US")
+	public void preConditionsTest_for_en_US() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** PreConditions For en_US test case Started");
+		logStep("****** PreConditions For en_US test case Started");
+		
+		Functions.Appium_Autostart();
+		Functions.archive_folder("Charles");
+		proxy.startRecording();
+		proxy.clearCharlesSession();
+		Functions.launchtheApp("true");
+		System.out.println("App launched ");
+		logStep("App launched ");
+		Functions.close_launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		Functions.checkForAppState();
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		Functions.archive_folder("Charles");
+		hrTab = new HourlyNavTab(Ad);
+		dTab = new DailyNavTab(Ad);
+		hmTab = new HomeNavTab(Ad);
+		rTab = new RadarNavTab(Ad);
+		vTab = new VideoNavTab(Ad);
+		addrScreen = new AddressScreen(Ad);
+		pScreen = new PlanningCardScreen(Ad);
+		sScreen = new SeasonalHubCardScreen(Ad);
+		bnScreen = new BreakingNewsCardScreen(Ad);
+		stScreen = new SettingsScreen(Ad);
+		loginScreen = new LogInScreen(Ad);
+		
+		//Ad.terminateApp("com.weather.TWC");
+	}
+
+	@Test(priority = 306, enabled = true)
+	@Description("Validating NextGen IM Call for en_US")
+	public void validate_NextGen_IM_call_for_en_US() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating NextGen IM Call for en_US");
+		logStep("Validating NextGen IM Call for en_US");
+
+		Utils.verifyPubadCal("iu=%2F7646%2Fapp_iphone_us%2Fdb_display%2Fhome_screen%2Fmarquee");
+
+	}
 
 	@Test(priority = 325, enabled = true)
 	@Description("Validating Privacy Card and its options existance")
 	public void validate_Privacy_card_and_Options() throws Exception {
 		System.out.println("==============================================");
-		System.out.println("Started Validating Privacy Card");
-		System.out.println("****** Navigating to Privacy Card ");
-		logStep("Navigating to Privacy Card ");
+		//System.out.println("Started Validating Privacy Card");
+		//System.out.println("****** Navigating to Privacy Card ");
+		//logStep("Navigating to Privacy Card ");
 		proxy.clearCharlesSession();
 		// Utils.navigateTofeedCard("privacy");
 		System.out.println("****** Validating Privacy Card and its options existance");
-		logStep("Validating Privacy Card and its options existance ");
+		logStep("****** Validating Privacy Card and its options existance");
 		stScreen.verify_PrivacyCard_Options_From_Settings("Smoke", "Privacy");
 
 	}
@@ -563,6 +1456,7 @@ public class RegressionTest extends TwcIosBaseTest {
 		Utils.navigateTofeedCard("breakingnews");
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();
+		
 	}
 
 	@Test(priority = 351, enabled = true)
@@ -611,9 +1505,9 @@ public class RegressionTest extends TwcIosBaseTest {
 		
 		System.out.println("****** Breaking News Severe1 Video1 Adcall verification test case Started");
 		logStep("****** Breaking News Severe1 Video1 Adcall verification test case Started");
-		proxy.clearCharlesSession();
 		Functions.archive_folder("Charles");
-		bnScreen.navigateToBreakingNewsDetailsPage();
+		proxy.clearCharlesSession();
+		bnScreen.navigateToBreakingNewsDetailsPage(proxy);
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();
 		Utils.get_iu_value_of_Feedcall("Smoke", "PreRollVideo");
@@ -725,9 +1619,9 @@ public class RegressionTest extends TwcIosBaseTest {
 		
 		System.out.println("****** Breaking News Severe2 Video1 Adcall verification test case Started");
 		logStep("****** Breaking News Severe2 Video1 Adcall verification test case Started");
-		proxy.clearCharlesSession();
 		Functions.archive_folder("Charles");
-		bnScreen.navigateToBreakingNewsDetailsPage();
+		proxy.clearCharlesSession();
+		bnScreen.navigateToBreakingNewsDetailsPage(proxy);
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();
 		Utils.get_iu_value_of_Feedcall("Smoke", "PreRollVideo");
@@ -801,9 +1695,9 @@ public class RegressionTest extends TwcIosBaseTest {
 		
 		System.out.println("****** Editorial Video Headline Card Breaking News Card Severe1 Video1 Adcall verification test case Started");
 		logStep("****** Editorial Video Headline Card Breaking News Card Severe1 Video1 Adcall verification test case Started");
-		proxy.clearCharlesSession();
 		Functions.archive_folder("Charles");
-		bnScreen.navigateToEditorialVideoHeadlineCardBreakingNewsDetailsPage();	
+		proxy.clearCharlesSession();
+		bnScreen.navigateToEditorialVideoHeadlineCardBreakingNewsDetailsPage(proxy);	
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();
 		Utils.get_iu_value_of_Feedcall("Smoke", "PreRollVideo");
@@ -865,9 +1759,9 @@ public class RegressionTest extends TwcIosBaseTest {
 		
 		System.out.println("****** Editorial Video Headline Card Breaking News Card Severe2 Video1 Adcall verification test case Started");
 		logStep("****** Editorial Video Headline Card Breaking News Card Severe2 Video1 Adcall verification test case Started");
-		proxy.clearCharlesSession();
 		Functions.archive_folder("Charles");
-		bnScreen.navigateToEditorialVideoHeadlineCardBreakingNewsDetailsPage();	
+		proxy.clearCharlesSession();
+		bnScreen.navigateToEditorialVideoHeadlineCardBreakingNewsDetailsPage(proxy);	
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();
 		Utils.get_iu_value_of_Feedcall("Smoke", "PreRollVideo");
@@ -910,7 +1804,7 @@ public class RegressionTest extends TwcIosBaseTest {
 		proxy.clearCharlesSession();
 		Functions.close_launchApp();
 		Functions.checkForAppState();
-		addrScreen.enternewAddress(false, "07095", "Woodbridge Township, New Jersey");
+		addrScreen.enternewAddress(false, "07095", "Woodbridge, New Jersey");
 		TestBase.waitForMilliSeconds(20000);		
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();
@@ -1278,7 +2172,7 @@ public class RegressionTest extends TwcIosBaseTest {
 			hmTab.clickonHomeTab();
 			proxy.clearCharlesSession();
 			Functions.archive_folder("Charles");
-			addrScreen.enternewAddress(false, "08824", "South Brunswick, New Jersey");
+			addrScreen.enternewAddress(false, "08824", "Kendall Park, New Jersey");
 			TestBase.waitForMilliSeconds(20000);
 			// Since as part of sticky ad implementation on UI weather.feed1 appears as weather.feed0 and so on
 			//hence modified Integrated feed card name to weather.feed0 from weather.feed1

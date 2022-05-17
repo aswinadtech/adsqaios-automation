@@ -13,7 +13,7 @@ public class Driver extends PropertyFile {
 
 	@SuppressWarnings("rawtypes")
 	protected static AppiumDriver<MobileElement> Ad;
-	protected static AppiumDriver<WebElement> Ad1;
+	protected static AppiumDriver<MobileElement> Ad1;
 	public static WebDriver driver = null;
 	public static WebDriver driver_ipa = null;
 	public static WebDriver driver_Report = null;

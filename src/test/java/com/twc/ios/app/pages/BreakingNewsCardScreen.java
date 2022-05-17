@@ -37,23 +37,22 @@ public class BreakingNewsCardScreen extends Utils {
 		try {
 			By byBreakingNews = null;
 			try {
-				CharlesProxy.proxy.clearCharlesSession();
 				byBreakingNews = MobileBy.AccessibilityId(breakingNews_AccessibilityId);
 				breakingNews = Ad.findElement(byBreakingNews);
 				
 			} catch (Exception e) {
-				CharlesProxy.proxy.clearCharlesSession();
 				byBreakingNews = MobileBy.AccessibilityId(breakingNow_AccessibilityId);
 				breakingNews = Ad.findElement(byBreakingNews);
-							
 			}
-			attachScreen();
+			CharlesProxy.proxy.clearCharlesSession();
 			TestBase.clickOnElement(byBreakingNews, breakingNews, "Breaking News Item");
 			TestBase.waitForMilliSeconds(15000);
 			System.out.println("Navigated to Breaking News Details page");
 			logStep("Navigated to Breaking News Details page");
 			attachScreen();
 		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(Ad.getPageSource());
 			System.out.println("Failed to Navigate to Breaking News Details page");
 			logStep("Failed to Navigate to Breaking News Details page");
 		}
@@ -63,11 +62,8 @@ public class BreakingNewsCardScreen extends Utils {
 	@Step("Navigate to Editorial Video Headline Card Breaking News Details Page")
 	public void navigateToEditorialVideoHeadlineCardBreakingNewsDetailsPage() throws Exception {
 		try {
-			CharlesProxy.proxy.clearCharlesSession();
-			
 			editorialVideobreakingNews = Ad.findElement(byEditorialVideobreakingNews);
-			attachScreen();
-
+			CharlesProxy.proxy.clearCharlesSession();
 			TestBase.clickOnElement(byEditorialVideobreakingNews, editorialVideobreakingNews, "Editorial Video Headline Card Breaking News Item");
 			TestBase.waitForMilliSeconds(15000);
 			System.out.println("Navigated to Editorial Video Headline Card Breaking News Details page");
@@ -75,6 +71,55 @@ public class BreakingNewsCardScreen extends Utils {
 			attachScreen();
 
 		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(Ad.getPageSource());
+			System.out.println("Failed to Navigate to Editorial Video Headline Card Breaking News Details page");
+			logStep("Failed to Navigate to Editorial Video Headline Card Breaking News Details page");
+		}
+
+	}
+	
+	@Step("Navigate to Breaking News Details Page")
+	public void navigateToBreakingNewsDetailsPage(CharlesProxy proxy) throws Exception {
+		try {
+			By byBreakingNews = null;
+			try {
+				byBreakingNews = MobileBy.AccessibilityId(breakingNews_AccessibilityId);
+				breakingNews = Ad.findElement(byBreakingNews);
+				
+			} catch (Exception e) {
+				byBreakingNews = MobileBy.AccessibilityId(breakingNow_AccessibilityId);
+				breakingNews = Ad.findElement(byBreakingNews);
+			}
+			CharlesProxy.proxy.clearCharlesSession();
+			TestBase.clickOnElement(byBreakingNews, breakingNews, "Breaking News Item", proxy);
+			TestBase.waitForMilliSeconds(15000);
+			System.out.println("Navigated to Breaking News Details page");
+			logStep("Navigated to Breaking News Details page");
+			attachScreen();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(Ad.getPageSource());
+			System.out.println("Failed to Navigate to Breaking News Details page");
+			logStep("Failed to Navigate to Breaking News Details page");
+		}
+
+	}
+	
+	@Step("Navigate to Editorial Video Headline Card Breaking News Details Page")
+	public void navigateToEditorialVideoHeadlineCardBreakingNewsDetailsPage(CharlesProxy proxy) throws Exception {
+		try {
+			editorialVideobreakingNews = Ad.findElement(byEditorialVideobreakingNews);
+			CharlesProxy.proxy.clearCharlesSession();
+			TestBase.clickOnElement(byEditorialVideobreakingNews, editorialVideobreakingNews, "Editorial Video Headline Card Breaking News Item", proxy);
+			TestBase.waitForMilliSeconds(15000);
+			System.out.println("Navigated to Editorial Video Headline Card Breaking News Details page");
+			logStep("Navigated to Editorial Video Headline Card Breaking News Details page");
+			attachScreen();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(Ad.getPageSource());
 			System.out.println("Failed to Navigate to Editorial Video Headline Card Breaking News Details page");
 			logStep("Failed to Navigate to Editorial Video Headline Card Breaking News Details page");
 		}

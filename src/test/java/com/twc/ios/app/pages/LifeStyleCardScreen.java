@@ -146,11 +146,11 @@ public class LifeStyleCardScreen extends Utils {
 				 * index page to generate amazon calls for applicable pages line Running and
 				 * Boat & Beach
 				 */
-				swipe_Up();
-				swipe_Up();
-				swipe_Up();
-				swipe_Up();
-				swipe_Up();
+				swipe_Up(Ad);
+				swipe_Up(Ad);
+				swipe_Up(Ad);
+				swipe_Up(Ad);
+				swipe_Up(Ad);
 				if (currentIndex.equalsIgnoreCase("Flu") || currentIndex.equalsIgnoreCase("Allergy")) {
 					// to navigate to article pages
 					try {

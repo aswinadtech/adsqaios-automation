@@ -573,11 +573,11 @@ public class CriteoAndAmazonBidTest extends TwcIosBaseTest {
 		System.out.println("****** amazon aax AQ Details ad call validation Started");
 		logStep("****** amazon aax AQ Details ad call validation Started");
 
-		Utils.verifyAAX_SlotId("Smoke", "Air Quality(Content)", false);
+		Utils.verifyAAX_SlotId("Smoke", "Air Quality(Content)");
 
 	}
 
-	/*@Test(priority = 328, enabled = true)
+	@Test(priority = 328, enabled = true)
 	@Description("Verify AQ Details ad call amazon bid id")
 	public void Verify_AQ_Details_ad_call_amazon_bid_id() throws Exception {
 		System.out.println("==============================================");
@@ -586,7 +586,7 @@ public class CriteoAndAmazonBidTest extends TwcIosBaseTest {
 		System.out.println("****** AQ Details ad call amazon bid id validation Started");
 		logStep("****** AQ Details ad call amazon bid id validation Started");
 		Utils.validate_aax_bid_value_with_gampad_bid_value("Smoke", "Air Quality(Content)", true, true);
-	}*/
+	}
 
 	@Test(priority = 335, enabled = true)
 	@Description("Verify amazon aax Seasonal Hub Details ad call")
@@ -1617,7 +1617,7 @@ public class CriteoAndAmazonBidTest extends TwcIosBaseTest {
 		 */
 
 		hrTab.navigateToHourlyTabAndHandleInterstitialAd();
-		Functions.swipe_Up_ByIterations(10);
+		Functions.swipe_Up_ByIterations(Ad, 10);
 		hmTab.clickonHomeTab();
 		TestBase.waitForMilliSeconds(5000);
 		proxy.getXml();

@@ -346,7 +346,7 @@
           <locations>
             <locationPatterns/>
           </locations>
-          <toolEnabled>false</toolEnabled>
+          <toolEnabled>true</toolEnabled>
           <useSelectedLocations>false</useSelectedLocations>
         </selectedHostsTool>
       </entry>

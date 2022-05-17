@@ -2509,7 +2509,7 @@ public class SmokeTestForPageObjectTesting extends TwcIosBaseTest {
 		proxy.clearCharlesSession();
 		Functions.archive_folder("Charles");
 		hrTab.navigateToHourlyTab();
-		Functions.swipe_Up_ByIterations(10);
+		Functions.swipe_Up_ByIterations(Ad, 10);
 		TestBase.waitForMilliSeconds(5000);
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();

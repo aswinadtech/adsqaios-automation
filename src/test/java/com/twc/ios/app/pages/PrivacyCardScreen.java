@@ -86,9 +86,9 @@ public class PrivacyCardScreen extends Utils {
 				System.out.println("An Exception while Switching to Native App Context");
 				logStep("An Exception while Switching to Native App Context");
 			}
-			swipe_Up();
-			swipe_Up();
-			swipe_Up();
+			swipe_Up(Ad);
+			swipe_Up(Ad);
+			swipe_Up(Ad);
 			TestBase.waitForMilliSeconds(5000);
 			// swipe_Up();
 
@@ -146,9 +146,9 @@ public class PrivacyCardScreen extends Utils {
 		System.out.println("Returned From 'Navigate to Privacy'");
 		logStep("Returned From 'Navigate to Privacy'");
 		TestBase.waitForMilliSeconds(30000);
-		swipe_Up();
-		swipe_Up();
-		swipe_Up();
+		swipe_Up(Ad);
+		swipe_Up(Ad);
+		swipe_Up(Ad);
 		TestBase.waitForMilliSeconds(5000);
 		// swipe_Up();
 		try {
@@ -219,9 +219,9 @@ public class PrivacyCardScreen extends Utils {
 		System.out.println("Returned From 'Navigate to Privacy'");
 		logStep("Returned From 'Navigate to Privacy'");
 		TestBase.waitForMilliSeconds(30000);
-		swipe_Up();
-		swipe_Up();
-		swipe_Up();
+		swipe_Up(Ad);
+		swipe_Up(Ad);
+		swipe_Up(Ad);
 		TestBase.waitForMilliSeconds(5000);
 		// swipe_Up();
 		try {

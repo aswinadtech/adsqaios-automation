@@ -4,7 +4,7 @@
   <test thread-count="5" name="Test">
     <classes>
       <class name="com.twc.ios.app.testcases.GDPRPrivacyTest"/>
-       <class name="com.twc.ios.app.testcases.BURDAPrivacyTest"/>
+      <class name="com.twc.ios.app.testcases.BURDAPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.USACCPAPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.USAPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.LGPDPrivacyTest"/>
@@ -13,7 +13,7 @@
       <class name="com.twc.ios.app.testcases.LATAMDOPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.LATAMCOPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.EXEMPTPrivacyTest"/>
-      <!--  class name="com.twc.ios.app.testcases.TURKEYPrivacyTest"/>-->
+      <class name="com.twc.ios.app.testcases.TURKEYPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.CHINAPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.BELARUSPrivacyTest"/>
       <class name="com.twc.ios.app.testcases.RUSSIAPrivacyTest"/>

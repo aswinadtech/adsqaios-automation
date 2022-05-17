@@ -34,6 +34,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 
+import com.twc.ios.app.charlesfunctions.CharlesProxy;
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
@@ -279,6 +281,66 @@ public class TestBase extends Driver{
 
 		System.out.println("Clicking on " + elementName + " Element");
 		Driver.logStep("Clicking on " + elementName + " Element");
+		element.click();
+		// Driver.attachScreen();
+
+	}
+	
+	/**
+	 * 
+	 * @param byLocatorStrategy
+	 * @param element
+	 * @param elementName
+	 */
+	public static void clickOnElement(By byLocatorStrategy, MobileElement element, String elementName, CharlesProxy proxy) {
+		try {
+			Thread.sleep(2000L);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if (getElementsCount(byLocatorStrategy) == 0) {
+			try {
+				Thread.sleep(4000L);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		long elementCheckStrtTime = 0L;
+		long elementCheckEndTime = 0L;
+		long elementCheckTimeElapsed = 0L;
+		
+		long elementCheckTimeconvert = 0L;
+		elementCheckStrtTime = System.nanoTime();
+		elementCheckEndTime = System.nanoTime();
+		elementCheckTimeElapsed = elementCheckEndTime - elementCheckStrtTime;
+		elementCheckTimeconvert = TimeUnit.SECONDS.convert(elementCheckTimeElapsed, TimeUnit.NANOSECONDS);
+		
+		while (!element.isEnabled()) {
+			elementCheckEndTime = System.nanoTime();
+			elementCheckTimeElapsed = elementCheckEndTime - elementCheckStrtTime;
+			elementCheckTimeconvert = TimeUnit.SECONDS.convert(elementCheckTimeElapsed, TimeUnit.NANOSECONDS);
+			
+			if (elementCheckTimeconvert >= 240) {
+				System.out.println("Noticed that " + elementName + " not enabled to perform click action, waited for: "+elementCheckTimeconvert +" Seconds, test may fail");
+				Driver.logStep("Noticed that " + elementName + " not enabled to perform click action, waited for: "+elementCheckTimeconvert +" Seconds, test may fail");
+				break;
+			} 
+			try {
+				Thread.sleep(2000L);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		System.out.println("Clicking on " + elementName + " Element");
+		Driver.logStep("Clicking on " + elementName + " Element");
+		
+		System.out.println("Clearing charles session before cliking the element");
+		Driver.logStep("Clearing charles session before cliking the element");
+		proxy.clearCharlesSession();
+		proxy.clearCharlesSession();
+		
 		element.click();
 		// Driver.attachScreen();
 

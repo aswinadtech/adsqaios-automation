@@ -4010,7 +4010,7 @@ public class Utils extends Functions {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean verifyAPICalWithHostandPath(String host, String path) throws Exception {
+	public static boolean verifyAPICallWithHostandPath(String host, String path) throws Exception {
 		// readExcelValues.excelValues(excelName, sheetName);
 		File fXmlFile = new File(outfile.getName());
 
@@ -4169,6 +4169,55 @@ public class Utils extends Functions {
 		}
 
 		return resflag;
+	}
+	
+	public static boolean verifyAPICallWithHost(String host) throws Exception {
+		// readExcelValues.excelValues(excelName, sheetName);
+		File fXmlFile = new File(outfile.getName());
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		dbFactory.setValidating(false);
+		dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/namespaces", false);
+		// dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/validation", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+		Document doc = dBuilder.parse(fXmlFile);
+// Getting the transaction element by passing xpath expression
+		NodeList nodeList = doc.getElementsByTagName("transaction");
+		String xpathExpression = "charles-session/transaction/@host";
+		List<String> getQueryList = evaluateXPath(doc, xpathExpression);
+
+// Getting custom_params amzn_b values
+		List<String> customParamsList = new ArrayList<String>();
+
+		// String iuId = null;
+
+		boolean iuExists = false;
+		for (String qry : getQueryList) {
+			if (qry.contains(host)) {
+				iuExists = true;
+				break;
+			}
+		}
+		boolean hflag = false;
+		boolean pflag = false;
+		boolean resflag = false;
+
+		if (iuExists) {
+			System.out.println(host + "  call is present");
+			logStep(host + "  call is present");
+		} else {
+			System.out.println(host + " ad call is not present");
+			logStep(host + " ad call is not present");
+
+		}
+
+		return iuExists;
 	}
 
 	/**
@@ -8944,7 +8993,7 @@ public class Utils extends Functions {
 		ReadExcelValues.excelValues(excelName, sheetName);
 		String host = ReadExcelValues.data[2][Cap];
 		String path = ReadExcelValues.data[3][Cap];
-		boolean flag = verifyAPICalWithHostandPath(host, path);
+		boolean flag = verifyAPICallWithHostandPath(host, path);
 		if (flag) {
 			System.out.println(host + path + " call is present in Charles session");
 			logStep(host + path + " call is present in Charles session");
@@ -8973,7 +9022,7 @@ public class Utils extends Functions {
 		ReadExcelValues.excelValues(excelName, sheetName);
 		String host = ReadExcelValues.data[2][Cap];
 		String path = ReadExcelValues.data[3][Cap];
-		boolean flag = verifyAPICalWithHostandPath(host, path);
+		boolean flag = verifyAPICallWithHostandPath(host, path);
 		if (flag) {
 			System.out.println(host + path + " call is present in Charles session");
 			logStep(host + path + " call is present in Charles session");
@@ -9012,7 +9061,7 @@ public class Utils extends Functions {
 		ReadExcelValues.excelValues(excelName, sheetName);
 		String host = ReadExcelValues.data[2][Cap];
 		String path = ReadExcelValues.data[4][Cap];
-		boolean flag = verifyAPICalWithHostandPath(host, path);
+		boolean flag = verifyAPICallWithHostandPath(host, path);
 		if (flag) {
 			System.out.println(host + path + " call is present in Charles session");
 			logStep(host + path + " call is present in Charles session");
@@ -9041,7 +9090,7 @@ public class Utils extends Functions {
 		ReadExcelValues.excelValues(excelName, sheetName);
 		String host = ReadExcelValues.data[2][Cap];
 		String path = ReadExcelValues.data[4][Cap];
-		boolean flag = verifyAPICalWithHostandPath(host, path);
+		boolean flag = verifyAPICallWithHostandPath(host, path);
 		if (flag) {
 			System.out.println(host + path + " call is present in Charles session");
 			logStep(host + path + " call is present in Charles session");
@@ -9252,7 +9301,7 @@ public class Utils extends Functions {
 		String host = ReadExcelValues.data[2][Cap];
 		String path = ReadExcelValues.data[4][Cap];
 
-		boolean flag = verifyAPICalWithHostandPath(host, path);
+		boolean flag = verifyAPICallWithHostandPath(host, path);
 		if (flag) {
 			System.out.println(host + path + " call is present in Charles session");
 			logStep(host + path + " call is present in Charles session");
@@ -11040,7 +11089,7 @@ public class Utils extends Functions {
 		String host = ReadExcelValues.data[2][Cap];
 		String path = ReadExcelValues.data[3][Cap];
 
-		boolean flag = verifyAPICalWithHostandPath(host, path);
+		boolean flag = verifyAPICallWithHostandPath(host, path);
 		if (flag) {
 			System.out.println(host + path + " call is present in Charles session");
 			logStep(host + path + " call is present in Charles session");
@@ -11085,7 +11134,7 @@ public class Utils extends Functions {
 		String host = ReadExcelValues.data[2][Cap];
 		String path = ReadExcelValues.data[3][Cap];
 
-		boolean flag = verifyAPICalWithHostandPath(host, path);
+		boolean flag = verifyAPICallWithHostandPath(host, path);
 		if (flag) {
 			System.out.println(host + path + " call is present in Charles session");
 			logStep(host + path + " call is present in Charles session");
@@ -11130,7 +11179,7 @@ public class Utils extends Functions {
 		String host = ReadExcelValues.data[2][Cap];
 		String path = ReadExcelValues.data[3][Cap];
 
-		boolean flag = verifyAPICalWithHostandPath(host, path);
+		boolean flag = verifyAPICallWithHostandPath(host, path);
 		if (flag) {
 			System.out.println(host + path + " call is present in Charles session");
 			logStep(host + path + " call is present in Charles session");
@@ -11428,7 +11477,7 @@ public class Utils extends Functions {
 		ReadExcelValues.excelValues(excelName, sheetName);
 		String host = ReadExcelValues.data[2][Cap];
 		String path = ReadExcelValues.data[3][Cap];
-		boolean flag = verifyAPICalWithHostandPath(host, path);
+		boolean flag = verifyAPICallWithHostandPath(host, path);
 
 		if (flag) {
 			System.out.println(host + path + " call is present in Charles session");
@@ -11472,7 +11521,7 @@ public class Utils extends Functions {
 		ReadExcelValues.excelValues(excelName, sheetName);
 		String host = ReadExcelValues.data[2][Cap];
 		String path = ReadExcelValues.data[4][Cap];
-		boolean flag = verifyAPICalWithHostandPath(host, path);
+		boolean flag = verifyAPICallWithHostandPath(host, path);
 
 		if (flag) {
 			System.out.println(host + path + " call is present in Charles session");
@@ -11719,7 +11768,7 @@ public class Utils extends Functions {
 		String host = ReadExcelValues.data[2][Cap];
 		String path = ReadExcelValues.data[4][Cap];
 
-		boolean flag = verifyAPICalWithHostandPath(host, path);
+		boolean flag = verifyAPICallWithHostandPath(host, path);
 		if (flag) {
 			System.out.println(host + path + " call is present in Charles session");
 			logStep(host + path + " call is present in Charles session");
@@ -11756,6 +11805,32 @@ public class Utils extends Functions {
 
 		}
 
+	}
+	
+	/**
+	 * Verifies whether lotame call contains 'seg' parameter
+	 * @param excelName
+	 * @param sheetName
+	 * @param expectedSegment
+	 * @throws Exception
+	 */
+	public static void verify_Lotame_Call_Segment_Parameter(String excelName, String sheetName, String expectedSegment)
+			throws Exception {
+		ReadExcelValues.excelValues(excelName, sheetName);
+		String host = ReadExcelValues.data[2][Cap];
+		//String path = ReadExcelValues.data[4][Cap];
+		String path = expectedSegment;
+		boolean flag = verifyAPICallWithHostandPath(host, path);
+		if (flag) {
+			System.out.println(host+ " call is present in Charles session and contains segment: "+expectedSegment.split("=")[1]);
+			logStep(host+ " call is present in Charles session and contains segment: "+expectedSegment.split("=")[1]);
+
+		} else {
+			System.out.println("Either "+host +" call is not present in Charles session or "+host +" call not contains the segment "+expectedSegment.split("=")[1]);
+			logStep("Either "+host +" call is not present in Charles session or "+host +" call not contains the segment "+expectedSegment.split("=")[1]);
+			Assert.fail("Either "+host +" call is not present in Charles session or "+host +" call not contains the segment "+expectedSegment.split("=")[1]);
+		}
+		
 	}
 
 }

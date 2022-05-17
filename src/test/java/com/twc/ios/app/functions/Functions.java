@@ -1,5 +1,6 @@
 package com.twc.ios.app.functions;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
@@ -391,7 +392,7 @@ public class Functions extends Driver {
 		// TestBase.waitForMilliSeconds(10000);
 		Ad = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
 		// Ad= new IOSDriver<MobileElement>(service, capabilities);
-		Ad.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		Ad.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		// Handle Extra popup appears when app launched (like New module ebnable)
 		ftlScreens = new FTLScreens(Ad);
 		ftlScreens.handle_Unwanted_Popups();
@@ -462,7 +463,7 @@ public class Functions extends Driver {
 		// TestBase.waitForMilliSeconds(10000);
 		Ad = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
 		// Ad= new IOSDriver<MobileElement>(service, capabilities);
-		Ad.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		Ad.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		// Handle Extra popup appears when app launched (like New module ebnable)
 		ftlScreens = new FTLScreens(Ad);
 		ftlScreens.handle_Unwanted_Popups_China();
@@ -548,7 +549,7 @@ public class Functions extends Driver {
 		// TestBase.waitForMilliSeconds(10000);
 		Ad = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
 		// Ad= new IOSDriver<MobileElement>(service, capabilities);
-		Ad.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		Ad.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		// Handle Extra popup appears when app launched (like New module ebnable)
 		ftlScreens = new FTLScreens(Ad);
 		ftlScreens.handle_Unwanted_Popups();
@@ -605,7 +606,7 @@ public class Functions extends Driver {
 		capabilities.setCapability("waitForAppScript", "$.delay(5000); true");
 		System.out.println("Reading capabilities done");
 		// Wait time for Execution of node.js
-		TestBase.waitForMilliSeconds(80000);
+		//TestBase.waitForMilliSeconds(80000);
 
 		Ad = new IOSDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
 		Ad.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -959,8 +960,9 @@ public class Functions extends Driver {
 	 * Launch the widget app
 	 * @throws Exception
 	 */
-	public static void launchtheWidgetApp() throws Exception {
-
+	public static void launchAppFromTheWidgetApp() throws Exception {
+		FTLScreens ftlScreens;
+				
 		ReadExcelValues.excelValues("Smoke", "Capabilities");
 		// service = AppiumDriverLocalService.buildService(new
 		// AppiumServiceBuilder().withAppiumJS(new
@@ -1002,19 +1004,21 @@ public class Functions extends Driver {
 		System.out.println("Reading capabilities done");
 		// Wait time for Execution of node.js
 		// TestBase.waitForMilliSeconds(10000);
-		Ad = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
+		Ad1 = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
 		// Ad= new IOSDriver<MobileElement>(service, capabilities);
-		Ad.manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
+		Ad1.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		// Handle Extra popup appears when app launched (like New module ebnable)
 		// Handle_unwanted_popups();
 		// Functions.enternewAddress("Atlanta, Georgia");
 		// //Ad.tap(1, 10, 6, 2000);
 		// Functions.BacktoWeather();
 		// Functions.Take//ScreenShot();
-		Ad.findElementByAccessibilityId("The Weather Channel").click();
+		TestBase.waitForMilliSeconds(10000);
+		Functions.swipe_Up_ByIterations(Ad1, 4);
+		Ad1.findElementByAccessibilityId("The Weather Channel").click();
 
-		// Write_result wrResult1 = new Write_result();
-		// wrResult1.WriteResult("Capabilities", ipaPath.toString(), 14, Cap);
+		ftlScreens = new FTLScreens(Ad1);
+		ftlScreens.handle_Unwanted_Popups_When_App_Launched_From_Widget();
 	}
 
 	/**
@@ -1156,7 +1160,7 @@ public class Functions extends Driver {
 	 * SCROLL DOWN
 	 * @throws Exception
 	 */
-	public static void swipe_Up() throws Exception {
+	public static void swipe_Up(AppiumDriver<MobileElement> Ad) throws Exception {
 		// Scroll JS
 
 		TouchAction ta = new TouchAction(Ad);
@@ -1172,7 +1176,7 @@ public class Functions extends Driver {
 
 			ta.press(PointOption.point(0, startY)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(2000)))
 					.moveTo(PointOption.point(0, endY)).release().perform();
-			TestBase.waitForMilliSeconds(2000);
+			TestBase.waitForMilliSeconds(500);
 			ta.press(PointOption.point(0, startY)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(2000)))
 					.moveTo(PointOption.point(0, endY)).release().perform();
 
@@ -1194,7 +1198,7 @@ public class Functions extends Driver {
 				// Ad.swipe(0, startY, 0, endY, 2000);
 				ta.press(PointOption.point(0, startY)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(2000)))
 						.moveTo(PointOption.point(0, endY)).release().perform();
-				TestBase.waitForMilliSeconds(2000);
+				TestBase.waitForMilliSeconds(500);
 				ta.press(PointOption.point(0, startY)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(2000)))
 						.moveTo(PointOption.point(0, endY)).release().perform();
 
@@ -1237,10 +1241,10 @@ public class Functions extends Driver {
 	 * @param count
 	 * @throws Exception
 	 */
-	public static void swipe_Up_ByIterations(int count) throws Exception {
+	public static void swipe_Up_ByIterations(AppiumDriver<MobileElement> Ad, int count) throws Exception {
 		for (int i = 1; i <= count; i++) {
-			swipe_Up();
-			TestBase.waitForMilliSeconds(5000);
+			swipe_Up(Ad);
+			TestBase.waitForMilliSeconds(3000);
 		}
 
 	}
@@ -1476,12 +1480,12 @@ public class Functions extends Driver {
 			Ad.terminateApp("com.weather.TWC");
 			System.out.println("App Closed SuccessFully");
 			logStep("App Closed SuccessFully");
-			TestBase.waitForMilliSeconds(5000);
+//			TestBase.waitForMilliSeconds(5000);
 			Ad.launchApp();
 			//Ad.activateApp("com.weather.TWC");
 			System.out.println("App Launched SuccessFully");
 			logStep("App Launched SuccessFully");
-			TestBase.waitForMilliSeconds(5000);
+//			TestBase.waitForMilliSeconds(5000);
 			ftlScreens = new FTLScreens(Ad);
 			ftlScreens.handle_Unwanted_Popups();
 			// attachScreen();
@@ -1984,7 +1988,7 @@ public class Functions extends Driver {
 		// WebDriver Ad = new RemoteWebDriver(new URL("http://127.0.0.1:4733/wd/hub"),
 		// capabilities);
 		// Ad= new IOSDriver<MobileElement>(service, capabilities);
-		Ad.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		Ad.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 		try {
 			Ad.get("https://appdistribution.firebase.dev/app_distro/projects");
@@ -2250,7 +2254,7 @@ public class Functions extends Driver {
 		// WebDriver Ad = new RemoteWebDriver(new URL("http://127.0.0.1:4733/wd/hub"),
 		// capabilities);
 		// Ad= new IOSDriver<MobileElement>(service, capabilities);
-		Ad.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		Ad.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 		try {
 			Ad.get("https://appdistribution.firebase.dev/app_distro/projects");
@@ -2613,7 +2617,7 @@ public class Functions extends Driver {
 		// WebDriver Ad = new RemoteWebDriver(new URL("http://127.0.0.1:4733/wd/hub"),
 		// capabilities);
 		// Ad= new IOSDriver<MobileElement>(service, capabilities);
-		Ad.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		Ad.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
 		try {
 			Ad.get("https://appdistribution.firebase.dev/app_distro/projects");
@@ -2940,13 +2944,13 @@ public class Functions extends Driver {
 
 		System.out.println("Reading capabilities done");
 
-		Ad = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
+		Ad1 = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
 
-		Ad.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-		TestBase.waitForMilliSeconds(10000);
+		Ad1.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//		TestBase.waitForMilliSeconds(10000);
 		try {
 
-			Ad.findElementByXPath("//XCUIElementTypeApplication[@name='Settings']");
+			Ad1.findElementByXPath("//XCUIElementTypeApplication[@name='Settings']");
 			System.out.println("Settings app launched");
 			logStep("Settings app launched");
 		} catch (Exception e) {
@@ -2955,7 +2959,7 @@ public class Functions extends Driver {
 		}
 		// clicking on Wifi
 		try {
-			Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='WIFI']").click();
+			Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='WIFI']").click();
 			;
 			System.out.println("Clicked on Wifi on Settings screen");
 			logStep("Clicked on Wifi on Settings screen");
@@ -2963,17 +2967,17 @@ public class Functions extends Driver {
 			System.out.println("Not able to Click on Wifi on Settings screen");
 			logStep("Not able to Click on Wifi on Settings screen");
 		}
-		TestBase.waitForMilliSeconds(20000);
+//		TestBase.waitForMilliSeconds(20000);
 		// Click on Desired Network on Wifi selection screen
 		try {
 			// Ad.findElementByXPath("//XCUIElementTypeStaticText[@name=\"Gibson-WiFi\"]").click();
-			Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
+			Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
 			System.out.println("Click on Desired Wifi Network ");
 			logStep("Click on Desired Wifi Network ");
 			try {
-				if (Ad.findElementByXPath("//XCUIElementTypeNavigationBar[@name='Enter Password']").isDisplayed()) {
+				if (Ad1.findElementByXPath("//XCUIElementTypeNavigationBar[@name='Enter Password']").isDisplayed()) {
 
-					MobileElement passWord = Ad
+					MobileElement passWord = Ad1
 							.findElementByXPath("//XCUIElementTypeSecureTextField[@name='Password']");
 
 					passWord.click();
@@ -2984,10 +2988,10 @@ public class Functions extends Driver {
 						System.out.println("Entered Wifi Password ");
 						logStep("Entered Wifi Password ");
 
-						Ad.findElementByXPath("//XCUIElementTypeButton[@name='Join']").click();
+						Ad1.findElementByXPath("//XCUIElementTypeButton[@name='Join']").click();
 						TestBase.waitForMilliSeconds(20000);
 						try {
-							Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
+							Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
 							System.out.println("Click on Desired Wifi Network after input wifi password");
 							logStep("Click on Desired Wifi Network after input wifi password ");
 						} catch (Exception e) {
@@ -3010,23 +3014,23 @@ public class Functions extends Driver {
 			System.out.println("Not able to click on Desired Wifi Network ");
 			logStep("Not able to click on Desired Wifi Network ");
 		}
-		TestBase.waitForMilliSeconds(10000);
+//		TestBase.waitForMilliSeconds(10000);
 		// checking for 'Foget This Network to makesure Network is selected and moved to
 		// next page
 		try {
-			Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Forget This Network']");
+			Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Forget This Network']");
 			System.out.println("Navigated to Desired Wifi Network screen");
 			logStep("Navigated to Desired Wifi Network screen");
 			// make a check to see if Join this network is displayed or not, if yes then
 			// select
 			try {
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Join This Network']").click();
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Join This Network']").click();
 				;
 				System.out.println("Joining desired network ");
 				logStep("Joining desired network ");
 
 				// Ad.findElementByXPath("//XCUIElementTypeStaticText[@name=\"Gibson-WiFi\"]").click();
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
 				System.out.println("Click on Desired Wifi Network after joining it");
 				logStep("Click on Desired Wifi Network after joining it");
 			} catch (Exception e) {
@@ -3035,27 +3039,27 @@ public class Functions extends Driver {
 			}
 		} catch (Exception e) {
 			// Ad.findElementByXPath("//XCUIElementTypeStaticText[@name=\"Gibson-WiFi\"]").click();
-			Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
+			Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
 			System.out.println("Navigating to Desired network page after selecting it");
 			logStep("Navigating to Desired network page after selecting it");
 
 		}
 		// swipe up to navigate to configure manual proxy
-		swipe_Up();
-		TestBase.waitForMilliSeconds(10000);
-		Ad.context("NATIVE_APP");
+		swipe_Up(Ad1);
+//		TestBase.waitForMilliSeconds(10000);
+		Ad1.context("NATIVE_APP");
 		try {
-			Ad.findElementByAccessibilityId("Configure Proxy").click();
+			Ad1.findElementByAccessibilityId("Configure Proxy").click();
 			;
 			System.out.println("Clicked on Configure Proxy ");
 			logStep("Clicked on Configure Proxy ");
 			try {
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Port']");
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Port']");
 				System.out.println("Navigated to Proxy Configurtion Page");
 				logStep("Navigated to Proxy Configurtion Page");
 			} catch (Exception e) {
 				try {
-					Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
+					Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
 					;
 					System.out.println("Clicked on Configure Proxy ");
 					logStep("Clicked on Configure Proxy ");
@@ -3067,7 +3071,7 @@ public class Functions extends Driver {
 		} catch (Exception e) {
 
 			try {
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
 				;
 				System.out.println("Clicked on Configure Proxy ");
 				logStep("Clicked on Configure Proxy ");
@@ -3077,11 +3081,11 @@ public class Functions extends Driver {
 			}
 
 		}
-		TestBase.waitForMilliSeconds(10000);
+//		TestBase.waitForMilliSeconds(10000);
 
 		if (!proxy) {
 			try {
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Off']").click();
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Off']").click();
 				System.out.println("Turned Off Proxy ");
 				logStep("Turned Off Proxy ");
 			} catch (Exception e) {
@@ -3090,7 +3094,7 @@ public class Functions extends Driver {
 			}
 		} else {
 			try {
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Off']").click();
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Off']").click();
 				System.out.println("Turned Off Proxy ");
 				logStep("Turned Off Proxy ");
 			} catch (Exception e) {
@@ -3098,14 +3102,14 @@ public class Functions extends Driver {
 				logStep("Not able to turned off Proxy ");
 			}
 			try {
-				if (Ad.findElementByXPath("//XCUIElementTypeButton[@name='Save']").isEnabled()) {
-					Ad.findElementByXPath("//XCUIElementTypeButton[@name='Save']").click();
+				if (Ad1.findElementByXPath("//XCUIElementTypeButton[@name='Save']").isEnabled()) {
+					Ad1.findElementByXPath("//XCUIElementTypeButton[@name='Save']").click();
 					;
 					System.out.println("Saved proxy details ");
 					logStep("Saved proxy details ");
-					TestBase.waitForMilliSeconds(10000);
+//					TestBase.waitForMilliSeconds(10000);
 				} else {
-					Ad.findElementByXPath("//XCUIElementTypeButton[@name='" + wifiName + "']").click();
+					Ad1.findElementByXPath("//XCUIElementTypeButton[@name='" + wifiName + "']").click();
 					System.out.println("Navigated back to Configure proxy page ");
 					logStep("Navigated back to Configure proxy page ");
 				}
@@ -3114,19 +3118,19 @@ public class Functions extends Driver {
 				System.out.println("Not able to Save proxy details ");
 				logStep("Not able to Save proxy details ");
 			}
-			TestBase.waitForMilliSeconds(10000);
+//			TestBase.waitForMilliSeconds(10000);
 			try {
-				Ad.findElementByAccessibilityId("Configure Proxy").click();
+				Ad1.findElementByAccessibilityId("Configure Proxy").click();
 				;
 				System.out.println("Clicked on Configure Proxy ");
 				logStep("Clicked on Configure Proxy ");
 				try {
-					Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Port']");
+					Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Port']");
 					System.out.println("Navigated to Proxy Configurtion Page");
 					logStep("Navigated to Proxy Configurtion Page");
 				} catch (Exception e) {
 					try {
-						Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
+						Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
 						;
 						System.out.println("Clicked on Configure Proxy ");
 						logStep("Clicked on Configure Proxy ");
@@ -3138,7 +3142,7 @@ public class Functions extends Driver {
 			} catch (Exception e) {
 
 				try {
-					Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
+					Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
 					;
 					System.out.println("Clicked on Configure Proxy ");
 					logStep("Clicked on Configure Proxy ");
@@ -3148,10 +3152,10 @@ public class Functions extends Driver {
 				}
 
 			}
-			TestBase.waitForMilliSeconds(10000);
+//			TestBase.waitForMilliSeconds(10000);
 
 			try {
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Manual']").click();
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Manual']").click();
 				System.out.println("Clicked on Manual Proxy ");
 				logStep("Clicked on Manual Proxy ");
 			} catch (Exception e) {
@@ -3159,20 +3163,20 @@ public class Functions extends Driver {
 				logStep("Not able to click on Manual Proxy ");
 			}
 
-			TestBase.waitForMilliSeconds(10000);
+//			TestBase.waitForMilliSeconds(10000);
 			try {
-				MobileElement serverPort = Ad.findElementByXPath("//XCUIElementTypeTextField[@name='Port']");
+				MobileElement serverPort = Ad1.findElementByXPath("//XCUIElementTypeTextField[@name='Port']");
 				serverPort.clear();
 				serverPort.click();
 				serverPort.clear();
 				System.out.println("Clicked on Port to input port number");
 				logStep("Clicked on Port to input port number ");
-				TestBase.waitForMilliSeconds(5000);
+//				TestBase.waitForMilliSeconds(5000);
 				try {
 					serverPort.sendKeys("8111");
 					System.out.println("Entered port details ");
 					logStep("Entered port details ");
-					TestBase.waitForMilliSeconds(3000);
+//					TestBase.waitForMilliSeconds(3000);
 
 				} catch (Exception e) {
 					System.out.println("Not able to input  port details ");
@@ -3184,7 +3188,7 @@ public class Functions extends Driver {
 			}
 
 			try {
-				MobileElement serverIp = Ad.findElementByXPath("//XCUIElementTypeTextField[@name='Server']");
+				MobileElement serverIp = Ad1.findElementByXPath("//XCUIElementTypeTextField[@name='Server']");
 
 				serverIp.clear();
 				serverIp.click();
@@ -3199,7 +3203,7 @@ public class Functions extends Driver {
 					serverIp.sendKeys(currentIPAddress);
 					System.out.println("Entered proxy address ");
 					logStep("Entered proxy address ");
-					TestBase.waitForMilliSeconds(3000);
+//					TestBase.waitForMilliSeconds(3000);
 				} catch (Exception e) {
 					System.out.println("Not able to input manual poxy address ");
 					logStep("Not able to input manual poxy address ");
@@ -3208,23 +3212,24 @@ public class Functions extends Driver {
 				System.out.println("Not able to click on Server to input ip address ");
 				logStep("Not able to click on Server to input ip address ");
 			}
-			TestBase.waitForMilliSeconds(5000);
+//			TestBase.waitForMilliSeconds(5000);
 
 		}
 
 		try {
-			Ad.findElementByXPath("//XCUIElementTypeButton[@name='Save']").click();
+			Ad1.findElementByXPath("//XCUIElementTypeButton[@name='Save']").click();
 			;
 			System.out.println("Saved proxy details ");
 			logStep("Saved proxy details ");
-			TestBase.waitForMilliSeconds(10000);
+//			TestBase.waitForMilliSeconds(10000);
 		} catch (Exception e) {
 			System.out.println("Not able to Save proxy details ");
 			logStep("Not able to Save proxy details ");
 		}
 		try {
 			//Ad.closeApp();
-			Ad.quit();
+			Ad1.terminateApp("com.apple.Preferences");
+			Ad1.quit();
 			System.out.println("Closed System app ");
 			logStep("Closed System app ");
 		} catch (Exception e) {
@@ -3274,13 +3279,13 @@ public class Functions extends Driver {
 
 		System.out.println("Reading capabilities done");
 
-		Ad = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
+		Ad1 = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
 
-		Ad.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		TestBase.waitForMilliSeconds(10000);
+		Ad1.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//		TestBase.waitForMilliSeconds(10000);
 		try {
 
-			Ad.findElementByXPath("//XCUIElementTypeApplication[@name='Settings']");
+			Ad1.findElementByXPath("//XCUIElementTypeApplication[@name='Settings']");
 			System.out.println("Settings app launched");
 			logStep("Settings app launched");
 		} catch (Exception e) {
@@ -3289,7 +3294,7 @@ public class Functions extends Driver {
 		}
 		// clicking on Wifi
 		try {
-			Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='WIFI']").click();
+			Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='WIFI']").click();
 			;
 			System.out.println("Clicked on Wifi on Settings screen");
 			logStep("Clicked on Wifi on Settings screen");
@@ -3297,17 +3302,17 @@ public class Functions extends Driver {
 			System.out.println("Not able to Click on Wifi on Settings screen");
 			logStep("Not able to Click on Wifi on Settings screen");
 		}
-		TestBase.waitForMilliSeconds(20000);
+//		TestBase.waitForMilliSeconds(20000);
 		// Click on Desired Network on Wifi selection screen
 		try {
 			// Ad.findElementByXPath("//XCUIElementTypeStaticText[@name=\"Gibson-WiFi\"]").click();
-			Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
+			Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
 			System.out.println("Click on Desired Wifi Network ");
 			logStep("Click on Desired Wifi Network ");
 			try {
-				if (Ad.findElementByXPath("//XCUIElementTypeNavigationBar[@name='Enter Password']").isDisplayed()) {
+				if (Ad1.findElementByXPath("//XCUIElementTypeNavigationBar[@name='Enter Password']").isDisplayed()) {
 
-					MobileElement passWord = Ad
+					MobileElement passWord = Ad1
 							.findElementByXPath("//XCUIElementTypeSecureTextField[@name='Password']");
 
 					passWord.click();
@@ -3318,10 +3323,10 @@ public class Functions extends Driver {
 						System.out.println("Entered Wifi Password ");
 						logStep("Entered Wifi Password ");
 
-						Ad.findElementByXPath("//XCUIElementTypeButton[@name='Join']").click();
-						TestBase.waitForMilliSeconds(20000);
+						Ad1.findElementByXPath("//XCUIElementTypeButton[@name='Join']").click();
+//						TestBase.waitForMilliSeconds(20000);
 						try {
-							Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
+							Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
 							System.out.println("Click on Desired Wifi Network after input wifi password");
 							logStep("Click on Desired Wifi Network after input wifi password ");
 						} catch (Exception e) {
@@ -3344,23 +3349,23 @@ public class Functions extends Driver {
 			System.out.println("Not able to click on Desired Wifi Network ");
 			logStep("Not able to click on Desired Wifi Network ");
 		}
-		TestBase.waitForMilliSeconds(10000);
+//		TestBase.waitForMilliSeconds(10000);
 		// checking for 'Foget This Network to makesure Network is selected and moved to
 		// next page
 		try {
-			Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Forget This Network']");
+			Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Forget This Network']");
 			System.out.println("Navigated to Desired Wifi Network screen");
 			logStep("Navigated to Desired Wifi Network screen");
 			// make a check to see if Join this network is displayed or not, if yes then
 			// select
 			try {
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Join This Network']").click();
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Join This Network']").click();
 				;
 				System.out.println("Joining desired network ");
 				logStep("Joining desired network ");
 
 				// Ad.findElementByXPath("//XCUIElementTypeStaticText[@name=\"Gibson-WiFi\"]").click();
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
 				System.out.println("Click on Desired Wifi Network after joining it");
 				logStep("Click on Desired Wifi Network after joining it");
 			} catch (Exception e) {
@@ -3369,27 +3374,27 @@ public class Functions extends Driver {
 			}
 		} catch (Exception e) {
 			// Ad.findElementByXPath("//XCUIElementTypeStaticText[@name=\"Gibson-WiFi\"]").click();
-			Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
+			Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='" + wifiName + "']").click();
 			System.out.println("Navigating to Desired network page after selecting it");
 			logStep("Navigating to Desired network page after selecting it");
 
 		}
 		// swipe up to navigate to configure manual proxy
-		swipe_Up();
-		TestBase.waitForMilliSeconds(10000);
-		Ad.context("NATIVE_APP");
+		swipe_Up(Ad1);
+//		TestBase.waitForMilliSeconds(10000);
+		Ad1.context("NATIVE_APP");
 		try {
-			Ad.findElementByAccessibilityId("Configure Proxy").click();
+			Ad1.findElementByAccessibilityId("Configure Proxy").click();
 			;
 			System.out.println("Clicked on Configure Proxy ");
 			logStep("Clicked on Configure Proxy ");
 			try {
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Port']");
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Port']");
 				System.out.println("Navigated to Proxy Configurtion Page");
 				logStep("Navigated to Proxy Configurtion Page");
 			} catch (Exception e) {
 				try {
-					Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
+					Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
 					;
 					System.out.println("Clicked on Configure Proxy ");
 					logStep("Clicked on Configure Proxy ");
@@ -3401,7 +3406,7 @@ public class Functions extends Driver {
 		} catch (Exception e) {
 
 			try {
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Configure Proxy']").click();
 				;
 				System.out.println("Clicked on Configure Proxy ");
 				logStep("Clicked on Configure Proxy ");
@@ -3411,11 +3416,11 @@ public class Functions extends Driver {
 			}
 
 		}
-		TestBase.waitForMilliSeconds(10000);
+//		TestBase.waitForMilliSeconds(10000);
 
 		if (!proxy) {
 			try {
-				Ad.findElementByXPath("//XCUIElementTypeStaticText[@name='Off']").click();
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='Off']").click();
 				System.out.println("Turned Off Proxy ");
 				logStep("Turned Off Proxy ");
 			} catch (Exception e) {
@@ -3427,18 +3432,19 @@ public class Functions extends Driver {
 		}
 
 		try {
-			Ad.findElementByXPath("//XCUIElementTypeButton[@name='Save']").click();
+			Ad1.findElementByXPath("//XCUIElementTypeButton[@name='Save']").click();
 			;
 			System.out.println("Saved proxy details ");
 			logStep("Saved proxy details ");
-			TestBase.waitForMilliSeconds(10000);
+//			TestBase.waitForMilliSeconds(10000);
 		} catch (Exception e) {
 			System.out.println("Not able to Save proxy details ");
 			logStep("Not able to Save proxy details ");
 		}
 		try {
 			//Ad.closeApp();
-			Ad.quit();
+			Ad1.terminateApp("com.apple.Preferences");
+			Ad1.quit();
 			System.out.println("Closed System app ");
 			logStep("Closed System app ");
 		} catch (Exception e) {

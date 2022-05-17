@@ -3,6 +3,9 @@ package com.twc.ios.app.testcases;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import org.testng.annotations.Listeners;
 
@@ -22,6 +25,7 @@ import com.twc.ios.app.pages.AddressScreen;
 import com.twc.ios.app.pages.DailyNavTab;
 import com.twc.ios.app.pages.HomeNavTab;
 import com.twc.ios.app.pages.HourlyNavTab;
+import com.twc.ios.app.pages.LogInScreen;
 import com.twc.ios.app.pages.PlanningCardScreen;
 import com.twc.ios.app.pages.RadarNavTab;
 import com.twc.ios.app.pages.SeasonalHubCardScreen;
@@ -44,6 +48,16 @@ public class SmokeTest extends TwcIosBaseTest {
 	PlanningCardScreen pScreen;
 	SeasonalHubCardScreen sScreen;
 	SettingsScreen stScreen;
+	LogInScreen loginScreen;
+	
+	long subscriptionFqCapStrtTime = 0L;
+	long start = 0;
+	long finish = 0;
+	long subscriptionFqCapEndTime = 0L;
+	long timeElapsed = 0;
+	long subscriptionFqtimeElapsed = 0L;
+	long convert = 0;
+	long subscriptionFqtimeconvert = 0L;
 
 	@BeforeClass(alwaysRun = true)
 	@Description("BeforeClass")
@@ -66,7 +80,7 @@ public class SmokeTest extends TwcIosBaseTest {
 		if (this.configFile != null) {
 			this.configFile.delete();
 		}
-		
+		Ad.launchApp();
 		stScreen.getAppVersion();
 		Functions.archive_folder("Charles");
 		proxy.disableRewriting();
@@ -118,6 +132,7 @@ public class SmokeTest extends TwcIosBaseTest {
 		logStep("App launched ");
 		Functions.archive_folder("Charles");
 		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
 		proxy.clearCharlesSession();
 		hrTab = new HourlyNavTab(Ad);
 		dTab = new DailyNavTab(Ad);
@@ -128,19 +143,10 @@ public class SmokeTest extends TwcIosBaseTest {
 		pScreen = new PlanningCardScreen(Ad);
 		sScreen = new SeasonalHubCardScreen(Ad);
 		stScreen = new SettingsScreen(Ad);
+		loginScreen = new LogInScreen(Ad);
+
 	}
-
-	/*
-	 * @Test(priority = 9999) public void afterTest() throws Exception {
-	 * System.out.println("==============================================");
-	 * System.out.println("****** After Test Started"); Utils.getAppVersion();
-	 * Functions.Setappinto_TestMode("UnSelect"); Functions.clear_session();
-	 * Functions.archive_folder("Charles"); driver.quit(); //Ad.closeApp();
-	 * Ad.quit(); System.out.println("App closed successfully");
-	 * 
-	 * }
-	 */
-
+	
 	/**
 	 * Verify Feed Calls
 	 * 
@@ -256,7 +262,7 @@ public class SmokeTest extends TwcIosBaseTest {
 
 		System.out.println("****** Air Quality Details page test cases Started");
 		logStep("****** Air Quality Details page test cases Started");
-		Utils.verifyPubadCal("Smoke", "Air Quality(Content)", false);
+		Utils.verifyPubadCal("Smoke", "Air Quality(Content)");
 	}
 
 	@Test(priority = 106, enabled = true)
@@ -1780,7 +1786,9 @@ public class SmokeTest extends TwcIosBaseTest {
 		Utils.createXMLFileForCharlesSessionFile();
 		Utils.validate_custom_param_val_of_gampad("Smoke", "Map", "mr", "0");
 		proxy.clearCharlesSession();
-		Functions.scroll_Up();
+		System.out.println("****** 30 seconds hard wait to refresh the ad call");
+		logStep("****** 30 seconds hard wait to refresh the ad call");
+		TestBase.waitForMilliSeconds(30000);
 		Functions.archive_folder("Charles");
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();
@@ -1795,7 +1803,8 @@ public class SmokeTest extends TwcIosBaseTest {
 		Utils.createXMLFileForCharlesSessionFile();
 		Utils.validate_custom_param_val_of_gampad("Smoke", "Map", "mr", "0");
 		proxy.clearCharlesSession();
-		Functions.scroll_Up();
+		//Functions.scroll_Up();
+		Functions.swipe_Down();
 		Functions.archive_folder("Charles");
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();
@@ -2592,7 +2601,7 @@ public class SmokeTest extends TwcIosBaseTest {
 		proxy.clearCharlesSession();
 		Functions.archive_folder("Charles");
 		hrTab.navigateToHourlyTab();
-		Functions.swipe_Up_ByIterations(10);
+		Functions.swipe_Up_ByIterations(Ad, 10);
 		TestBase.waitForMilliSeconds(5000);
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();
@@ -2660,7 +2669,7 @@ public class SmokeTest extends TwcIosBaseTest {
 		Utils.verifyAPICal("Smoke", "Lotame");
 
 	}
-
+	
 	/**
 	 * This method validates Turbo Api call i.e. api.weather.com call
 	 */
@@ -2851,7 +2860,7 @@ public class SmokeTest extends TwcIosBaseTest {
 	 * This method validates Seasonal Hub details page ad call
 	 */
 /*Since Ads are disabled on Seasonal hub card, now navigating to all indexes and validating for non presence of gampad call in the above, to reduce execution time
- * @Test(priority = 700, enabled = false)
+ * @Test(priority = 700, enabled = true)
 	@Description("Verify Seasonal Hub details page iu")
 	public void Verify_Seasonal_Hub_Details_Page_AdCall() throws Exception {
 		System.out.println("==============================================");
@@ -2866,5 +2875,41 @@ public class SmokeTest extends TwcIosBaseTest {
 		sScreen.verifyPubadCal_SeasonalHub("Smoke", "SeasonalHub(Details)", false);
 		hmTab.clickonHomeTab();
 	}*/
+	
+	@Test(priority = 800, enabled = true)
+	@Description("Launch the app from widget")
+	public void launchAppFromWidget() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Launch the App from widget test case Started");
+		logStep("****** Launch the App from widget test case Started");
+		Ad.terminateApp("com.weather.TWC");
+		System.out.println("App closed successfully");
+		logStep("App closed successfully");
+		proxy.clearCharlesSession();
+		Functions.launchAppFromTheWidgetApp();
+		System.out.println("App launched From Widget");
+		logStep("App launched From Widget");
+		Functions.archive_folder("Charles");
+		proxy.getXml();
+		Utils.createXMLFileForCharlesSessionFile();
+		Ad1.terminateApp("com.apple.weather");
+		Ad1.terminateApp("com.weather.TWC");
+		
+	}
+	
+	/**
+	 * This method validates par custom parameter of Marquee call when app launched from widget
+	 */
+	@Test(priority = 801, enabled = true)
+	@Description("Validating 'par' custom parameter of Marquee call when app launched from widget")
+	public void Validate_Marquee_Call_par_Custom_param() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating par custom parameter of Marquee call when app launched from widget");
+		logStep("Validating par custom parameter of Marquee call ");
+		Utils.validate_custom_param_val_of_gampad("Smoke", "Marquee", "par", "apple_widget");
+
+	}
+	
+	
 
 }
