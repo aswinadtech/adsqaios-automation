@@ -122,7 +122,10 @@ public class SettingsScreen extends Utils {
 		Thread.sleep(2000);
 		// Click on Close icon on Settings page.
 		//Ad.findElementByXPath("(//XCUIElementTypeButton[@name='close_menu_button'])[1]").click();
-		Functions.scroll_Up();
+		//Functions.scroll_Up();
+		Functions.swipe_Down();
+		Functions.swipe_Down();
+		Functions.swipe_Down();
 		closeMenuButton = Ad.findElement(byCloseMenuButton);
 		TestBase.clickOnElement(byCloseMenuButton, closeMenuButton, "Close Menu Button");
 		Thread.sleep(1000);
