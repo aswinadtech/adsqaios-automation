@@ -122,7 +122,8 @@ public class SettingsScreen extends Utils {
 		Thread.sleep(2000);
 		// Click on Close icon on Settings page.
 		//Ad.findElementByXPath("(//XCUIElementTypeButton[@name='close_menu_button'])[1]").click();
-		//Functions.scroll_Up();
+//		Functions.scroll_Up();
+//		Functions.swipe_Up(Ad);
 		Functions.swipe_Down();
 		Functions.swipe_Down();
 		Functions.swipe_Down();
@@ -940,7 +941,7 @@ public class SettingsScreen extends Utils {
 			}
 			Thread.sleep(5000);
 			if (userGroupName.equalsIgnoreCase("IOSFLAG-4200") || userGroupName.equalsIgnoreCase("IntegratedAdCard")
-					|| userGroupName.equalsIgnoreCase("WM Cards")) {
+					|| userGroupName.equalsIgnoreCase("WM Cards") || userGroupName.equalsIgnoreCase("IOSFLAG-8105")) {
 				// Select Test Group
 				//Ad.findElementByClassName("XCUIElementTypeSearchField").sendKeys("AdsTestAdUnitOnly");
 				userGroupSearchField = Ad.findElement(byUserGroupSearchField);
@@ -1468,6 +1469,7 @@ public class SettingsScreen extends Utils {
 				Thread.sleep(3000);
 				// click OK on New Branch Selected
 				//Ad.findElementByName("OK").click();
+				TestBase.waitForVisibilityOfElementLocated(Ad, 60, byOK);
 				oK = Ad.findElement(byOK);
 				TestBase.clickOnElement(byOK, oK, "OK Button");
 				System.out.println(branchName + " is Selected");
