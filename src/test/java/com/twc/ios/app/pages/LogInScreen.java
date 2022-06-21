@@ -199,12 +199,14 @@ public class LogInScreen extends Utils {
 			TestBase.waitForVisibilityOfElementLocated(Ad, 120, byYouAreAllSetText);
 			youAreAllSetOK = Ad.findElement(byYouAreAllSetOK);
 			TestBase.clickOnElement(byYouAreAllSetOK, youAreAllSetOK, "You Are All Set OK Button");
+			attachScreen();
 			
 			backButtonFromPremium = Ad.findElement(byBackButtonFromPremium);
 			TestBase.clickOnElement(byBackButtonFromPremium, backButtonFromPremium, "Back Button");
 			
 			closeMenuButton = Ad.findElement(byCloseMenuButton);
 			TestBase.clickOnElement(byCloseMenuButton, closeMenuButton, "Done Button");
+			attachScreen();
 		}
 		
 		
@@ -260,12 +262,14 @@ public class LogInScreen extends Utils {
 			TestBase.waitForVisibilityOfElementLocated(Ad, 120, byYouAreAllSetText);
 			youAreAllSetOK = Ad.findElement(byYouAreAllSetOK);
 			TestBase.clickOnElement(byYouAreAllSetOK, youAreAllSetOK, "You Are All Set OK Button");
+			attachScreen();
 			
 			backButtonFromPremium = Ad.findElement(byBackButtonFromPremium);
 			TestBase.clickOnElement(byBackButtonFromPremium, backButtonFromPremium, "Back Button");
 			
 			closeMenuButton = Ad.findElement(byCloseMenuButton);
 			TestBase.clickOnElement(byCloseMenuButton, closeMenuButton, "Done Button");
+			attachScreen();
 		}
 		
 		

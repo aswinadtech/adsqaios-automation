@@ -127,6 +127,8 @@ public class Functions extends Driver {
 	public static String params_val = null;
 	public static String fgeoparams_val = null;
 	public static String faudparams_val = null;
+	public static int startX;
+	public static int endX;
 	public static int startY;
 	public static int endY;
 	public static String Hardcoded = null;
@@ -392,7 +394,7 @@ public class Functions extends Driver {
 		// TestBase.waitForMilliSeconds(10000);
 		Ad = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
 		// Ad= new IOSDriver<MobileElement>(service, capabilities);
-		Ad.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		Ad.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		// Handle Extra popup appears when app launched (like New module ebnable)
 		ftlScreens = new FTLScreens(Ad);
 		ftlScreens.handle_Unwanted_Popups();
@@ -463,7 +465,7 @@ public class Functions extends Driver {
 		// TestBase.waitForMilliSeconds(10000);
 		Ad = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
 		// Ad= new IOSDriver<MobileElement>(service, capabilities);
-		Ad.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		Ad.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		// Handle Extra popup appears when app launched (like New module ebnable)
 		ftlScreens = new FTLScreens(Ad);
 		ftlScreens.handle_Unwanted_Popups_China();
@@ -549,7 +551,7 @@ public class Functions extends Driver {
 		// TestBase.waitForMilliSeconds(10000);
 		Ad = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
 		// Ad= new IOSDriver<MobileElement>(service, capabilities);
-		Ad.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		Ad.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		// Handle Extra popup appears when app launched (like New module ebnable)
 		ftlScreens = new FTLScreens(Ad);
 		ftlScreens.handle_Unwanted_Popups();
@@ -986,7 +988,7 @@ public class Functions extends Driver {
 		// capabilities.setCapability("app","/Users/narasimhanukala/git/ads-automation/ios_Smoke_Automation/Build/iPhone_-_Flagship.ipa");
 		// capabilities.setCapability(readExcelValues.data[12][0],
 		// readExcelValues.data[12][Cap]);
-		capabilities.setCapability(ReadExcelValues.data[13][0], "7200");
+		capabilities.setCapability(ReadExcelValues.data[13][0], 120);
 		capabilities.setCapability(ReadExcelValues.data[14][0], true);
 		capabilities.setCapability(ReadExcelValues.data[16][0], ReadExcelValues.data[16][Cap]);
 		capabilities.setCapability(ReadExcelValues.data[11][0], ReadExcelValues.data[11][Cap]);
@@ -1006,19 +1008,21 @@ public class Functions extends Driver {
 		// TestBase.waitForMilliSeconds(10000);
 		Ad1 = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
 		// Ad= new IOSDriver<MobileElement>(service, capabilities);
-		Ad1.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		Ad1.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 		// Handle Extra popup appears when app launched (like New module ebnable)
 		// Handle_unwanted_popups();
 		// Functions.enternewAddress("Atlanta, Georgia");
 		// //Ad.tap(1, 10, 6, 2000);
 		// Functions.BacktoWeather();
 		// Functions.Take//ScreenShot();
-		TestBase.waitForMilliSeconds(10000);
+		TestBase.waitForMilliSeconds(5000);
 		Functions.swipe_Up_ByIterations(Ad1, 4);
+		attachScreen(Ad1);
 		Ad1.findElementByAccessibilityId("The Weather Channel").click();
-
+		TestBase.waitForMilliSeconds(10000);
 		ftlScreens = new FTLScreens(Ad1);
 		ftlScreens.handle_Unwanted_Popups_When_App_Launched_From_Widget();
+		attachScreen(Ad1);
 	}
 
 	/**
@@ -1088,6 +1092,38 @@ public class Functions extends Driver {
 			}
 		}
 		return filelist;
+	}
+	
+	/**
+	 * To Scroll left on iOS device.
+	 * 
+	 * @author narasimhanukala;
+	 * @throws Exception
+	 */
+	public static void scroll_Left() throws Exception {
+		// Scroll JS
+
+		JavascriptExecutor js = (JavascriptExecutor) Ad;
+		HashMap<String, String> scrollObject = new HashMap<String, String>();
+		scrollObject.put("direction", "left");
+		js.executeScript("mobile: scroll", scrollObject);
+
+	}
+
+	/**
+	 * To Scroll right on iOS device.
+	 * 
+	 * @author narasimhanukala;
+	 * @throws Exception
+	 */
+	public static void scroll_Right() throws Exception {
+		// Scroll JS
+
+		JavascriptExecutor js = (JavascriptExecutor) Ad;
+		HashMap<String, String> scrollObject = new HashMap<String, String>();
+		scrollObject.put("direction", "right");
+		js.executeScript("mobile: scroll", scrollObject);
+
 	}
 
 	/**
@@ -1229,7 +1265,37 @@ public class Functions extends Driver {
 			endY = endY1.intValue();
 			ta.press(PointOption.point(0, endY)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(2000)))
 					.moveTo(PointOption.point(0, startY)).release().perform();
+			
+		} catch (Exception e) {
 
+		}
+
+	}
+	
+	/**
+	 * SCROLL Left
+	 * @throws Exception
+	 */
+	public static void swipe_Left() throws Exception {
+
+		TouchAction ta = new TouchAction(Ad);
+		try {
+			Dimension dimensions = Ad.manage().window().getSize();// throwing exception
+			Double startX1 = dimensions.getWidth()* 0.75;
+			Double startY1 = dimensions.getHeight() * 0.73;
+			
+			startX = startX1.intValue();
+			startY = startY1.intValue();
+			// Double endY1 = (double) (dimensions.getHeight()/40); //
+			// dimensions.getHeight() 0.2; == 512.0
+			Double endX1 = dimensions.getWidth() * 0.10;
+			Double endY1 = dimensions.getHeight() * 0.40;
+			
+			endX = endX1.intValue();
+			endY = endY1.intValue();
+			ta.press(PointOption.point(startX, endY)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(2000)))
+					.moveTo(PointOption.point(endX, endY)).release().perform();
+			
 		} catch (Exception e) {
 
 		}
@@ -1410,37 +1476,7 @@ public class Functions extends Driver {
 		}
 	}
 
-	/**
-	 * To Scroll left on iOS device.
-	 * 
-	 * @author narasimhanukala;
-	 * @throws Exception
-	 */
-	public static void scroll_Left() throws Exception {
-		// Scroll JS
-
-		JavascriptExecutor js = (JavascriptExecutor) Ad;
-		HashMap<String, String> scrollObject = new HashMap<String, String>();
-		scrollObject.put("direction", "left");
-		js.executeScript("mobile: scroll", scrollObject);
-
-	}
-
-	/**
-	 * To Scroll right on iOS device.
-	 * 
-	 * @author narasimhanukala;
-	 * @throws Exception
-	 */
-	public static void scroll_Right() throws Exception {
-		// Scroll JS
-
-		JavascriptExecutor js = (JavascriptExecutor) Ad;
-		HashMap<String, String> scrollObject = new HashMap<String, String>();
-		scrollObject.put("direction", "right");
-		js.executeScript("mobile: scroll", scrollObject);
-
-	}
+	
 
 	/**
 	 * Wait for an Element
@@ -2062,6 +2098,7 @@ public class Functions extends Driver {
 				 */
 				System.out.println("Latest Version available to download is: " + BuildName);
 				logStep("Latest Version available to download is: " + BuildName);
+				attachScreen();
 				/*
 				 * Ad.findElementByXPath(
 				 * "//*[@class='latest-badge']//following-sibling::div[@class='project-release-metadata']//div[@class='install']/a")
@@ -2333,11 +2370,12 @@ public class Functions extends Driver {
 				 */
 
 				if (BuildName.equalsIgnoreCase(buildVersion)) {
+					attachScreen();
 					Ad.findElementByXPath("//div[text()='Latest']/parent::div/following-sibling::ipa-download/a").click();
 					
 				} else {
 					List<MobileElement> buildsAvailable = Ad.findElementsByXPath(
-							"//div[text()='Latest']/parent::div/parent::div/parent::release/parent::div/following-sibling::div");
+							"//div[text()='Latest']/parent::div/parent::div/parent::release-row/parent::div/following-sibling::div");
 
 					for (MobileElement currentBuild : buildsAvailable) {
 						Build_Main = currentBuild.findElementByXPath(".//div[@class='version']/span[1]");
@@ -2349,6 +2387,7 @@ public class Functions extends Driver {
 						System.out.println("Current Version is: " + BuildName);
 						logStep("Current Version is: " + BuildName);
 						if (BuildName.equalsIgnoreCase(buildVersion)) {
+							attachScreen();
 							//JavascriptExecutor js = (JavascriptExecutor) Ad;
 							// MobileElement element = currentBuild.findElementByXPath(".//ipa-download/a");
 							js.executeScript("arguments[0].scrollIntoView();", currentBuild);
@@ -2746,12 +2785,13 @@ public class Functions extends Driver {
 					 */
 
 					if (BuildName.equalsIgnoreCase(buildVersion)) {
+						attachScreen();
 						Ad.findElementByXPath("//div[text()='Latest']/parent::div/following-sibling::ipa-download/a")
 								.click();
 					} else {
 						List<MobileElement> buildsAvailable = Ad.findElementsByXPath(
-								"//div[text()='Latest']/parent::div/parent::div/parent::release/parent::div/following-sibling::div");
-
+								"//div[text()='Latest']/parent::div/parent::div/parent::release-row/parent::div/following-sibling::div");
+								 
 						for (MobileElement currentBuild : buildsAvailable) {
 							Build_Main = currentBuild.findElementByXPath(".//div[@class='version']/span[1]");
 							buildmain = Build_Main.getText();
@@ -2762,6 +2802,7 @@ public class Functions extends Driver {
 							System.out.println("Current Version is: " + BuildName);
 							logStep("Current Version is: " + BuildName);
 							if (BuildName.equalsIgnoreCase(buildVersion)) {
+								attachScreen();
 								//JavascriptExecutor js = (JavascriptExecutor) Ad;
 								// MobileElement element = currentBuild.findElementByXPath(".//ipa-download/a");
 								js.executeScript("arguments[0].scrollIntoView();", currentBuild);
@@ -2902,16 +2943,13 @@ public class Functions extends Driver {
 		}*/
 		TestBase.waitForMilliSeconds(30000);
 	}
-
+	
 	/**
-	 * Launch IOS Settings App and Enable the proxy
+	 * Launch IOS Settings App
 	 * 
-	 * @param currentIPAddress
-	 * @param wifiName
-	 * @param proxy
 	 * @throws Exception
 	 */
-	public static void launchiOSSettings(String currentIPAddress, String wifiName, boolean proxy) throws Exception {
+	public static void launchiOSSettings() throws Exception {
 
 		ReadExcelValues.excelValues("Smoke", "Capabilities");
 
@@ -2957,6 +2995,18 @@ public class Functions extends Driver {
 			System.out.println("Settings app not launched");
 			logStep("Settings app not launched");
 		}
+		attachScreen(Ad1);
+	}
+
+	/**
+	 * Enable the proxy
+	 * 
+	 * @param currentIPAddress
+	 * @param wifiName
+	 * @param proxy
+	 * @throws Exception
+	 */
+	public static void enableDeviceProxy(String currentIPAddress, String wifiName, boolean proxy) throws Exception {
 		// clicking on Wifi
 		try {
 			Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='WIFI']").click();
@@ -3215,13 +3265,13 @@ public class Functions extends Driver {
 //			TestBase.waitForMilliSeconds(5000);
 
 		}
-
+		attachScreen(Ad1);
 		try {
 			Ad1.findElementByXPath("//XCUIElementTypeButton[@name='Save']").click();
 			;
 			System.out.println("Saved proxy details ");
 			logStep("Saved proxy details ");
-//			TestBase.waitForMilliSeconds(10000);
+			TestBase.waitForMilliSeconds(3000);
 		} catch (Exception e) {
 			System.out.println("Not able to Save proxy details ");
 			logStep("Not able to Save proxy details ");
@@ -3240,58 +3290,14 @@ public class Functions extends Driver {
 	}
 
 	/**
-	 * Launch IOS Settings App and Turn Off the Proxy
+	 * Turn Off the Proxy
 	 * 
 	 * @param wifiName
 	 * @param proxy
 	 * @throws Exception
 	 */
-	public static void launchiOSSettings(String wifiName, boolean proxy) throws Exception {
-
-		ReadExcelValues.excelValues("Smoke", "Capabilities");
-
-		DesiredCapabilities capabilities = new DesiredCapabilities();
-
-		// Capabilities for IOS and Android Based on Selected on Device Selection
-		capabilities.setCapability(ReadExcelValues.data[7][0], "=" + ReadExcelValues.data[7][Cap]);
-		capabilities.setCapability(ReadExcelValues.data[11][0], ReadExcelValues.data[11][Cap]);
-		capabilities.setCapability(ReadExcelValues.data[2][0], ReadExcelValues.data[2][Cap]);
-		capabilities.setCapability(ReadExcelValues.data[3][0], ReadExcelValues.data[3][Cap]);
-		capabilities.setCapability(ReadExcelValues.data[14][0], true);
-		capabilities.setCapability("automationName", "XCUITest");
-		capabilities.setCapability("useNewWDA", true);
-		capabilities.setCapability("xcodeOrgId", "54VVTD24DT");
-		capabilities.setCapability("xcodeSigningId", "iPhone Developer");
-
-		capabilities.setCapability(ReadExcelValues.data[1][0], ReadExcelValues.data[1][Cap]);
-
-		capabilities.setCapability(ReadExcelValues.data[5][0], ReadExcelValues.data[5][Cap]);
-
-		capabilities.setCapability(ReadExcelValues.data[8][0], ReadExcelValues.data[8][Cap]);
-
-		capabilities.setCapability("realDeviceLogger", "/Users/apple/node_modules/deviceconsole");
-		capabilities.setCapability("wdaLocalPort", "7401");
-
-		capabilities.setCapability("clearSystemFiles", true);
-
-		capabilities.setCapability("app", "Settings");
-		capabilities.setCapability("connectHardwareKeyboard", true);
-
-		System.out.println("Reading capabilities done");
-
-		Ad1 = new IOSDriver(new URL("http://127.0.0.1:4733/wd/hub"), capabilities);
-
-		Ad1.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-//		TestBase.waitForMilliSeconds(10000);
-		try {
-
-			Ad1.findElementByXPath("//XCUIElementTypeApplication[@name='Settings']");
-			System.out.println("Settings app launched");
-			logStep("Settings app launched");
-		} catch (Exception e) {
-			System.out.println("Settings app not launched");
-			logStep("Settings app not launched");
-		}
+	public static void enableDeviceProxy(String wifiName, boolean proxy) throws Exception {
+		
 		// clicking on Wifi
 		try {
 			Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name='WIFI']").click();
@@ -3430,19 +3436,115 @@ public class Functions extends Driver {
 		} else {
 
 		}
-
+		attachScreen(Ad1);
 		try {
 			Ad1.findElementByXPath("//XCUIElementTypeButton[@name='Save']").click();
 			;
 			System.out.println("Saved proxy details ");
 			logStep("Saved proxy details ");
-//			TestBase.waitForMilliSeconds(10000);
+			TestBase.waitForMilliSeconds(3000);
 		} catch (Exception e) {
 			System.out.println("Not able to Save proxy details ");
 			logStep("Not able to Save proxy details ");
 		}
 		try {
 			//Ad.closeApp();
+			Ad1.terminateApp("com.apple.Preferences");
+			Ad1.quit();
+			System.out.println("Closed System app ");
+			logStep("Closed System app ");
+		} catch (Exception e) {
+			System.out.println("Failed to close System app ");
+			logStep("Failed to close System app ");
+		}
+
+	}
+	
+	/**
+	 * Enable/Disable Apps Tracking
+	 * 
+	 * @throws Exception
+	 */
+	public static void modifyAppsTracking(boolean enableTracking) throws Exception {
+		MobileElement AdsTestSwitch = null;
+		String SwitchValue = null;
+		// swipe up to navigate to Privacy
+			swipe_Up(Ad1);
+			swipe_Up(Ad1);
+		
+		try {
+			// clicking on Privacy
+			Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name=\"Privacy\"]").click();
+			System.out.println("Clicked on Privacy on Settings screen");
+			logStep("Clicked on Privacy on Settings screen");
+			try {
+				// clicking on Tracking
+				Ad1.findElementByXPath("//XCUIElementTypeStaticText[@name=\"USER_TRACKING\"]").click();
+				System.out.println("Clicked on Tracking On Privacy Screen");
+				logStep("Clicked on Tracking On Privacy Screen");
+				
+				try {
+					//Checking for Back button on Tracking Screen
+					Ad1.findElementByXPath("//XCUIElementTypeButton[@name=\"Privacy\"]");
+					
+					AdsTestSwitch = Ad1.findElementByXPath("//XCUIElementTypeSwitch[@name=\"Allow Apps to Request to Track\"]");
+					
+					SwitchValue = AdsTestSwitch.getAttribute("value");
+					
+					if (enableTracking) {
+						if (SwitchValue.equals("1")) {
+							attachScreen(Ad1);
+							System.out.println("Tracking already enabled");
+							logStep("Tracking already enabled");
+							Ad1.findElementByXPath("//XCUIElementTypeButton[@name=\"Privacy\"]").click();
+						} else {
+							AdsTestSwitch.click();
+							attachScreen(Ad1);
+							System.out.println("Tracking enabled");
+							logStep("Tracking enabled");
+							//Also enabling Tracking for individual applications
+							List<MobileElement> listOfAppsToTrack =  Ad1.findElements(By.xpath("//XCUIElementTypeSwitch"));
+							
+							for (int i = 1; i < listOfAppsToTrack.size(); i++) {
+								listOfAppsToTrack.get(i).click();
+							}
+							Ad1.findElementByXPath("//XCUIElementTypeButton[@name=\"Privacy\"]").click();
+						}
+					} else {
+						if (SwitchValue.equals("1")) {
+							System.out.println("Tracking already enabled, hence disabling");
+							logStep("Tracking already enabled, hence disabling");
+							AdsTestSwitch.click();
+							attachScreen(Ad1);
+							////XCUIElementTypeButton[@name="Allow Apps to Continue Tracking"]
+							////XCUIElementTypeButton[@name="Cancel"]
+							if (TestBase.isElementExists(By.xpath("//XCUIElementTypeButton[@name=\"Ask Apps to Stop Tracking\"]"), Ad1)) {
+								Ad1.findElementByXPath("//XCUIElementTypeButton[@name=\"Ask Apps to Stop Tracking\"]").click();
+							}
+							Ad1.findElementByXPath("//XCUIElementTypeButton[@name=\"Privacy\"]").click();
+						} else {
+							attachScreen(Ad1);
+							System.out.println("Tracking already disabled");
+							logStep("Tracking already disabled");
+							Ad1.findElementByXPath("//XCUIElementTypeButton[@name=\"Privacy\"]").click();
+						}
+					}
+				
+				} catch (Exception e) {
+					System.out.println("An Exception on Tracking Screen");
+					logStep("An Exception on Tracking Screen");
+				}
+
+			} catch (Exception e) {
+				System.out.println("Not able to click on Tracking on Privacy Screen");
+				logStep("Not able to click on Tracking on Privacy Screen");
+			}
+		} catch (Exception e) {
+			System.out.println("Not able to Click on Privacy on Settings screen");
+			logStep("Not able to Click on Privacy on Settings screen");
+		}
+		
+		try {
 			Ad1.terminateApp("com.apple.Preferences");
 			Ad1.quit();
 			System.out.println("Closed System app ");

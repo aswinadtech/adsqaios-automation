@@ -43,6 +43,7 @@ import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -134,7 +135,8 @@ public class Utils extends Functions {
 		if (!enableProxy) {
 			System.out.println("Since enableProxy set to false, iPhone Proxy setting to Off");
 			logStep("Since enableProxy set to false, iPhone Proxy setting to Off");
-			launchiOSSettings(properties.getProperty("wifiName"), enableProxy);
+			launchiOSSettings();
+			enableDeviceProxy(properties.getProperty("wifiName"), enableProxy);
 		} else {
 			FileOutputStream fos = new FileOutputStream(
 					System.getProperty("user.dir") + properties.getProperty("dataFilePath"));
@@ -158,7 +160,8 @@ public class Utils extends Functions {
 						"Previous and  Current IP Address are different, hence updating proxy settings of iPhone");
 				logStep("Previous and  Current IP Address are different, hence updating proxy settings of iPhone");
 				try {
-					launchiOSSettings(current_IPAddress, properties.getProperty("wifiName"), enableProxy);
+					launchiOSSettings();
+					enableDeviceProxy(current_IPAddress, properties.getProperty("wifiName"), enableProxy);
 				} catch (Exception e) {
 					System.out.println("An exception while updating proxy details in iPhone");
 					logStep("An exception while updating proxy details in iPhone");
@@ -211,7 +214,8 @@ public class Utils extends Functions {
 		if (!enableProxy) {
 			System.out.println("Since enableProxy set to false, iPhone Proxy setting to Off");
 			logStep("Since enableProxy set to false, iPhone Proxy setting to Off");
-			launchiOSSettings(properties.getProperty("wifiName"), enableProxy);
+			launchiOSSettings();
+			enableDeviceProxy(properties.getProperty("wifiName"), enableProxy);
 		} else {
 			FileOutputStream fos = new FileOutputStream(
 					System.getProperty("user.dir") + properties.getProperty("dataFilePath"));
@@ -228,7 +232,8 @@ public class Utils extends Functions {
 				System.out.println("Since IP Check is ignored, updating proxy settings of iPhone");
 				logStep("Since IP Check is ignored, updating proxy settings of iPhone");
 				try {
-					launchiOSSettings(current_IPAddress, properties.getProperty("wifiName"), enableProxy);
+					launchiOSSettings();
+					enableDeviceProxy(current_IPAddress, properties.getProperty("wifiName"), enableProxy);
 				} catch (Exception e) {
 					System.out.println("An exception while updating proxy details in iPhone");
 					logStep("An exception while updating proxy details in iPhone");
@@ -252,7 +257,8 @@ public class Utils extends Functions {
 							"Previous and  Current IP Address are different, hence updating proxy settings of iPhone");
 					logStep("Previous and  Current IP Address are different, hence updating proxy settings of iPhone");
 					try {
-						launchiOSSettings(current_IPAddress, properties.getProperty("wifiName"), enableProxy);
+						launchiOSSettings();
+						enableDeviceProxy(current_IPAddress, properties.getProperty("wifiName"), enableProxy);
 					} catch (Exception e) {
 						System.out.println("An exception while updating proxy details in iPhone");
 						logStep("An exception while updating proxy details in iPhone");
@@ -606,6 +612,24 @@ public class Utils extends Functions {
 
 		}
 
+	}
+	
+	/**
+	 * Verifies whether IM Ad displayed on Homescreen and returns true/false
+	 * @return
+	 */
+	public static boolean isNextGenIMAdDisplayed() {
+		boolean flag = false;
+		if (TestBase.isElementExists(By.xpath("//XCUIElementTypeOther[@name='nextgen-integrated-marquee-card-containerView']"))) {
+			nextGenIMadDisplayed = true;
+			System.out.println("****** NextGen IM Ad displayed on homescreen");
+			logStep("****** NextGen IM Ad displayed on homescreen");
+			flag = true;
+		} else {
+			nextGenIMadDisplayed = false;
+			flag = false;
+		}
+		return flag;
 	}
 
 	/**
@@ -1135,6 +1159,44 @@ public class Utils extends Functions {
 			cust_params = cust_params.replaceAll("_", " ");
 		}
 
+		return cust_params;
+	}
+	
+	/**
+	 * Returns query param value
+	 * @param qryValue
+	 * @param queryParam
+	 * @return
+	 */
+	private static String getQueryParamValue(String qryValue, String queryParam) {
+		
+		String cust_params = "";
+		String[] key = null;
+		// if (qryValue != null && qryValue.contains("cust_params")) {
+		if (qryValue != null && qryValue.contains(queryParam)) {
+			cust_params = qryValue.substring(qryValue.indexOf(queryParam));
+		}
+		if (cust_params.indexOf(queryParam+ "=" ) == 0 || cust_params.indexOf("&" + queryParam + "=") > 0 || cust_params.indexOf("=" + queryParam + "=") > 0) {
+			
+			try {
+				cust_params = cust_params.substring(cust_params.indexOf("&" + queryParam + "="));
+				cust_params = cust_params.substring(cust_params.indexOf(queryParam));
+			} catch (Exception e) {
+				try {
+					cust_params = cust_params.substring(cust_params.indexOf("=" + queryParam + "="));
+					cust_params = cust_params.substring(cust_params.indexOf(queryParam));
+				} catch (Exception e1) {
+					cust_params = cust_params.substring(cust_params.indexOf(queryParam + "="));
+				}
+			}
+			String b[] = cust_params.split("&");
+			cust_params = b[0];
+			key = cust_params.split("=");
+			cust_params = key[1];
+		} else {
+			cust_params = "";
+		}
+		
 		return cust_params;
 	}
 
@@ -3078,6 +3140,83 @@ public class Utils extends Functions {
 		}
 
 	}
+	
+	/**
+	 * verifies non custom parameter valuee in gampad call
+	 * @param excelName
+	 * @param sheetName
+	 * @param param
+	 * @param value
+	 * @throws Exception
+	 */
+	public static void validate_non_custom_param_val_in_gampad_url(String excelName, String sheetName, String param, String value)
+			throws Exception {
+		ReadExcelValues.excelValues(excelName, sheetName);
+
+		// Read the content form file
+		File fXmlFile = new File(outfile.getName());
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		dbFactory.setValidating(false);
+		dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/namespaces", false);
+		// dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/validation", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+		Document doc = dBuilder.parse(fXmlFile);
+		// Getting the transaction element by passing xpath expression
+		NodeList nodeList = doc.getElementsByTagName("transaction");
+		String xpathExpression = "charles-session/transaction/@query";
+		List<String> getQueryList = evaluateXPath(doc, xpathExpression);
+
+		// Getting custom_params amzn_b values
+		List<String> customParamsList = new ArrayList<String>();
+
+		String iuId = null;
+		// "iu=%2F7646%2Fapp_iphone_us%2Fdb_display%2Fhome_screen%2Ftoday";
+		if (sheetName.equalsIgnoreCase("PreRollVideo")) {
+			iuId = videoIUValue;
+		} else {
+			iuId = ReadExcelValues.data[18][Cap];
+		}
+		boolean rdpExists = false;
+		boolean iuExists = false;
+		for (String qry : getQueryList) {
+			if (qry.contains(iuId)) {
+				iuExists = true;
+				if (qry.contains(param+"="+value)) {
+					rdpExists = true;
+					// if (!"".equals(tempCustmParam))
+					// customParamsList.add(getCustomParamsBy_iu_value(qry));
+					break;
+				}
+
+			}
+
+		}
+
+		if (iuExists) {
+			if (rdpExists ) {
+				System.out.println(param+"="+value +" is found in"+sheetName+" gampad call, hence : "+param+" parameter validation is successful");
+				logStep(param+"="+value +" is found in"+sheetName+" gampad call, hence : "+param+" parameter validation is successful");
+			} else {
+				System.out.println(param+"="+value +" is not found in"+sheetName+" gampad call, hence : "+param+" parameter validation is failed");
+				logStep(param+"="+value +" is not found in"+sheetName+" gampad call, hence : "+param+" parameter validation is failed");
+				Assert.fail(param+"="+value +" is not found in"+sheetName+" gampad call, hence : "+param+" parameter validation is failed");
+			}
+		} else {
+			System.out.println(iuId + " ad call is not present");
+			logStep(iuId + " ad call is not present");
+			System.out.println(param+"="+value +" parameter validation is failed");
+			logStep(param+"="+value +" parameter validation is failed");
+			Assert.fail(iuId + " ad call is not present");
+		}
+
+	}
 
 	/**
 	 * get b values from amazon aax calls of XML File and store to list
@@ -3820,6 +3959,7 @@ public class Utils extends Functions {
 						j = aaxHealthArticlesCheckCount;
 					}
 					for (int i = 0; i < maxIterations ; i++, j++) {
+						i++;
 						if (!(j < listOf_b_Params.size())) {
 							System.out.println(
 									"Articles Bid id's have been used already, nothing more leftout to validate for: "+sheetName +"verify manually");
@@ -3843,7 +3983,7 @@ public class Utils extends Functions {
 
 						} else {
 							amazonBiddingSuccessCount++;
-							if (listOf_b_Params.get(j).equalsIgnoreCase(customParamsList.get(i+1))) {
+							if (listOf_b_Params.get(j).equalsIgnoreCase(customParamsList.get(i))) {
 								successCount++;
 								/*
 								 * System.out.println("amazon aax " + sheetName +
@@ -3853,11 +3993,11 @@ public class Utils extends Functions {
 								 */
 
 								System.out.println(j + " Occurance of Amazon call bid value: " + listOf_b_Params.get(j)
-										+ " is matched with " + i+1 + " Occurance of corresponding " + sheetName
-										+ " gampad call " + cust_param + " value: " + customParamsList.get(i+1));
+										+ " is matched with " + i + " Occurance of corresponding " + sheetName
+										+ " gampad call " + cust_param + " value: " + customParamsList.get(i));
 								logStep(j + " Occurance of Amazon call bid value: " + listOf_b_Params.get(j)
-										+ " is matched with " + i+1 + " Occurance of corresponding " + sheetName
-										+ " gampad call " + cust_param + " value: " + customParamsList.get(i+1));
+										+ " is matched with " + i + " Occurance of corresponding " + sheetName
+										+ " gampad call " + cust_param + " value: " + customParamsList.get(i));
 								// System.out.println("amazon aax " + sheetName + " call bid value validation is
 								// successful");
 								// logStep("amazon aax " + sheetName + " call bid value vaidation is
@@ -3865,21 +4005,21 @@ public class Utils extends Functions {
 								// break;
 
 							} else {
-								if (customParamsList.get(i+1).equalsIgnoreCase("-1")) {
-									System.out.println(i+1 + " Occurance of corresponding " + sheetName + " gampad call: "
+								if (customParamsList.get(i).equalsIgnoreCase("-1")) {
+									System.out.println(i + " Occurance of corresponding " + sheetName + " gampad call: "
 											+ feedCall + " not having parameter " + cust_param);
-									logStep(i+1 + " Occurance of corresponding " + sheetName + " gampad call: " + feedCall
+									logStep(i + " Occurance of corresponding " + sheetName + " gampad call: " + feedCall
 											+ " not having parameter " + cust_param);
 									failCount++;
 								} else {
 									System.out.println(j + " Occurance of Amazon call " + cust_param + " value: "
 											+ listOf_b_Params.get(j) + " is not matched with " + i
 											+ " Occurance of corresponding " + sheetName + " gampad call " + cust_param
-											+ " value: " + customParamsList.get(i+1));
+											+ " value: " + customParamsList.get(i));
 									logStep(j + " Occurance of Amazon call " + cust_param + " value: "
 											+ listOf_b_Params.get(j) + " is not matched with " + i
 											+ " Occurance of corresponding " + sheetName + " gampad call " + cust_param
-											+ " value: " + customParamsList.get(i+1));
+											+ " value: " + customParamsList.get(i));
 									failCount++;
 								}
 
@@ -4171,6 +4311,187 @@ public class Utils extends Functions {
 		return resflag;
 	}
 	
+	/**
+	 * Verifies API call with given host and path1 and path2
+	 * @param host
+	 * @param path1
+	 * @param path2
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean verifyAPICallWithHostandPath(String host, String path1, String path2) throws Exception {
+		// readExcelValues.excelValues(excelName, sheetName);
+		File fXmlFile = new File(outfile.getName());
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		dbFactory.setValidating(false);
+		dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/namespaces", false);
+		// dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/validation", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+		Document doc = dBuilder.parse(fXmlFile);
+// Getting the transaction element by passing xpath expression
+		NodeList nodeList = doc.getElementsByTagName("transaction");
+		String xpathExpression = "charles-session/transaction/@host";
+		List<String> getQueryList = evaluateXPath(doc, xpathExpression);
+
+// Getting custom_params amzn_b values
+		List<String> customParamsList = new ArrayList<String>();
+
+		// String iuId = null;
+
+		boolean iuExists = false;
+		for (String qry : getQueryList) {
+			if (qry.contains(host)) {
+				iuExists = true;
+				break;
+			}
+		}
+		boolean hflag = false;
+		boolean pflag = false;
+		boolean p1flag = false;
+		boolean resflag = false;
+
+		if (iuExists) {
+			System.out.println(host + "  call is present");
+			logStep(host + "  call is present");
+			outerloop: for (int p = 0; p < nodeList.getLength(); p++) {
+				// System.out.println("Total transactions: "+nodeList.getLength());
+				if (nodeList.item(p) instanceof Node) {
+					Node node = nodeList.item(p);
+					if (node.hasChildNodes()) {
+						NodeList nl = node.getChildNodes();
+						for (int j = 0; j < nl.getLength(); j++) {
+							// System.out.println("node1 length is: "+nl.getLength());
+							Node innernode = nl.item(j);
+							if (innernode != null) {
+								// System.out.println("Innernode name is: "+innernode.getNodeName());
+								if (innernode.getNodeName().equals("request")) {
+									//System.out.println("...................................");
+									hflag = false;
+									pflag = false;
+									if (innernode.hasChildNodes()) {
+										NodeList n2 = innernode.getChildNodes();
+										for (int k = 0; k < n2.getLength(); k++) {
+											// System.out.println("node2 length is: "+n2.getLength());
+											Node innernode2 = n2.item(k);
+											if (innernode2 != null) {
+												// System.out.println("Innernode2 name is: "+innernode2.getNodeName());
+												if (innernode2.getNodeType() == Node.ELEMENT_NODE) {
+													Element eElement = (Element) innernode2;
+													// System.out.println("Innernode2 element name is:
+													// "+eElement.getNodeName());
+													if (eElement.getNodeName().equals("headers")) {
+														if (innernode2.hasChildNodes()) {
+															NodeList n3 = innernode2.getChildNodes();
+															for (int q = 0; q < n3.getLength(); q++) {
+																// System.out.println("node3 length is:
+																// "+n3.getLength());
+																Node innernode3 = n3.item(q);
+																if (innernode3 != null) {
+																	// System.out.println("Innernode3 name is:
+																	// "+innernode3.getNodeName());
+																	if (innernode3.getNodeType() == Node.ELEMENT_NODE) {
+																		Element eElement1 = (Element) innernode3;
+																		
+																		// System.out.println("Innernode3 element name
+																		// is: "+eElement1.getNodeName());
+																		if (eElement1.getNodeName().equals("header")) {
+																			String content = eElement1.getTextContent();
+																			//System.out.println("request body "+content);
+
+																			if (content.contains(host)) {
+																				hflag = true;
+																				//System.out.println("request body found "+ content);
+																				
+																			} else if (content.contains(path1)) {
+																				if (content.contains(path2)) {
+																					pflag = true;
+																				}
+																				//System.out.println("request body found "+ content);
+																				
+																			}
+																		}
+
+																		// this condition especially for android since
+																		// its file has path value under first-line
+																		// element
+																		if (eElement1.getNodeName()
+																				.equals("first-line")) {
+																			String content = eElement1.getTextContent();
+																			// System.out.println("request body
+																			// "+content);
+
+																			if (content.contains(path1)) {
+																				if (content.contains(path2)) {
+																					pflag = true;
+																				}
+																				
+																				// System.out.println("request body
+																				// found "
+																				// +  content);
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+
+								/*
+								 * if (flag) { // System.out.println("Exiting after found true "); //
+								 * System.out.println("checking innernode name is: "+innernode.getNodeName());
+								 * if (innernode.getNodeName().equals("response")) { //
+								 * System.out.println(innernode.getNodeName()); if (innernode.hasChildNodes()) {
+								 * NodeList n2 = innernode.getChildNodes(); for (int k = 0; k < n2.getLength();
+								 * k++) { Node innernode2 = n2.item(k); if (innernode2 != null) { if
+								 * (innernode2.getNodeType() == Node.ELEMENT_NODE) { Element eElement =
+								 * (Element) innernode2; if (eElement.getNodeName().equals("body")) { String
+								 * content = eElement.getTextContent(); //
+								 * System.out.println("response body "+content); if
+								 * (content.contains(readExcelValues.data[13][Cap])) { resflag = true; break
+								 * outerloop;
+								 * 
+								 * } } } } } } }
+								 * 
+								 * }
+								 */
+								if (hflag && pflag) {
+									resflag = true;
+									break outerloop;
+								}
+							}
+						}
+					}
+				}
+				// flag = false;
+			}
+
+		} else {
+			System.out.println(host + " ad call is not present");
+			logStep(host + " ad call is not present");
+
+		}
+
+		return resflag;
+	}
+	
+	/**
+	 * Verifies API call with given host
+	 * @param host
+	 * @return
+	 * @throws Exception
+	 */
 	public static boolean verifyAPICallWithHost(String host) throws Exception {
 		// readExcelValues.excelValues(excelName, sheetName);
 		File fXmlFile = new File(outfile.getName());
@@ -4218,6 +4539,158 @@ public class Utils extends Functions {
 		}
 
 		return iuExists;
+	}
+	
+		
+	public static boolean getTheQueryParamValueOfGivenHost(String host) throws Exception {
+		// readExcelValues.excelValues(excelName, sheetName);
+		File fXmlFile = new File(outfile.getName());
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		dbFactory.setValidating(false);
+		dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/namespaces", false);
+		// dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/validation", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+		Document doc = dBuilder.parse(fXmlFile);
+// Getting the transaction element by passing xpath expression
+		NodeList nodeList = doc.getElementsByTagName("transaction");
+		String xpathExpression = "charles-session/transaction/@host";
+		List<String> getQueryList = evaluateXPath(doc, xpathExpression);
+
+// Getting custom_params amzn_b values
+		List<String> customParamsList = new ArrayList<String>();
+
+		// String iuId = null;
+
+		boolean iuExists = false;
+		for (String qry : getQueryList) {
+			if (qry.contains(host)) {
+				iuExists = true;
+				
+	//			getQueryParamValue(String qryValue, String queryParam)
+				
+				
+				break;
+			}
+		}
+		boolean hflag = false;
+		boolean pflag = false;
+		boolean resflag = false;
+
+		if (iuExists) {
+			System.out.println(host + "  call is present");
+			logStep(host + "  call is present");
+		} else {
+			System.out.println(host + " ad call is not present");
+			logStep(host + " ad call is not present");
+
+		}
+
+		return iuExists;
+	}
+	
+	/**
+	 * Verifies PreRoll Video Beacon in Charles Session
+	 * @param host
+	 * @param path
+	 * @return
+	 * @throws Exception
+	 */
+	public static boolean verifyPreRollVideoBeaconValueInCharlesSession(String host, String path, String beaconParam, String beaconValue) throws Exception {
+		// readExcelValues.excelValues(excelName, sheetName);
+		File fXmlFile = new File(outfile.getName());
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		dbFactory.setValidating(false);
+		dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/namespaces", false);
+		// dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/validation", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+		Document doc = dBuilder.parse(fXmlFile);
+// Getting the transaction element by passing xpath expression
+		NodeList nodeList = doc.getElementsByTagName("transaction");
+		String xpathExpression = "charles-session/transaction/@host";
+		List<String> getQueryList = evaluateXPath(doc, xpathExpression);
+
+// Getting custom_params amzn_b values
+		List<String> customParamsList = new ArrayList<String>();
+
+		// String iuId = null;
+
+		boolean iuExists = false;
+		for (String qry : getQueryList) {
+			if (qry.contains(host)) {
+				iuExists = true;
+				break;
+			}
+		}
+		boolean hflag = false;
+		boolean pflag = false;
+		boolean resflag = false;
+		String needBeaconSessionId = null;
+		int iteration = 0;
+
+		if (iuExists) {
+			System.out.println(host + "  call is present");
+			logStep(host + "  call is present");
+			outerloop: for (int p = 0; p < nodeList.getLength(); p++) {
+				// System.out.println("Total transactions: "+nodeList.getLength());
+				if (nodeList.item(p) instanceof Node) {
+					Node node = nodeList.item(p);
+					String currentNode = node.getNodeName();
+					NamedNodeMap node1 = node.getAttributes();
+					Node hostNameNode = node1.getNamedItem("host");
+					String hostName = hostNameNode.getNodeValue();
+					//System.out.println("CCurrent Node Name is: "+hostNameNode.getNodeValue());
+					if(hostName.equalsIgnoreCase(host)) {
+						Node pathNameNode = node1.getNamedItem("path");
+						String pathName = pathNameNode.getNodeValue();
+						if(pathName.equalsIgnoreCase(path)) {
+							Node queryNode = node1.getNamedItem("query");
+							String queryString = queryNode.getNodeValue();
+							String adBeaconSessionId = getQueryParamValue(queryString, "adSessionId");
+							if(adBeaconSessionId.equalsIgnoreCase("")) {
+								continue;
+							}
+							iteration++;
+							System.out.println("Beacon Session id: "+adBeaconSessionId);
+							if(iteration == 1) {
+								needBeaconSessionId  = adBeaconSessionId;
+							}
+							String adBeaconType = getQueryParamValue(queryString, beaconParam);
+							
+							if (adBeaconType.equalsIgnoreCase(beaconValue) && adBeaconSessionId.equalsIgnoreCase(needBeaconSessionId) ) {
+								System.out.println("beacon value found");
+								resflag = true;
+								break;
+							}
+								
+							
+						}
+					}
+								
+				}
+				// flag = false;
+			}
+
+		} else {
+			System.out.println(host + " call is not present");
+			logStep(host + " call is not present");
+
+		}
+
+		return resflag;
 	}
 
 	/**
@@ -11831,6 +12304,88 @@ public class Utils extends Functions {
 			Assert.fail("Either "+host +" call is not present in Charles session or "+host +" call not contains the segment "+expectedSegment.split("=")[1]);
 		}
 		
+	}
+	
+	public static void validate_Video_Preroll_beacon(String excelName, String sheetName,
+			String cust_param, String expected) throws Exception {
+		ReadExcelValues.excelValues(excelName, sheetName);
+		String host = ReadExcelValues.data[2][Cap];
+		String path = ReadExcelValues.data[4][Cap];
+		
+		// Read the content form file
+		File fXmlFile = new File(outfile.getName());
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		dbFactory.setValidating(false);
+		dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/namespaces", false);
+		// dbFactory.setNamespaceAware(true);
+		dbFactory.setFeature("http://xml.org/sax/features/validation", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+		dbFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+		Document doc = dBuilder.parse(fXmlFile);
+		// Getting the transaction element by passing xpath expression
+		NodeList nodeList = doc.getElementsByTagName("transaction");
+		String xpathExpression = "charles-session/transaction/@query";
+		List<String> getQueryList = evaluateXPath(doc, xpathExpression);
+		
+		for (String qry : getQueryList) {
+			if (qry.contains(iuId)) {
+	//			adCallFound = true;
+	//			tempCustmParam = getCustomParamBy_iu_value(qry, cust_param);
+				// if (!"".equals(tempCustmParam))
+				// customParamsList.add(getCustomParamsBy_iu_value(qry));
+				break;
+			}
+
+		}
+		
+//		/omsdk/sendmessage?adSessionId=15A42FE5-C702-4571-82BA-7EBC45950296&timestamp=1654167702023&type=complete
+	//	getQueryParamValue(String qryValue, String queryParam);
+		String sessionId = "";
+		path = path+"adSessionId=";
+		path  = path.concat(sessionId);
+//		type=complete;
+		boolean flag = verifyAPICallWithHostandPath(host, path);
+		if (flag) {
+			System.out.println(host + path + " call is present in Charles session");
+			logStep(host + path + " call is present in Charles session");
+
+			String actual = get_param_value_from_APIResponse(host, path, cust_param);
+
+			if (actual.equalsIgnoreCase(expected)) {
+				System.out.println("Custom Parameter :" + cust_param + " value: " + actual
+						+ " is matched with the expected value " + expected);
+				logStep("Custom Parameter :" + cust_param + " value: " + actual + " is matched with the expected value "
+						+ expected);
+				System.out.println("Criteo parameter: " + cust_param + " validation is successful");
+				logStep("Criteo parameter: " + cust_param + " validation is successful");
+			} else {
+				System.out.println("Custom Parameter :" + cust_param + " value: " + actual
+						+ " is not matched with the expected value " + expected);
+				logStep("Custom Parameter :" + cust_param + " value: " + actual
+						+ " is not matched with the expected value " + expected);
+				System.out.println("Criteo parameter: " + cust_param + " validation is failed");
+				logStep("Criteo parameter: " + cust_param + " validation is failed");
+				Assert.fail("Custom Parameter :" + cust_param + " value: " + actual
+						+ " is not matched with the expected value " + expected);
+			}
+
+		} else {
+			System.out.println(host + path + " call is not present in Charles session, hence Custom Parameter: "
+					+ cust_param + " validation skipped");
+			logStep(host + path + " call is not present in Charles session, hence Custom Parameter: " + cust_param
+					+ " validation skipped");
+			System.out.println("Criteo parameter: " + cust_param + " validation is failed");
+			logStep("Criteo parameter: " + cust_param + " validation is failed");
+			Assert.fail(host + path + " call is not present in Charles session, hence Custom Parameter: " + cust_param
+					+ " validation skipped");
+
+		}
+
 	}
 
 }

@@ -29,9 +29,33 @@ public class Driver extends PropertyFile {
 	public static void attachScreen() {
 		captureScreenShot();
 	}
+	
+	@Step("Generating Screenshot")
+	public static void attachScreen(AppiumDriver<MobileElement> Ad) {
+		captureScreenShot(Ad);
+	}
 
 	@Attachment("Screenshot")
 	public static byte[] captureScreenShot() {
+		// public static byte[] attachScreen() {
+		try {
+			System.out.println("Generating Screenshot");
+			logStep("Generating Screenshot");
+			// logStep("Taking screenshot");
+			return (((TakesScreenshot) Ad).getScreenshotAs(OutputType.BYTES));
+		} catch (Exception e) {
+			System.out.println("Failed to capture Screenshot");
+			logStep("Failed to capture Screenshot");
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			logStep(e.getMessage());
+			return null;
+		}
+
+	}
+	
+	@Attachment("Screenshot")
+	public static byte[] captureScreenShot(AppiumDriver<MobileElement> Ad) {
 		// public static byte[] attachScreen() {
 		try {
 			System.out.println("Generating Screenshot");

@@ -127,7 +127,7 @@ public class GDPRPrivacyTest extends TwcIosBaseTest {
  		Functions.uninstallApp();
 		Functions.launchFirebaseInSafariAndInstallApp();
 		//Functions.launchFirebaseInSafariAndInstallApp("RC");
-		//Functions.launchFirebaseInSafariAndInstallApp("Nightly", "12.20(3001390)");
+		//Functions.launchFirebaseInSafariAndInstallApp("Nightly", "12.27(3001510)");
 		TestBase.waitForMilliSeconds(5000);
 		Utils.twcAppInstalledCheck();
 		//Ad.closeApp();

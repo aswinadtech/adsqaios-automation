@@ -54,6 +54,30 @@ public class PlanningCardScreen extends Utils {
 		this.Ad = Ad;
 	}
 
+	@Step("Navigate To Hourly Tab from Planning Card")
+	public void navigateToHourlyTabFromPlanningCard() {
+		try {
+			By byHourlyTab = null;
+			try {
+				//byHourlyTab = MobileBy.xpath(hourlyTab_Xpath);
+				byHourlyTab = MobileBy.AccessibilityId(hourlyTab_AccessibilityId);
+				hourlyTab = Ad.findElement(byHourlyTab);
+				
+			} catch (Exception e) {
+				byHourlyTab = MobileBy.xpath(selectedHourlyTab_Xpath);
+				hourlyTab = Ad.findElement(byHourlyTab);
+				
+			}
+			TestBase.clickOnElement(byHourlyTab, hourlyTab, "Hourly Tab");
+			TestBase.waitForMilliSeconds(5000);
+			attachScreen();
+		} catch (Exception e) {
+			System.out.println("Hourly Tab not displayed");
+			logStep("Hourly Tab not displayed");
+			attachScreen();
+		}
+	}
+	
 	@Step("Navigate To Hourly Details from Planning Card")
 	public void navigateToHourlyDetailsFromPlanningCard() {
 		try {
@@ -139,6 +163,21 @@ public class PlanningCardScreen extends Utils {
 			attachScreen();
 		}
 	}
+	
+	@Step("Navigate To Daily Tab from Planning Card")
+	public void navigateToDailyTabFromPlanningCard() {
+		try {
+			
+			dailyTab = Ad.findElement(byDailyTab);
+			TestBase.clickOnElement(byDailyTab, dailyTab, "Daily Tab");
+			TestBase.waitForMilliSeconds(5000);
+			attachScreen();
+		} catch (Exception e) {
+			System.out.println("Daily Tab not displayed");
+			logStep("Daily Tab not displayed");
+			attachScreen();
+		}
+	}
 
 	@Step("Navigate To Daily Details from Planning Card")
 	public void navigateToDailyDetailsFromPlanningCard() {
@@ -199,6 +238,23 @@ public class PlanningCardScreen extends Utils {
 		} catch (Exception e) {
 			System.out.println("Daily Details not displayed");
 			logStep("Daily Details not displayed");
+			attachScreen();
+		}
+	}
+	
+	@Step("Navigate To Today Tab from Planning Card")
+	public void navigateToTodayTabFromPlanningCard() {
+
+		try {
+			
+			todayTab = Ad.findElement(byTodayTab);
+			TestBase.clickOnElement(byTodayTab, todayTab, "Today Tab");
+			TestBase.waitForMilliSeconds(5000);
+			attachScreen();
+			
+		} catch (Exception e) {
+			System.out.println("Today Tab not displayed");
+			logStep("Today Tab not displayed");
 			attachScreen();
 		}
 	}

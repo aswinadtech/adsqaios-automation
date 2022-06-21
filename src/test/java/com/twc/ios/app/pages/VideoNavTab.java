@@ -1,9 +1,11 @@
 package com.twc.ios.app.pages;
 
 import org.openqa.selenium.By;
+import org.testng.Assert;
 
 import com.twc.ios.app.charlesfunctions.CharlesProxy;
 import com.twc.ios.app.general.Driver;
+import com.twc.ios.app.general.ReadExcelValues;
 import com.twc.ios.app.general.TestBase;
 import com.twc.ios.app.general.Utils;
 
@@ -18,11 +20,13 @@ public class VideoNavTab extends Utils{
 	String videoTab_AccessibilityId = "Video";
 	String winterTab_AccessibilityId = "Winter";
 	String severeTab_AccessibilityId = "Severe";
+	String tropicsTab_AccessibilityId = "Tropics";
 
 	By byVideoDetailNavTab = MobileBy.AccessibilityId(videoDetailTab_AccessibilityId);
 	By byVideoNavTab = MobileBy.AccessibilityId(videoTab_AccessibilityId);
 	By byWinterNavTab = MobileBy.AccessibilityId(winterTab_AccessibilityId);
 	By bySevereNavTab = MobileBy.AccessibilityId(severeTab_AccessibilityId);
+	By byTropicsNavTab = MobileBy.AccessibilityId(tropicsTab_AccessibilityId);
 	
 
 	MobileElement videoNavTab = null;
@@ -66,9 +70,18 @@ public class VideoNavTab extends Utils{
 						logStep("Navigated to Severe tab");
 						attachScreen();
 					} catch (Exception ex1) {
+						try {
+						videoNavTab = Ad.findElement(byTropicsNavTab);
+						TestBase.clickOnElement(byTropicsNavTab, videoNavTab, "Tropics Nav Tab");
+						TestBase.waitForMilliSeconds(20000);
+						System.out.println("Navigated to Tropics tab ");
+						logStep("Navigated to Tropics tab");
+						attachScreen();
+					} catch (Exception ex2) {
 						System.out.println("Video tab not displayed");
 						logStep("Video tab not displayed");
 						attachScreen();
+					}
 					}
 				}
 			}
@@ -135,15 +148,53 @@ public class VideoNavTab extends Utils{
 						logStep("Navigated to Severe tab");
 						attachScreen();
 					} catch (Exception ex1) {
+						try {
+						if (clearCharles) {
+							proxy.clearCharlesSession();
+						}
+						videoNavTab = Ad.findElement(byTropicsNavTab);
+						if (clearCharles) {
+							proxy.clearCharlesSession();
+						}
+						TestBase.clickOnElement(byTropicsNavTab, videoNavTab, "Tropics Nav Tab");
+						TestBase.waitForMilliSeconds(20000);
+						System.out.println("Navigated to Tropics tab ");
+						logStep("Navigated to Tropics tab");
+						attachScreen();
+					} catch (Exception ex2) {
 						System.out.println("Video tab not displayed");
 						logStep("Video tab not displayed");
 						attachScreen();
+					}
 					}
 				}
 			
 			}
 		}
 
+	}
+	
+	@Step("Validate Preroll Video Beacon")
+	public void validatePreRollVideoBeacon(String excelName, String sheetName, String beaconParam, String beaconValue) throws Exception{
+		ReadExcelValues.excelValues(excelName, sheetName);
+		String host = ReadExcelValues.data[2][Cap];
+		String path = ReadExcelValues.data[3][Cap];
+		//boolean flag = Utils.verifyPreRollVideoBeaconValueInCharlesSession(host, path,"type","complete");
+		boolean flag = Utils.verifyPreRollVideoBeaconValueInCharlesSession(host, path, beaconParam, beaconValue);
+		if (flag) {
+			System.out.println(host + path + " call is present in Charles session with "+beaconParam+" = "+ beaconValue);
+			logStep(host + path + " call is present in Charles session with "+beaconParam+" = "+ beaconValue);
+			System.out.println(host + path + " call with "+beaconParam+" = "+ beaconValue+ " Verification is successful");
+			logStep(host + path + " call with "+beaconParam+" = "+ beaconValue+ " Verification is successful");
+
+		} else {
+			System.out.println(host + path + " call with "+beaconParam+" = "+ beaconValue +" is not present in Charles session");
+			logStep(host + path + " call with "+beaconParam+" = "+ beaconValue +" is not present in Charles session");
+			System.out.println(host + path + " call with "+beaconParam+" = "+ beaconValue+ " Verification is failed");
+			logStep(host + path + " call with "+beaconParam+" = "+ beaconValue+ " Verification is failed");
+			Assert.fail(host + path + " call with "+beaconParam+" = "+ beaconValue+ " Verification is failed");
+
+		}
 	}
 
 }

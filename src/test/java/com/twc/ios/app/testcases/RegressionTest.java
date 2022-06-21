@@ -1,5 +1,6 @@
 package com.twc.ios.app.testcases;
 
+import org.openqa.selenium.By;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
@@ -10,8 +11,11 @@ import com.twc.ios.app.general.TestBase;
 import com.twc.ios.app.general.TwcIosBaseTest;
 import com.twc.ios.app.general.Utils;
 import com.twc.ios.app.pages.AddressScreen;
+import com.twc.ios.app.pages.AirQualityCardContentScreen;
+import com.twc.ios.app.pages.AirQualityCardScreen;
 import com.twc.ios.app.pages.BreakingNewsCardScreen;
 import com.twc.ios.app.pages.DailyNavTab;
+import com.twc.ios.app.pages.FeedOneCardScreen;
 import com.twc.ios.app.pages.HomeNavTab;
 import com.twc.ios.app.pages.HourlyNavTab;
 import com.twc.ios.app.pages.LogInScreen;
@@ -38,6 +42,7 @@ public class RegressionTest extends TwcIosBaseTest {
 	private static final String BN_SEVERE1_CONFIG_FILE_PATH = "BNSevere1charles_common.config";
 	private static final String BN_SEVERE2_CONFIG_FILE_PATH = "BNSevere2charles_common.config";
 	private static final String CRITEO_CONFIG_FILE_PATH = "Criteocharles_common.config";
+	private static final String MAP_LOCAL_CONFIG_FILE_PATH = "maplocalcharles_common.config";
 
 	// public static CharlesProxy proxy;
 	public File configFile;
@@ -53,6 +58,9 @@ public class RegressionTest extends TwcIosBaseTest {
 	BreakingNewsCardScreen bnScreen;
 	SettingsScreen stScreen;
 	LogInScreen loginScreen;
+	FeedOneCardScreen fOneCardScreen;
+	AirQualityCardScreen aqCardScreen;
+	AirQualityCardContentScreen aqCardContentScreen;
 	
 	long subscriptionFqCapStrtTime = 0L;
 	long start = 0;
@@ -148,6 +156,9 @@ public class RegressionTest extends TwcIosBaseTest {
 		bnScreen = new BreakingNewsCardScreen(Ad) ;
 		stScreen = new SettingsScreen(Ad);
 		loginScreen = new LogInScreen(Ad);
+		fOneCardScreen = new FeedOneCardScreen(Ad);
+		aqCardScreen = new AirQualityCardScreen(Ad);
+		aqCardContentScreen = new AirQualityCardContentScreen(Ad);
 	}
 
 	@Test(priority = 50, enabled = true)
@@ -554,7 +565,8 @@ public class RegressionTest extends TwcIosBaseTest {
 		
 		loginScreen.premiumSubscriptionOfMonthly("jmktwc4@gmail.com", "300Interstate");
 //		loginScreen.premiumSubscriptionOfYearly("jmktwc4@gmail.com", "300Interstate");
-			
+		Functions.close_launchApp();
+		attachScreen();
 		subscriptionFqCapStrtTime = System.nanoTime();
 		start = System.nanoTime();
 				
@@ -710,6 +722,7 @@ public class RegressionTest extends TwcIosBaseTest {
 		}
 		
 		Ad.launchApp();
+		attachScreen();
 		proxy.clearCharlesSession();
 		Functions.close_launchApp();
 		Functions.put_Background_launch(10);
@@ -1401,6 +1414,9 @@ public class RegressionTest extends TwcIosBaseTest {
 		bnScreen = new BreakingNewsCardScreen(Ad);
 		stScreen = new SettingsScreen(Ad);
 		loginScreen = new LogInScreen(Ad);
+		fOneCardScreen = new FeedOneCardScreen(Ad);
+		aqCardScreen = new AirQualityCardScreen(Ad);
+		aqCardContentScreen = new AirQualityCardContentScreen(Ad);
 		
 		//Ad.terminateApp("com.weather.TWC");
 	}
@@ -2647,5 +2663,237 @@ public class RegressionTest extends TwcIosBaseTest {
 		Utils.Verify_Gampad_Call_ByResponseText("Smoke", "SafetyAndPreparedness(Test)");
 
 	}
+	
+	/**
+	 * This method validate the 'mr' custom parameter of Homescreen sticky ad when kill and launch the app
+	 * @throws Exception
+	 */
+	@Test(priority = 975, enabled = true)
+	@Description("Verify 'mr' custom parameter of Homescreen sticky ad when kill and launch the app")
+	public void Verify_HomeScreen_Sticky_Ad_mr_Custom_Parameter_When_Kill_And_Launch() throws Exception {
+		System.out.println("==============================================");
+
+		System.out.println("****** Verifying mr custom parameter of Homescreen sticky ad call when kill and launch the app");
+		logStep("****** Verifying mr custom parameter of Homescreen sticky ad call when kill and launch the app");
+		Functions.close_launchApp();
+		Functions.close_launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		TestBase.waitForMilliSeconds(2000);
+		// navigate to Radar tab
+		Functions.archive_folder("Charles");
+		
+		if (Utils.isNextGenIMAdDisplayed()) {
+			System.out.println("****** Since NextGen IM Ad displayed on homescreen, skipping sticky ad 'mr' parameter validation");
+			logStep("****** Since NextGen IM Ad displayed on homescreen, skipping sticky ad 'mr' parameter validation");
+		} else {
+			proxy.getXml();
+			Utils.createXMLFileForCharlesSessionFile();
+			Utils.validate_custom_param_val_of_gampad("Smoke", "PulltorefreshTestMode", "mr", "0");
+			proxy.clearCharlesSession();
+			System.out.println("****** 30 seconds hard wait to refresh the ad call");
+			logStep("****** 30 seconds hard wait to refresh the ad call");
+			TestBase.waitForMilliSeconds(30000);
+			Functions.archive_folder("Charles");
+			proxy.getXml();
+			Utils.createXMLFileForCharlesSessionFile();
+			Utils.validate_custom_param_val_of_gampad("Smoke", "PulltorefreshTestMode", "mr", "1");
+						
+		}
+		
+	}
+	
+	/**
+	 * This method validate the 'mr' custom parameter of Homescreen sticky ad on interaction With PlanningCard
+	 * @throws Exception
+	 */
+	@Test(priority = 976, enabled = true)
+	@Description("Verify 'mr' custom parameter of Homescreen sticky ad on interaction With PlanningCard")
+	public void Verify_HomeScreen_Sticky_Ad_mr_Custom_Parameter_On_Interaction_With_PlanningCard() throws Exception {
+		System.out.println("==============================================");
+
+		System.out.println("****** Verifying mr custom parameter of Homescreen sticky ad call on interaction With PlanningCard");
+		logStep("****** Verifying mr custom parameter of Homescreen sticky ad call on interaction With PlanningCard");
+		proxy.clearCharlesSession();
+				
+		if (Utils.isNextGenIMAdDisplayed()) {
+			System.out.println("****** Since NextGen IM Ad displayed on homescreen, skipping sticky ad 'mr' parameter validation");
+			logStep("****** Since NextGen IM Ad displayed on homescreen, skipping sticky ad 'mr' parameter validation");
+		} else {
+			hmTab.clickonHomeTab();
+			proxy.clearCharlesSession();
+			TestBase.waitForMilliSeconds(2000);
+			
+			// navigate to Planning Card
+			Functions.archive_folder("Charles");
+			Utils.navigateTofeedCard("planning-containerView");
+			proxy.clearCharlesSession();
+			Functions.archive_folder("Charles");
+			
+			// navigate to Daily Tab from Planning Card
+			pScreen.navigateToDailyTabFromPlanningCard();
+			proxy.getXml();
+			Utils.createXMLFileForCharlesSessionFile();
+			Utils.validate_custom_param_val_of_gampad("Smoke", "PulltorefreshTestMode", "mr", "1");
+			proxy.clearCharlesSession();
+			Functions.archive_folder("Charles");
+			
+			TestBase.waitForMilliSeconds(3000);
+			Functions.scroll_Left();
+			//Functions.swipe_Left();
+			proxy.getXml();
+			Utils.createXMLFileForCharlesSessionFile();
+			Utils.validate_custom_param_val_of_gampad("Smoke", "PulltorefreshTestMode", "mr", "1");
+			proxy.clearCharlesSession();
+			Functions.archive_folder("Charles");
+			
+			// navigate to Hourly Tab from Planning Card
+			pScreen.navigateToHourlyTabFromPlanningCard();
+			proxy.getXml();
+			Utils.createXMLFileForCharlesSessionFile();
+			Utils.validate_custom_param_val_of_gampad("Smoke", "PulltorefreshTestMode", "mr", "1");
+			proxy.clearCharlesSession();
+			Functions.archive_folder("Charles");
+			
+			//Functions.swipe_Left();
+			//Functions.scroll_Left();
+			TestBase.waitForMilliSeconds(3000);
+			Functions.scroll_Right();
+			proxy.getXml();
+			Utils.createXMLFileForCharlesSessionFile();
+			Utils.validate_custom_param_val_of_gampad("Smoke", "PulltorefreshTestMode", "mr", "1");
+			proxy.clearCharlesSession();
+			Functions.archive_folder("Charles");
+			
+			// navigate to Today Tab from Planning Card
+			pScreen.navigateToTodayTabFromPlanningCard();
+			proxy.getXml();
+			Utils.createXMLFileForCharlesSessionFile();
+			Utils.validate_custom_param_val_of_gampad("Smoke", "PulltorefreshTestMode", "mr", "1");
+			
+		}
+		
+	}
+	
+	/**
+	 * This Script Enable preconfiguration for ThirdParty Tracking Pixe Into The AQ Details Page
+	 * @throws Exception    
+	 */
+	@Test(priority = 1001, enabled = true)
+	@Description("Enabling Preconfiguration for ThirdParty Tracking Pixel Into The AQ Details Page")
+	public void enable_PreConfiguration_for_ThirdParty_Tracking_Pixel_Into_AQ_Details_Page() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Enable Preconfiguration for ThirdParty Tracking Pixel Into The AQ Details Page");
+		logStep("Enable Preconfiguration for ThirdParty Tracking Pixel Into The AQ Details Page ");
+		hmTab.clickonHomeTab();
+		stScreen.select_Airlock_UserGroup("IOSFLAG-8105");
+		Functions.close_launchApp();
+		Functions.checkForAppState();
+		proxy.clearCharlesSession();
+		Functions.archive_folder("Charles");
+		TestBase.waitForMilliSeconds(5000);
+		addrScreen.enternewAddress(false, "99833", "Petersburg, Alaska");
+		TestBase.waitForMilliSeconds(20000);
+		try {
+			Utils.navigateTofeedCard("weather.feed0");
+			TestBase.waitForMilliSeconds(20000);
+			fOneCardScreen.navigateToFeedOneCardContentPage();
+			aqCardContentScreen.waitForAirQualityCardContentPage();
+			navigateBackToFeedCard();		
+		} catch (Exception e) {
+			System.out.println("There is an exception while navigting to feed1 card");
+			logStep("There is an exception while navigting to feed1 card");
+		} finally {
+			proxy.getXml();
+			Utils.createXMLFileForCharlesSessionFile();
+		}
+	}
+	
+	@Test(priority = 1002, enabled = true)
+	@Description("Verify Third Party Pixel Call When Navigated to AQ Detaills Page From Feed1 Card")
+	public void Verify_ThirdParty_Pixel_Call_When_Navigated_To_AQDetails_Page_From_Feed1_Card() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("=========================== Third Party Pixel Call ====================");
+
+		System.out.println("****** Third Party Pixel Call validation Started");
+		logStep("****** Third Party Pixel Call validation Started");
+
+		aqCardContentScreen.verifyPixel_Call_When_Navigated_To_AQDetails_Page_From_Feed1_Card("Smoke", "Air Quality(Content)");
+
+	}
+	
+	/**
+	 * This Script Enable preconfiguration for PreRoll Video Beacon
+	 * @throws Exception
+	 */
+	@Test(priority = 1010, enabled = true)
+	@Description("Enabling Preconfiguration for PreRoll Video Beacon")
+	public void enable_PreConfiguration_for_PreRoll_Video_Beacon() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Enable Preconfiguration for PreRoll Video Beacon");
+		logStep("Enable Preconfiguration for PreRoll Video Beacon");
+		hmTab.clickonHomeTab();
+		stScreen.select_Airlock_UserGroup("AdsTestAdUnitOnly");
+		Functions.close_launchApp();
+		Functions.checkForAppState();
+		
+		Functions.archive_folder("Charles");
+		TestBase.waitForMilliSeconds(5000);
+		addrScreen.enternewAddress(false, "12758", "Livingston Manor, New York");
+		TestBase.waitForMilliSeconds(20000);
+		proxy.clearCharlesSession();
+		try {
+			// navigate to Video tab
+			vTab.navigateToVideoTab(true, proxy);
+			TestBase.waitForMilliSeconds(40000);
+		} catch (Exception e) {
+			System.out.println("There is an exception while navigting to video tab");
+			logStep("There is an exception while navigting to video tab");
+		} finally {
+			proxy.getXml();
+			Utils.createXMLFileForCharlesSessionFile();
+		}
+	}
+	
+	@Test(priority = 1011, enabled = true)
+	@Description("Verify PreRoll Video Beacon")
+	public void Verify_PreRoll_Video_Beacon() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("=========================== Third Party Pixel Call ====================");
+
+		System.out.println("****** PreRoll Video Beacon validation Started");
+		logStep("****** PreRoll Video Beacon validation Started");
+
+		vTab.validatePreRollVideoBeacon("Smoke", "PreRollVideo", "type", "complete");
+
+	}
+	
+	/*@Test(priority = 1020, enabled = true)
+	@Description("Enabling Preconfiguration for Map Local")
+	public void enable_PreConfiguration_for_mapLocal() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Enable Preconfiguration for Map Local");
+		logStep("Enable Preconfiguration for Map Local");
+		proxy.quitCharlesProxy();
+		 String jsonPath = "src/test/resources/SevereInsightNY.json";
+		mapLocal(MAP_LOCAL_CONFIG_FILE_PATH, jsonPath);
+		proxy = new CharlesProxy("localhost", 8111, MAP_LOCAL_CONFIG_FILE_PATH);
+		proxy.startCharlesProxyWithUI();
+		proxy.enableMapLocal();
+		stScreen.select_Airlock_Branch("Clear");
+		stScreen.select_Airlock_UserGroup("IOSFLAG 7782SevereInsight");
+		Functions.close_launchApp();
+		proxy.clearCharlesSession();
+		//proxy.enableMapLocal();
+		//Functions.close_launchApp();
+//		addrScreen.enternewAddress(false, "Atlanta, Georgia");
+		addrScreen.enternewAddress(false, "New York City, New York");
+		Functions.close_launchApp();
+//		addrScreen.enternewAddress(false, "Atlanta, Georgia");
+		addrScreen.enternewAddress(false, "New York City, New York");
+		System.out.println("****** End Of Preconfiguration for Map Local");
+		logStep("End Of Preconfiguration for Map Local");
+			
+	}*/
 
 }

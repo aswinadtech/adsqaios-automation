@@ -205,6 +205,20 @@ public class TestBase extends Driver{
 	
 	/**
 	 * 
+	 * @param byLocatorStrategy
+	 * @param Ad
+	 * @return
+	 */
+	public static boolean isElementExists(By byLocatorStrategy, AppiumDriver<MobileElement> Ad) {
+		if(getElementsCount(byLocatorStrategy, Ad)==0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	/**
+	 * 
 	 * @param element
 	 * @return
 	 */
@@ -291,6 +305,7 @@ public class TestBase extends Driver{
 	 * @param byLocatorStrategy
 	 * @param element
 	 * @param elementName
+	 * @param proxy
 	 */
 	public static void clickOnElement(By byLocatorStrategy, MobileElement element, String elementName, CharlesProxy proxy) {
 		try {
@@ -333,14 +348,13 @@ public class TestBase extends Driver{
 			}
 		}
 
-		System.out.println("Clicking on " + elementName + " Element");
-		Driver.logStep("Clicking on " + elementName + " Element");
-		
+				
 		System.out.println("Clearing charles session before cliking the element");
 		Driver.logStep("Clearing charles session before cliking the element");
 		proxy.clearCharlesSession();
-		proxy.clearCharlesSession();
-		
+				
+		System.out.println("Clicking on " + elementName + " Element");
+		Driver.logStep("Clicking on " + elementName + " Element");
 		element.click();
 		// Driver.attachScreen();
 
@@ -370,6 +384,16 @@ public class TestBase extends Driver{
 	}
 	
 	/**
+	 * 
+	 * @param byLocatorStrategy
+	 * @param Ad
+	 * @return
+	 */
+	public static int getElementsCount(By byLocatorStrategy, AppiumDriver<MobileElement> Ad) {
+		return Ad.findElements(byLocatorStrategy).size();
+	}
+	
+	/**
 	 * This method generates random number and returns it
 	 * @return
 	 */
@@ -383,7 +407,7 @@ public class TestBase extends Driver{
 	
 	/**
 	 * 
-	 * @param driver
+	 * @param Ad
 	 * @param timeOutInSeconds
 	 * @param byLocator
 	 */

@@ -60,7 +60,7 @@ public class FTLScreens extends Utils {
 	@Step("Handle Unwanted Popups during app launch")
 	public void handle_Unwanted_Popups() throws Exception {
 		try {
-			TestBase.waitForVisibilityOfElementLocated(Ad, 30, bySettingsButton);
+			TestBase.waitForVisibilityOfElementLocated(Ad, 40, bySettingsButton);
 			settingsButton = Ad.findElement(bySettingsButton);
 			System.out
 					.println("Settings Button found after app launch, hence no need to verify the application alerts");
@@ -281,7 +281,7 @@ public class FTLScreens extends Utils {
 	@Step("Handle Unwanted Popups during app launch For China/Russia/Belarus")
 	public void handle_Unwanted_Popups_China() throws Exception {
 		try {
-			TestBase.waitForVisibilityOfElementLocated(Ad, 30, bySettingsButton);
+			TestBase.waitForVisibilityOfElementLocated(Ad, 40, bySettingsButton);
 			settingsButton = Ad.findElement(bySettingsButton);
 			System.out
 					.println("Settings Button found after app launch, hence no need to verify the application alerts");
@@ -362,7 +362,7 @@ public class FTLScreens extends Utils {
 	@Step("Handle Unwanted Popups during app launch from widget")
 	public void handle_Unwanted_Popups_When_App_Launched_From_Widget() throws Exception {
 		try {
-			TestBase.waitForVisibilityOfElementLocated(Ad, 30, bySettingsButton);
+			TestBase.waitForVisibilityOfElementLocated(Ad, 40, bySettingsButton);
 			settingsButton = Ad.findElement(bySettingsButton);
 			System.out
 					.println("Settings Button found after app launch, hence no need to verify the application alerts");

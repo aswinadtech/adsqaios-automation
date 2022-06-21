@@ -4,8 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.testng.Assert;
+
 import com.twc.ios.app.charlesfunctions.CharlesConfiguration;
 import com.twc.ios.app.charlesfunctions.CharlesProxy;
+import com.twc.ios.app.charlesfunctions.CharlesProxyException;
 import com.twc.ios.app.charlesfunctions.CharlesConfiguration.Protocol;
 import com.twc.ios.app.charlesfunctions.CharlesConfiguration.RewriteRuleReplaceType;
 import com.twc.ios.app.charlesfunctions.CharlesConfiguration.RewriteRuleType;
@@ -16,6 +19,7 @@ public class TwcIosBaseTest extends CharlesProxy{
 
 	//private static final MobileAutomationLogger LOGGER = new MobileAutomationLogger(TwcIosBaseTest.class);
 	private boolean freshInstallDone = false;
+	 private CharlesConfiguration mapConfig;
 
 	/**
 	 * Create a Charles configuration to rewrite privacy regime to the given regime (GDPR) values. 
@@ -442,6 +446,25 @@ public class TwcIosBaseTest extends CharlesProxy{
 
 		return configFile;
 	}
+	
+	/**
+	 * 
+	 * @param CONFIG_FILE_PATH
+	 */
+	 public void mapLocal(String fileName, String jsonPath) {
+	        //String jsonPath = "src/test/resources/SevereInsightAtlanta.json";
+	        try {
+	            mapConfig = new CharlesConfiguration();
+	            mapConfig.addMapping(CharlesConfiguration.Protocol.HTTPS, "api.weather.com", "", "/v3/aggcommon/*", "*",
+	                    jsonPath, false);
+	            mapConfig.saveConfigurations(fileName);
+	           // proxy = new CharlesProxy("localhost", CONFIG_FILE_PATH);
+	        } catch (CharlesProxyException e) {
+	            Assert.fail(e.getMessage());
+	        }
 
+	        //proxy.startCharlesProxy();
+	        //proxy.enableMapLocal();
+	 }
 	
 }

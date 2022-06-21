@@ -1,5 +1,6 @@
 package com.twc.ios.app.testcases;
 
+import org.openqa.selenium.By;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import java.io.File;
@@ -50,15 +51,6 @@ public class SmokeTest extends TwcIosBaseTest {
 	SettingsScreen stScreen;
 	LogInScreen loginScreen;
 	
-	long subscriptionFqCapStrtTime = 0L;
-	long start = 0;
-	long finish = 0;
-	long subscriptionFqCapEndTime = 0L;
-	long timeElapsed = 0;
-	long subscriptionFqtimeElapsed = 0L;
-	long convert = 0;
-	long subscriptionFqtimeconvert = 0L;
-
 	@BeforeClass(alwaysRun = true)
 	@Description("BeforeClass")
 	public void beforeClass() {
@@ -123,7 +115,7 @@ public class SmokeTest extends TwcIosBaseTest {
 		// Preconditions
 		Functions.capabilities();
 		Functions.Appium_Autostart();
-		//Utils.getCurrentMacIPAddressAndSetiPhoneProxy(true, true);
+		Utils.getCurrentMacIPAddressAndSetiPhoneProxy(true, true);
 		proxy.startRecording();
 		proxy.clearCharlesSession();
 		Functions.archive_folder("Charles");
@@ -144,8 +136,9 @@ public class SmokeTest extends TwcIosBaseTest {
 		sScreen = new SeasonalHubCardScreen(Ad);
 		stScreen = new SettingsScreen(Ad);
 		loginScreen = new LogInScreen(Ad);
-
+				
 	}
+	
 	
 	/**
 	 * Verify Feed Calls
@@ -1626,6 +1619,18 @@ public class SmokeTest extends TwcIosBaseTest {
 		Utils.validate_custom_param_val_of_gampad("Smoke", "Feed1", "mr", "0");
 
 	}
+	
+	/**
+	 * This method validates mr custom parameter of Sticky ad Call
+	 */
+	@Test(priority = 302, enabled = true)
+	@Description("Validating 'mr' custom parameter of Sticky ad Call")
+	public void validate_Sticky_Ad_mr_Custom_param() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating mr custom parameter of Sticky ad call");
+		logStep("Validating mr custom parameter of Sticky ad call");
+		Utils.validate_custom_param_val_of_gampad("Smoke", "Pulltorefresh", "mr", "0");
+	}
 
 	/**
 	 * This method validates mr custom parameter of Hourly details call
@@ -1679,7 +1684,33 @@ public class SmokeTest extends TwcIosBaseTest {
 
 	}*/
 	
+	/**
+	 * This method validates attmas parameter of Marquee call when tracking enabled
+	 */
 	@Test(priority = 310, enabled = true)
+	@Description("Validating 'attmas' parameter of Marquee call when tracking enabled")
+	public void Validate_Marquee_call_attmas_param_when_tracking_enabled() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating attmas parameter of Marquee call when tracking enabled");
+		logStep("Validating attmas parameter of Marquee call when tracking enabled");
+		Utils.validate_non_custom_param_val_in_gampad_url("Smoke", "Marquee", "attmas", "authorized");
+
+	}
+	
+	/**
+	 * This method validates attmas parameter of Feed1 call when tracking enabled
+	 */
+	@Test(priority = 311, enabled = true)
+	@Description("Validating 'attmas' parameter of Feed1 call when tracking enabled")
+	public void Validate_Feed1_call_attmas_param_when_tracking_enabled() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating attmas parameter of Feed1 call when tracking enabled");
+		logStep("Validating attmas parameter of Feed1 call when tracking enabled");
+		Utils.validate_non_custom_param_val_in_gampad_url("Smoke", "Feed1", "attmas", "authorized");
+
+	}
+	
+	@Test(priority = 315, enabled = true)
 	@Description("Verify Allergy Details Spot Light ad call iu")
 	public void Verify_AllergyDetails_Spotlight_AdCall() throws Exception {
 		System.out.println("==============================================");
@@ -1691,7 +1722,7 @@ public class SmokeTest extends TwcIosBaseTest {
 	/**
 	 * This method validates pos custom parameter of Week Ahead call
 	 */
-	@Test(priority = 311, enabled = true)
+	@Test(priority = 316, enabled = true)
 	@Description("Validating 'pos' custom parameter of Allergy Details Spot Light call ")
 	public void Validate_AllergyDetails_Spotlight_pos_Custom_param() throws Exception {
 		System.out.println("==============================================");
@@ -1701,7 +1732,7 @@ public class SmokeTest extends TwcIosBaseTest {
 
 	}
 
-	@Test(priority = 312, enabled = true)
+	@Test(priority = 317, enabled = true)
 	@Description("Validating Allergy Details Spot Light call Ad sz parameter")
 	public void Validate_AllergyDetails_Spotlight_Ad_Size() throws Exception {
 		System.out.println("==============================================");
@@ -1710,7 +1741,7 @@ public class SmokeTest extends TwcIosBaseTest {
 		Utils.verify_Ad_Size("Smoke", "WMAllergy(SpotLight)");
 
 	}
-
+	
 	/**
 	 * This method validate the daily details ad units and its parameters To execute
 	 * below method alone, Utils.get_v3_wx_forecast_daily_15day_data() to be
@@ -1766,21 +1797,122 @@ public class SmokeTest extends TwcIosBaseTest {
 	}*/
 	
 	/**
+	 * This Script Enable preconfiguration for denying tracking of apps at device level
+	 * @throws Exception    
+	 */
+	@Test(priority = 330, enabled = true)
+	@Description("Enabling Preconfiguration for denying tracking of apps at device level")
+	public void enable_PreConfiguration_for_denying_tracking_at_device_level() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Enable Preconfiguration for denying tracking of apps at device level");
+		logStep("Enable Preconfiguration for denying tracking of apps at device level");
+		Functions.launchiOSSettings();
+		Functions.modifyAppsTracking(false);
+		Functions.archive_folder("Charles");
+		TestBase.waitForMilliSeconds(2000);
+		Ad.launchApp();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+				
+		try {
+			Utils.navigateTofeedCard("weather.feed0");
+					
+		} catch (Exception e) {
+			System.out.println("There is an exception while navigting to feed1 card");
+			logStep("There is an exception while navigting to feed1 card");
+		} finally {
+			proxy.getXml();
+			Utils.createXMLFileForCharlesSessionFile();
+		}
+	}
+	
+	/**
+	 * This method validates dnt custom parameter of Marquee call when tracking denied
+	 */
+	@Test(priority = 331, enabled = true)
+	@Description("Validating 'dnt' custom parameter of Marquee call when tracking denied")
+	public void Validate_Marquee_dnt_Custom_param_when_tracking_denied() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating dnt custom parameter of Marquee call when tracking denied");
+		logStep("Validating dnt custom parameter of Marquee call when tracking denied");
+		Utils.validate_custom_param_val_of_gampad("Smoke", "Marquee", "dnt", "y");
+
+	}
+
+	/**
+	 * This method validates dnt custom parameter of Feed1 call  when tracking denied
+	 */
+	@Test(priority = 332, enabled = true)
+	@Description("Validating 'dnt' custom parameter of Feed1 call when tracking denied")
+	public void Validate_Feed1_dnt_Custom_param_when_tracking_denied() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating dnt custom parameter of Feed1 call when tracking denied");
+		logStep("Validating dnt custom parameter of Feed1 call when tracking denied");
+		Utils.validate_custom_param_val_of_gampad("Smoke", "Feed1", "dnt", "y");
+
+	}
+
+	/**
+	 * This method validates attmas parameter of Marquee call when tracking denied
+	 */
+	@Test(priority = 333, enabled = true)
+	@Description("Validating 'attmas' parameter of Marquee call when tracking denied")
+	public void Validate_Marquee_call_attmas_param_when_tracking_denied() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating attmas parameter of Marquee call when tracking denied");
+		logStep("Validating attmas parameter of Marquee call when tracking denied");
+		Utils.validate_non_custom_param_val_in_gampad_url("Smoke", "Marquee", "attmas", "denied");
+
+	}
+	
+	/**
+	 * This method validates attmas parameter of Feed1 call when tracking denied
+	 */
+	@Test(priority = 334, enabled = true)
+	@Description("Validating 'attmas' parameter of Feed1 call when tracking denied")
+	public void Validate_Feed1_call_attmas_param_when_tracking_denied() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Validating attmas parameter of Feed1 call when tracking denied");
+		logStep("Validating attmas parameter of Feed1 call when tracking denied");
+		Utils.validate_non_custom_param_val_in_gampad_url("Smoke", "Feed1", "attmas", "denied");
+
+	}
+	
+	/**
+	 * This Script Enables tracking of apps at device level post validation of denying app tracking
+	 * @throws Exception    
+	 */
+	@Test(priority = 335, enabled = true)
+	@Description("Enabling tracking of apps at device level")
+	public void enable_tracking_at_device_level() throws Exception {
+		System.out.println("==============================================");
+		System.out.println("****** Enable tracking of apps at device level");
+		logStep("Enable tracking of apps at device level");
+		Functions.launchiOSSettings();
+		Functions.modifyAppsTracking(true);
+		
+	}
+	
+	/**
 	 * This method validate the 'mr' custom parameter of Map Details
 	 * @throws Exception
 	 */
-	@Test(priority = 328, enabled = true)
+	@Test(priority = 345, enabled = true)
 	@Description("Verify 'mr' custom parameter of Map Details")
 	public void Verify_Map_Details_mr_Custom_Parameter() throws Exception {
 		System.out.println("==============================================");
 
 		System.out.println("****** Verifying mr custom parameter of Map Details call");
 		logStep("****** Verifying mr custom parameter of Map Details call");
+		Functions.archive_folder("Charles");
+		TestBase.waitForMilliSeconds(2000);
+		Ad.launchApp();
+		Functions.close_launchApp();
+		
 		hmTab.clickonHomeTab();
 		proxy.clearCharlesSession();
-		TestBase.waitForMilliSeconds(2000);
+		
 		// navigate to Radar tab
-		Functions.archive_folder("Charles");
 		rTab.navigateToRadarTab();
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();
@@ -1809,7 +1941,10 @@ public class SmokeTest extends TwcIosBaseTest {
 		proxy.getXml();
 		Utils.createXMLFileForCharlesSessionFile();
 		Utils.validate_custom_param_val_of_gampad("Smoke", "Map", "mr", "1");
+		
 	}
+	
+	
 	
 	/**
 	 * Enable Preconditions for WeatherFX API Parameters validation
@@ -2894,6 +3029,7 @@ public class SmokeTest extends TwcIosBaseTest {
 		Utils.createXMLFileForCharlesSessionFile();
 		Ad1.terminateApp("com.apple.weather");
 		Ad1.terminateApp("com.weather.TWC");
+		Ad1.quit();
 		
 	}
 	
