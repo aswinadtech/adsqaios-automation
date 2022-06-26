@@ -222,7 +222,15 @@ public class USACCPAPrivacyTest extends TwcIosBaseTest {
 			//hrTab.navigateToHourlyTab();
 			hrTab.navigateToHourlyTabAndHandleInterstitialAd();
 			TestBase.waitForMilliSeconds(2000);
-
+			
+			/*
+			 * Sometimes Close Advertisement button interstitial button technically disabled,
+			 * hence navigation to other tabs gets failed. hence kill and launching the app after calling the handleinterstiital method. 
+			 */
+			 proxy.clearCharlesSession();
+			 Functions.close_launchApp();
+			 hmTab.clickonHomeTab();
+			 
 			// navigate to Daily tab
 			dTab.navigateToDailyTab();
 			TestBase.waitForMilliSeconds(2000);

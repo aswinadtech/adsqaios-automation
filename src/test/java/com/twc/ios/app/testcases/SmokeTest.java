@@ -157,7 +157,15 @@ public class SmokeTest extends TwcIosBaseTest {
 		stScreen.select_Airlock_Branch("IOSAUTOMATION02");
 		stScreen.select_Airlock_UserGroup("IOSAUTOMATION");
 		Functions.close_launchApp();
-		Utils.verifytinterstitialAdcallBeforeClearSession("Smoke", "Hourly");
+		
+		/*
+		 * Handling Interstitial ad ahead of navigating to all cards
+		 */
+		
+		//Utils.verifytinterstitialAdcallBeforeClearSession("Smoke", "Hourly");
+		hrTab.navigateToHourlyTabAndHandleInterstitialAd();
+		Functions.close_launchApp();
+		
 		proxy.clearCharlesSession();
 		addrScreen.enternewAddress(false, "Atlanta, Georgia");
 		TestBase.waitForMilliSeconds(20000);

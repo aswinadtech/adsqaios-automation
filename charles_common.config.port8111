@@ -124,9 +124,9 @@
     <fullscreen>false</fullscreen>
     <mainWindow>
       <x>20</x>
-      <y>76</y>
+      <y>48</y>
       <width>900</width>
-      <height>688</height>
+      <height>694</height>
     </mainWindow>
     <lastCheckUpdates>2017-06-30 06:35:41.478 UTC</lastCheckUpdates>
   </startupConfiguration>
@@ -157,27 +157,7 @@
     </warningsSeen>
     <properties>
       <entry>
-        <string>SummaryPanel.TABLE_COLUMN_STATES</string>
-        <columnStates/>
-      </entry>
-      <entry>
-        <string>ChartPanel.SIZE_TABLE_COLUMN_STATES</string>
-        <columnStates/>
-      </entry>
-      <entry>
-        <string>ChartPanel.TIMELINE_TABLE_COLUMN_STATES</string>
-        <columnStates/>
-      </entry>
-      <entry>
-        <string>ChartPanel.DURATION_TABLE_COLUMN_STATES</string>
-        <columnStates/>
-      </entry>
-      <entry>
         <string>NavigatorJTable.TABLE_COLUMN_STATES</string>
-        <columnStates/>
-      </entry>
-      <entry>
-        <string>ChartPanel.TYPE_TABLE_COLUMN_STATES</string>
         <columnStates/>
       </entry>
     </properties>

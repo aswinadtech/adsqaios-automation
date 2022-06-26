@@ -90,7 +90,7 @@ public class VideoNavTab extends Utils{
 	}
 	
 	@Step("Navigate To Video Tab: {0}")
-	public void navigateToVideoTab(boolean clearCharles, CharlesProxy proxy) throws Exception {
+	public void navigateToVideoTab_Old(boolean clearCharles, CharlesProxy proxy) throws Exception {
 		try {
 			if (clearCharles) {
 				proxy.clearCharlesSession();
@@ -152,6 +152,81 @@ public class VideoNavTab extends Utils{
 						if (clearCharles) {
 							proxy.clearCharlesSession();
 						}
+						videoNavTab = Ad.findElement(byTropicsNavTab);
+						if (clearCharles) {
+							proxy.clearCharlesSession();
+						}
+						TestBase.clickOnElement(byTropicsNavTab, videoNavTab, "Tropics Nav Tab");
+						TestBase.waitForMilliSeconds(20000);
+						System.out.println("Navigated to Tropics tab ");
+						logStep("Navigated to Tropics tab");
+						attachScreen();
+					} catch (Exception ex2) {
+						System.out.println("Video tab not displayed");
+						logStep("Video tab not displayed");
+						attachScreen();
+					}
+					}
+				}
+			
+			}
+		}
+
+	}
+	
+	@Step("Navigate To Video Tab: {0}")
+	public void navigateToVideoTab(boolean clearCharles, CharlesProxy proxy) throws Exception {
+		try {
+			
+			videoNavTab = Ad.findElement(byVideoDetailNavTab);
+			if (clearCharles) {
+				proxy.clearCharlesSession();
+			}
+			TestBase.clickOnElement(byVideoDetailNavTab, videoNavTab, "Video Nav Tab");
+			TestBase.waitForMilliSeconds(20000);
+			System.out.println("Navigated to Video tab ");
+			logStep("Navigated to Video tab");
+			attachScreen();
+		} catch (Exception e) {
+			try {
+				
+				videoNavTab = Ad.findElement(byVideoNavTab);
+				if (clearCharles) {
+					proxy.clearCharlesSession();
+				}
+				TestBase.clickOnElement(byVideoNavTab, videoNavTab, "Video Nav Tab");
+				TestBase.waitForMilliSeconds(20000);
+				System.out.println("Navigated to Video tab ");
+				logStep("Navigated to Video tab");
+				attachScreen();
+			}catch (Exception e1) {
+
+				try {
+					
+					videoNavTab = Ad.findElement(byWinterNavTab);
+					if (clearCharles) {
+						proxy.clearCharlesSession();
+					}
+					TestBase.clickOnElement(byWinterNavTab, videoNavTab, "Winter Nav Tab");
+					TestBase.waitForMilliSeconds(20000);
+					System.out.println("Navigated to Winter tab ");
+					logStep("Navigated to Winter tab");
+					attachScreen();
+				} catch (Exception ex) {
+					try {
+						
+						videoNavTab = Ad.findElement(bySevereNavTab);
+						if (clearCharles) {
+							proxy.clearCharlesSession();
+						}
+						TestBase.clickOnElement(bySevereNavTab, videoNavTab, "Severe Nav Tab");
+						TestBase.waitForMilliSeconds(20000);
+						System.out.println("Navigated to Severe tab ");
+						logStep("Navigated to Severe tab");
+						attachScreen();
+					} catch (Exception ex1) {
+						try {
+						
 						videoNavTab = Ad.findElement(byTropicsNavTab);
 						if (clearCharles) {
 							proxy.clearCharlesSession();

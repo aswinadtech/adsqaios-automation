@@ -563,8 +563,8 @@ public class RegressionTest extends TwcIosBaseTest {
 //		TestBase.waitForMilliSeconds(5000);
 //		Ad.launchApp();
 		
-		loginScreen.premiumSubscriptionOfMonthly("jmktwc4@gmail.com", "300Interstate");
-//		loginScreen.premiumSubscriptionOfYearly("jmktwc4@gmail.com", "300Interstate");
+		loginScreen.enableMonthlyPremiumSubscription("jmktwc4@gmail.com", "300Interstate");
+//		loginScreen.enableYearlyPremiumSubscription("jmktwc4@gmail.com", "300Interstate");
 		Functions.close_launchApp();
 		attachScreen();
 		subscriptionFqCapStrtTime = System.nanoTime();
@@ -2845,6 +2845,9 @@ public class RegressionTest extends TwcIosBaseTest {
 		try {
 			// navigate to Video tab
 			vTab.navigateToVideoTab(true, proxy);
+			hmTab.clickonHomeTab();
+			proxy.clearCharlesSession();
+			vTab.navigateToVideoTab(true, proxy);
 			TestBase.waitForMilliSeconds(40000);
 		} catch (Exception e) {
 			System.out.println("There is an exception while navigting to video tab");
@@ -2868,7 +2871,7 @@ public class RegressionTest extends TwcIosBaseTest {
 
 	}
 	
-	/*@Test(priority = 1020, enabled = true)
+/*	@Test(priority = 1020, enabled = true)
 	@Description("Enabling Preconfiguration for Map Local")
 	public void enable_PreConfiguration_for_mapLocal() throws Exception {
 		System.out.println("==============================================");
@@ -2893,7 +2896,7 @@ public class RegressionTest extends TwcIosBaseTest {
 		addrScreen.enternewAddress(false, "New York City, New York");
 		System.out.println("****** End Of Preconfiguration for Map Local");
 		logStep("End Of Preconfiguration for Map Local");
-			
+		
 	}*/
 
 }

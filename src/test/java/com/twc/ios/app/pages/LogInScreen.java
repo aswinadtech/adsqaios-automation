@@ -151,7 +151,7 @@ public class LogInScreen extends Utils {
 	}
 	
 	@Step("Premium Subscription For Monthly")
-	public void premiumSubscriptionOfMonthly(String appleId, String applePwd) throws Exception {
+	public void enableMonthlyPremiumSubscription(String appleId, String applePwd) throws Exception {
 		
 		settingsButton = Ad.findElement(bySettingsButton);
 		TestBase.clickOnElement(bySettingsButton, settingsButton, "Settings Button");
@@ -214,7 +214,7 @@ public class LogInScreen extends Utils {
 	}
 	
 	@Step("Premium Subscription For Yearly")
-	public void premiumSubscriptionOfYearly(String appleId, String applePwd) throws Exception {
+	public void enableYearlyPremiumSubscription(String appleId, String applePwd) throws Exception {
 		
 		settingsButton = Ad.findElement(bySettingsButton);
 		TestBase.clickOnElement(bySettingsButton, settingsButton, "Settings Button");

@@ -383,6 +383,13 @@ public class CriteoAndAmazonBidTest extends TwcIosBaseTest {
 		Functions.close_launchApp();
 		Functions.checkForAppState();
 		TestBase.waitForMilliSeconds(5000);
+		/*
+		 * Handling Interstitial ad ahead of navigating to all cards
+		 */
+		hrTab.navigateToHourlyTabAndHandleInterstitialAd();
+		proxy.clearCharlesSession();
+		Functions.close_launchApp();
+		
 		addrScreen.enternewAddress(false, "New York City, New York");
 		TestBase.waitForMilliSeconds(20000);
 		Utils.navigateToAllCards(true, true);
